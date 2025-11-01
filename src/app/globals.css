@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif !important;
+    
+
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Sans', sans-serif !important;
+ 
+}
+
+.city-head {
+  position: relative;
+}
+
+.city-head:after,
+.city-head:before {
+  top: 45px;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.city-head:after {
+  border-color: #0291d2 rgba(136, 183, 213, 0) rgba(136, 183, 213, 0);
+  border-width: 17px;
+  margin-left: -9px;
+  z-index: 9;
+}
+
+/* hero swiper  */
+
+.swiper-pagination-bullet {
+  background-color: white !important; /* Make the bullets white */
+}
+.swiper-pagination-bullet-active {
+  background-color: white !important; /* Active bullet color */
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #3190e7 !important;
+  opacity: 0.7;
+  width: 16px !important; /* Increase width */
+  height: 16px !important; /* Set height to match width */
+  border-radius: 50% !important; /* Make it round */
+  transition: transform 0.3s ease; /* Add a smooth animation */
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #3190e7 !important;
+  opacity: 1;
+}
+
+.navCategroy a {
+  background: linear-gradient(39deg, #d90c55, #8d18ba 80%);
+}
+
+.bg-image {
+  -webkit-animation: animateBackground 30s linear infinite;
+  animation: animateBackground 30s linear infinite;
+  background-image: url("/img/navbar/navcategoryimg.webp");
+  background-size: contain;
+  border: 0;
+  height: 60px;
+  /* margin-left: -15px; */
+  /* margin-top: -59px; */
+  position: relative;
+
+  width: 100%;
+}
+.help-support-img {
+  /* -webkit-animation: animateBackground 30s linear infinite;
+    animation: animateBackground 30s linear infinite; */
+  background-image: url("/img/navbar/navcategoryimg.webp");
+  background-size: contain;
+  border: 0;
+  height: 40px;
+
+  /* margin-left: -15px; */
+  /* margin-top: -59px; */
+
+  width: 100%;
+}
+
+@keyframes animateBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+/* help and suuport  */
+.btn-ser-need-ani {
+  -webkit-animation: pulse 1.5s infinite;
+  animation: pulse 1.5s infinite;
+  background: #21d78d;
+  border: 0 solid #333;
+  border-radius: 33px;
+  bottom: 10px;
+  box-shadow: 0 0 0 #21d78d;
+  color: #fff;
+  cursor: pointer;
+  font-family: Quicksand, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px 10px 35px;
+  position: fixed;
+  right: 20px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 #21d78d;
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(204, 169, 44, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+
+/* community  */
+.coomunitybg {
+  background: linear-gradient(0deg, #fff, #ffe6da9e);
+}
+
+.get-quote {
+  animation: pulse-getquote 1.5s infinite;
+}
+
+@keyframes pulse-getquote {
+  0% {
+    box-shadow: 0 0 0 0 red;
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(204, 169, 44, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+
+/* view business  */
+
+.hot-page2-hom-pre-head:after,
+.hot-page2-hom-pre-head:before {
+  content: " ";
+  height: 0;
+  left: 48%;
+  pointer-events: none;
+  position: absolute;
+  top: 43px;
+  width: 0;
+}
+
+.blogInnerScroll {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
