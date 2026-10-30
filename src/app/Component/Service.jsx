@@ -1,165 +1,102 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa6";
+import { PageHero, HeroSearch } from "../ui/page";
+import { Stagger, StaggerItem } from "../ui/motion";
+
+const services = [
+  {
+    title: "Real Estate", count: 23, link: "/realestate", image: "/img/service/servicefooter1.webp",
+    subcategories: [{ name: "Villas", count: 87 }, { name: "Independent House", count: 45 }, { name: "Plots and Lands", count: 80 }],
+    sublink: "/Sonipat/realestate",
+  },
+  {
+    title: "Hotels And Resorts", count: 987, link: "/hotels-resorts", image: "/img/service/servicefooter2.webp",
+    subcategories: [{ name: "Street Food", count: 23 }, { name: "Coffee Shop", count: 234 }, { name: "Food Hotel", count: 423 }, { name: "Beach Resort", count: 52 }, { name: "Resort", count: 86 }, { name: "Hotels", count: 33 }],
+    sublink: "/Sonipat/hotels-resorts",
+  },
+  {
+    title: "Travel & Tourism", count: 456, link: "/travel", image: "/img/service/servicefooter4.webp",
+    subcategories: [{ name: "Adventure", count: 120 }, { name: "Pilgrimage", count: 78 }, { name: "Luxury Travel", count: 65 }],
+    sublink: "/Sonipat/travel",
+  },
+  {
+    title: "Healthcare Services", count: 312, link: "/healthcare", image: "/img/service/servicefooter5.webp",
+    subcategories: [{ name: "Hospitals", count: 95 }, { name: "Clinics", count: 110 }, { name: "Pharmacies", count: 75 }],
+    sublink: "/Sonipat/healthcare",
+  },
+  {
+    title: "Education & Training", count: 654, link: "/education", image: "/img/service/servicefooter6.webp",
+    subcategories: [{ name: "Schools", count: 180 }, { name: "Colleges", count: 120 }, { name: "Coaching Centers", count: 90 }],
+    sublink: "/Sonipat/education",
+  },
+  {
+    title: "Automobiles & Services", count: 410, link: "/automobiles", image: "/img/service/servicefooter7.webp",
+    subcategories: [{ name: "Car Rentals", count: 60 }, { name: "Bike Rentals", count: 40 }, { name: "Mechanic Shops", count: 85 }],
+    sublink: "/Sonipat/automobiles",
+  },
+  {
+    title: "IT & Software Solutions", count: 520, link: "/it-software", image: "/img/service/servicefooter8.webp",
+    subcategories: [{ name: "Web Development", count: 150 }, { name: "Mobile App Development", count: 100 }, { name: "Cloud Services", count: 70 }],
+    sublink: "/Sonipat/it-software",
+  },
+  {
+    title: "Automobiles & Services", count: 610, link: "/automobiles", image: "/img/service/servicefooter9.webp",
+    subcategories: [{ name: "Car Rentals", count: 60 }, { name: "Bike Rentals", count: 40 }, { name: "Mechanic Shops", count: 85 }],
+    sublink: "/Sonipat/automobiles",
+  },
+];
 
 export default function Service() {
-  const services = [
-    {
-      title: "Real Estate 23",
-      link: "/realestate",
-      image: "/img/service/servicefooter1.webp",
-      subcategories: [
-        { name: "Villas", count: 87, link: "/Sonipat/realestate" },
-        { name: "Independent House", count: 45, link: "/Sonipat/realestate" },
-        { name: "Plots and Lands", count: 80, link: "/Sonipat/realestate" },
-      ],
-    },
-    {
-      title: "Hotels And Resorts 987",
-      link: "/hotels-resorts",
-      image: "/img/service/servicefooter2.webp",
-      subcategories: [
-        { name: "Street Food", count: 23, link: "/Sonipat/hotels-resorts" },
-        { name: "Coffee Shop", count: 234, link: "/Sonipat/hotels-resorts" },
-        { name: "Food Hotel", count: 423, link: "/Sonipat/hotels-resorts" },
-        { name: "Beach Resort", count: 52, link: "/Sonipat/hotels-resorts" },
-        { name: "Resort", count: 86, link: "/Sonipat/hotels-resorts" },
-        { name: "Hotels", count: 33, link: "/Sonipat/hotels-resorts" },
-      ],
-    },
-    {
-      title: "Travel & Tourism 456",
-      link: "/travel",
-      image: "/img/service/servicefooter4.webp",
-      subcategories: [
-        { name: "Adventure", count: 120, link: "/Sonipat/travel" },
-        { name: "Pilgrimage", count: 78, link: "/Sonipat/travel" },
-        { name: "Luxury Travel", count: 65, link: "/Sonipat/travel" },
-      ],
-    },
-    {
-      title: "Healthcare Services 312",
-      link: "/healthcare",
-      image: "/img/service/servicefooter5.webp",
-      subcategories: [
-        { name: "Hospitals", count: 95, link: "/Sonipat/healthcare" },
-        { name: "Clinics", count: 110, link: "/Sonipat/healthcare" },
-        { name: "Pharmacies", count: 75, link: "/Sonipat/healthcare" },
-      ],
-    },
-    {
-      title: "Education & Training 654",
-      link: "/education",
-      image: "/img/service/servicefooter6.webp",
-      subcategories: [
-        { name: "Schools", count: 180, link: "/Sonipat/education" },
-        { name: "Colleges", count: 120, link: "/Sonipat/education" },
-        { name: "Coaching Centers", count: 90, link: "/Sonipat/education" },
-      ],
-    },
-    {
-      title: "Automobiles & Services 410",
-      link: "/automobiles",
-      image: "/img/service/servicefooter7.webp",
-      subcategories: [
-        { name: "Car Rentals", count: 60, link: "/Sonipat/automobiles" },
-        { name: "Bike Rentals", count: 40, link: "/Sonipat/automobiles" },
-        { name: "Mechanic Shops", count: 85, link: "/Sonipat/automobiles" },
-      ],
-    },
-    {
-      title: "IT & Software Solutions 520",
-      link: "/it-software",
-      image: "/img/service/servicefooter8.webp",
-      subcategories: [
-        { name: "Web Development", count: 150, link: "/Sonipat/it-software" },
-        {
-          name: "Mobile App Development",
-          count: 100,
-          link: "/Sonipat/it-software",
-        },
-        { name: "Cloud Services", count: 70, link: "/Sonipat/it-software" },
-      ],
-    },
-    {
-      title: "Automobiles & Services 610",
-      link: "/automobiles",
-      image: "/img/service/servicefooter9.webp",
-      subcategories: [
-        { name: "Car Rentals", count: 60, link: "/Sonipat/automobiles" },
-        { name: "Bike Rentals", count: 40, link: "/Sonipat/automobiles" },
-        { name: "Mechanic Shops", count: 85, link: "/Sonipat/automobiles" },
-      ],
-    },
-  ];
+  const [query, setQuery] = useState("");
+  const q = query.toLowerCase();
+  const list = services.filter(
+    (s) => s.title.toLowerCase().includes(q) || s.subcategories.some((c) => c.name.toLowerCase().includes(q))
+  );
 
   return (
-    <div>
-      {/* Banner Section */}
-      <div className="banner h-[40vh] relative">
-        <img
-          src="/img/community/community.webp"
-          alt=""
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 coomunitybg" />
-        <div className="absolute z-40 inset-0 flex justify-center items-center">
-          <div className="space-y-3 flex flex-col items-center w-full px-4 md:px-0">
-            <h6 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold text-center">
-              All Service
-            </h6>
-            <p className="text-sm sm:text-base md:text-lg text-center">
-              Here post your events, seminar, webinar, festivals and more
-            </p>
-            <input
-              type="text"
-              placeholder="Search event in your city"
-              className="w-full py-3 max-w-md px-6 rounded-full md:w-[80%] lg:px-10 text-sm focus:outline-none"
-            />
-          </div>
-        </div>
-      </div>
+    <div className="bg-mist">
+      <PageHero
+        eyebrow="Directory"
+        title="All"
+        highlight="Services"
+        subtitle="Here post your events, seminar, webinar, festivals and more"
+        waveFill="#F4F5FB"
+      >
+        <HeroSearch placeholder="Search a service" value={query} onChange={(e) => setQuery(e.target.value)} />
+      </PageHero>
 
-      {/* Services Grid */}
-      <div className="px-4 sm:px-6 md:px-8 xl:px-32 pb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className="flex flex-col lg:flex-row items-start bg-white shadow-lg p-4 md:p-5 rounded-lg border border-gray-200 hover:shadow-xl transition-shadow"
-          >
-            {/* Image */}
-            <div className="w-full lg:w-52 lg:h-36 flex-shrink-0 mb-4 md:mb-0">
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-full object-cover rounded-md"
-              />
-            </div>
-
-            {/* Content */}
-            <div className="lg:ml-6 w-full">
-              <h2 className="text-lg md:text-xl font-semibold text-[#0A58CA] leading-tight">
-                <a href={service.link} className="hover:underline">
-                  {service.title}
-                </a>
-              </h2>
-
-              {/* Subcategories */}
-              <div className="mt-3 flex flex-wrap gap-3">
-                {service.subcategories.map((subcategory, subIndex) => (
-                  <a
-                    key={subIndex}
-                    href={subcategory.link}
-                    className="text-xs sm:text-sm text-nowrap text-[#0A58CA] border border-gray-300 px-3 py-1 rounded-md transition hover:bg-[#0A58CA] hover:text-white"
-                  >
-                    {subcategory.name}:{" "}
-                    <span className="font-medium text-gray-700">
-                      {subcategory.count}
-                    </span>
-                  </a>
-                ))}
+      <div className="container-x pb-16">
+        <Stagger gap={0.06} className="grid gap-5 md:grid-cols-2">
+          {list.map((service, i) => (
+            <StaggerItem key={`${service.title}-${i}`} className="group panel flex flex-col overflow-hidden transition duration-300 hover:shadow-card-hover sm:flex-row">
+              <Link href={service.link} className="relative block shrink-0 overflow-hidden sm:w-48 lg:w-56">
+                <img src={service.image} alt={service.title} className="aspect-[16/9] h-full w-full object-cover transition duration-700 group-hover:scale-105 sm:aspect-auto" />
+                <span className="chip absolute left-3 top-3 bg-night-950/75 text-white backdrop-blur">{service.count} listings</span>
+              </Link>
+              <div className="flex-1 p-5">
+                <Link href={service.link} className="flex items-center justify-between gap-3">
+                  <h2 className="text-lg font-bold text-night-900 transition group-hover:text-brand-600">{service.title}</h2>
+                  <FaArrowRight className="shrink-0 text-xs text-slate-300 transition group-hover:translate-x-1 group-hover:text-brand-500" />
+                </Link>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {service.subcategories.map((sub) => (
+                    <Link
+                      key={sub.name}
+                      href={service.sublink}
+                      className="flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-brand-500 hover:bg-brand-500 hover:text-white"
+                    >
+                      {sub.name}
+                      <span className="rounded-full bg-mist px-1.5 text-[10px] text-slate-500">{sub.count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </StaggerItem>
+          ))}
+        </Stagger>
+        {list.length === 0 && <p className="py-16 text-center text-slate-400">No services match “{query}”.</p>}
       </div>
     </div>
   );

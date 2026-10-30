@@ -1,84 +1,50 @@
 "use client";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import BusinessDirectory from "../Component/BuinessDirectory";
+import { FormShell } from "../ui/page";
+
+const methods = ["Paytm", "PayPal", "Stripe", "RazorPay"];
 
 export default function Page() {
+  const [points, setPoints] = useState("");
+  const [method, setMethod] = useState("");
+
   return (
     <>
-      <div className="bg-[url('/img/sign/sign1.webp')] h-screen">
-        <div className="bg-[rgba(0,0,0,0.71)] h-full flex items-center justify-center px-4">
-          <div className="w-full lg:max-w-[45%] md:max-w-[70%] sm:max-w-[90%] mx-auto bg-white rounded-md shadow-lg">
-            <div className="lg:w-full mx-auto h-2 bg-gradient-to-br from-[#717e9d] to-[#7fccbb] mb-6 rounded" />
-
-            <div className="bg-teal-400 rounded-md text-white text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-4 uppercase w-fit">
-              BUY POINTS
-            </div>
-
-            <div className="space-y-6 px-6 md:px-8 lg:px-12 py-8">
-              <h5 className="text-lg md:text-2xl text-center font-bold text-gray-800">
-                Hi, Rn53 Themes!!!
-              </h5>
-
-              <div className="space-y-6">
-                {/* Existing Points Section */}
-                <div className="text-center bg-[#DFFFF2] text-[#0b8c58] border border-green-400 rounded-md p-3">
-                  <p>Your Existing Points - 60 | Cost of 1 point = $1</p>
-                </div>
-
-                {/* Input Section */}
-                <div>
-                  <h6 className="text-sm md:text-base font-medium mb-2">
-                    Please Enter Points
-                  </h6>
-                  <input
-                    type="text"
-                    className="w-full py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                  />
-                </div>
-
-                {/* Payment Mode Section */}
-                <div>
-                  <h6 className="text-sm md:text-base font-medium mb-2">
-                    Payment Mode
-                  </h6>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="flex items-center gap-2">
-                      <input id="Paytm" type="radio" name="payment" />
-                      <label htmlFor="Paytm" className="text-sm">
-                        Paytm
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input id="PayPal" type="radio" name="payment" />
-                      <label htmlFor="PayPal" className="text-sm">
-                        PayPal
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input id="Stripe" type="radio" name="payment" />
-                      <label htmlFor="Stripe" className="text-sm">
-                        Stripe
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input id="razorPay" type="radio" name="payment" />
-                      <label htmlFor="razorPay" className="text-sm">
-                        RazorPay
-                      </label>
-                    </div>
-                  </div>
-
-                  <button className="w-full mt-5 block text-white bg-[#51C0FF] py-2 rounded-3xl hover:bg-[#429edc]">
-                    Pay Now
-                  </button>
-                </div>
-              </div>
-            </div>
+      <FormShell badge="Buy points" title="Hi, Rn53 Themes!" subtitle="Top up points to promote your listings.">
+        <div className="space-y-5">
+          <div className="flex items-center justify-between rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-700 ring-1 ring-emerald-200">
+            <span>Your existing points</span>
+            <span className="font-display text-2xl font-extrabold">60</span>
           </div>
-        </div>
-      </div>
+          <p className="text-xs text-slate-500">Cost of 1 point = $1</p>
 
+          <div>
+            <label htmlFor="points" className="field-label">Please Enter Points</label>
+            <input id="points" type="number" min="1" value={points} onChange={(e) => setPoints(e.target.value)} className="field" />
+            {points > 0 && <p className="mt-2 text-sm text-slate-500">You’ll pay <b className="text-night-900">${points}</b></p>}
+          </div>
+
+          <fieldset>
+            <legend className="field-label">Payment Mode</legend>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {methods.map((m) => (
+                <label
+                  key={m}
+                  className={`cursor-pointer rounded-2xl border-2 px-3 py-3 text-center text-sm font-semibold transition ${
+                    method === m ? "border-brand-500 bg-brand-50 text-brand-700" : "border-slate-200 text-slate-600 hover:border-brand-200"
+                  }`}
+                >
+                  <input type="radio" name="payment" value={m} checked={method === m} onChange={() => setMethod(m)} className="sr-only" />
+                  {m}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <button type="button" className="btn-primary w-full py-3.5 text-base">Pay Now</button>
+        </div>
+      </FormShell>
       <BusinessDirectory />
     </>
   );

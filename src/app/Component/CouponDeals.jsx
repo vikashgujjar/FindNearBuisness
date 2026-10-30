@@ -1,165 +1,101 @@
 "use client";
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaRegCopy, FaCheck, FaArrowLeft, FaTicket } from "react-icons/fa6";
+import { PageHero, HeroSearch } from "../ui/page";
+import { Stagger, StaggerItem } from "../ui/motion";
 
-export default function CouponDeals() {
-  const initialCoupons = [
-    {
-      image: "/img/couponDeal/coupon.webp",
-      alt: "Reliance fresh",
-      title: "Reliance Fresh",
-      expires: "31, Mar 2021",
-      termsUrl: "/terms",
-      termsText: "Terms & Conditions Apply",
-      buttonText: "Get Coupon",
-      couponToogler: false,
-      couponVal: "REL10%",
-      couponDesc: "Reliance Fresh",
-    },
-    {
-      image: "/img/couponDeal/coupon.webp",
-      alt: "Trends",
-      title: "Trends",
-      expires: "26, Mar 2021",
-      termsUrl: "/terms",
-      termsText: "Terms & Conditions Apply",
-      buttonText: "Get Coupon",
-      couponToogler: false,
-      couponVal: "REL10%",
-      couponDesc: "Trends",
-    },
-    {
-      image: "/img/couponDeal/coupon.webp",
-      alt: "Rn53 Themes",
-      title: "Rn53 Themes Offers",
-      expires: "25, Mar 2021",
-      termsUrl: "/terms",
-      termsText: "Terms & Conditions Apply",
-      buttonText: "Get Coupon",
-      couponToogler: false,
-      couponVal: "RN53OFFER",
-      couponDesc: "Rn53 Themes",
-    },
-    {
-      image: "/img/couponDeal/coupon.webp",
-      alt: "Future Touch",
-      title: "Future Touch 50% Offer",
-      expires: "23, Dec 2021",
-      termsUrl: "/terms",
-      termsText: "Terms & Conditions Apply",
-      buttonText: "Get Coupon",
-      couponToogler: false,
-      couponVal: "BIZ50%",
-      couponDesc: "Future Touch",
-    },
-  ];
+const coupons = [
+  { image: "/img/couponDeal/coupon.webp", title: "Reliance Fresh", expires: "31, Mar 2021", couponVal: "REL10%", couponDesc: "Reliance Fresh" },
+  { image: "/img/couponDeal/coupon.webp", title: "Trends", expires: "26, Mar 2021", couponVal: "REL10%", couponDesc: "Trends" },
+  { image: "/img/couponDeal/coupon.webp", title: "Rn53 Themes Offers", expires: "25, Mar 2021", couponVal: "RN53OFFER", couponDesc: "Rn53 Themes" },
+  { image: "/img/couponDeal/coupon.webp", title: "Future Touch 50% Offer", expires: "23, Dec 2021", couponVal: "BIZ50%", couponDesc: "Future Touch" },
+];
 
-  const [coupons, setCoupons] = useState(initialCoupons);
+function CouponCard({ coupon }) {
+  const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const toggleCoupon = (index) => {
-    const updatedCoupons = coupons.map((item, i) =>
-      i === index ? { ...item, couponToogler: !item.couponToogler } : item
-    );
-    setCoupons(updatedCoupons);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(coupon.couponVal);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {}
   };
 
   return (
-    <div>
-      {/* Banner Section */}
-      <div className="relative h-[20vh] md:h-[35vh] lg:h-[45vh] overflow-hidden">
-        <img
-          src="/img/couponDeal/couponDeal1.webp"
-          alt="Coupon Banner"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 z-10 flex items-center justify-center text-center">
-          <h1 className="text-3xl md:text-4xl text-white font-bold">
-            Coupons & Deals
-          </h1>
+    <div className="panel relative flex h-full flex-col overflow-hidden">
+      {/* ticket notches */}
+      <span aria-hidden className="absolute -left-3 top-[96px] h-6 w-6 rounded-full bg-mist" />
+      <span aria-hidden className="absolute -right-3 top-[96px] h-6 w-6 rounded-full bg-mist" />
+
+      <div className="flex items-center gap-4 p-5">
+        <img src={coupon.image} alt={coupon.title} className="h-16 w-16 shrink-0 rounded-2xl object-cover shadow" />
+        <div className="min-w-0">
+          <h3 className="font-bold text-night-900">{coupon.title}</h3>
+          <p className="text-xs text-slate-500">Expires {coupon.expires}</p>
         </div>
       </div>
+      <div className="mx-5 border-t-2 border-dashed border-slate-200" />
 
-      {/* Coupon Section */}
-      <section className="py-12 px-5 md:px-8 xl:px-32 bg-gray-50">
-        <div className="max-w-6xl mx-auto text-center mb-10">
-          <p className="text-gray-700">
-            Post your events, seminars, webinars, festivals, and more
-          </p>
-          <input
-            type="text"
-            placeholder="Search event in your city..."
-            className="mt-5 px-6 py-3 w-full md:w-1/2 rounded-full border focus:outline-none text-sm shadow-sm"
-          />
-        </div>
+      <div className="flex flex-1 flex-col justify-center p-5">
+        <AnimatePresence mode="wait" initial={false}>
+          {revealed ? (
+            <motion.div key="code" initial={{ opacity: 0, rotateX: -60 }} animate={{ opacity: 1, rotateX: 0 }} exit={{ opacity: 0 }} className="text-center">
+              <p className="text-sm text-slate-500">🎉 Here’s your code for <b className="text-night-900">{coupon.couponDesc}</b></p>
+              <button
+                type="button"
+                onClick={copy}
+                className="mx-auto mt-3 flex items-center gap-3 rounded-2xl border-2 border-dashed border-brand-300 bg-brand-50 px-5 py-3 font-display text-xl font-extrabold tracking-widest text-brand-700"
+              >
+                {coupon.couponVal}
+                {copied ? <FaCheck className="text-base text-emerald-500" /> : <FaRegCopy className="text-base" />}
+              </button>
+              <button type="button" onClick={() => setRevealed(false)} className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-600">
+                <FaArrowLeft /> Back
+              </button>
+            </motion.div>
+          ) : (
+            <motion.div key="cta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center justify-between gap-3">
+              <a href="/terms" className="text-xs text-slate-500 underline hover:text-brand-600">Terms & Conditions Apply</a>
+              <button type="button" onClick={() => setRevealed(true)} className="btn-primary">
+                <FaTicket /> Get Coupon
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-center">
-          {coupons.map((coupon, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 max-w-md mx-auto"
-            >
-              {coupon.couponToogler ? (
-                <div className="text-center space-y-5">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-700 to-pink-500 bg-clip-text text-transparent">
-                    🎉 Congratulations!
-                  </h2>
-                  <p className="text-gray-700 text-sm">
-                    Here’s your code for{" "}
-                    <span className="font-semibold text-gray-900">
-                      {coupon.couponDesc}
-                    </span>
-                    :
-                  </p>
-                  <div className="bg-gray-100 py-3 px-6 rounded-lg inline-block">
-                    <h6 className="font-bold text-xl tracking-wider text-gray-900">
-                      {coupon.couponVal}
-                    </h6>
-                  </div>
-                  <button
-                    onClick={() => toggleCoupon(index)}
-                    className="px-6 py-2 bg-gradient-to-tr from-purple-700 to-pink-500 text-white font-medium rounded-full hover:scale-105 transition"
-                  >
-                    ⬅ Back
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b pb-4">
-                    <img
-                      src={coupon.image}
-                      alt={coupon.alt}
-                      className="w-16 h-16 rounded-lg object-cover shadow"
-                    />
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {coupon.title}
-                    </h3>
-                  </div>
-                  <div className="flex justify-between items-center bg-gray-100 p-3 rounded-xl">
-                    <div className="text-left">
-                      <p className="text-xs text-gray-500">EXPIRES:</p>
-                      <p className="text-sm font-semibold text-gray-800">
-                        {coupon.expires}
-                      </p>
-                      <a
-                        href={coupon.termsUrl}
-                        className="text-xs text-blue-600 underline hover:text-blue-800"
-                      >
-                        {coupon.termsText}
-                      </a>
-                    </div>
-                    <button
-                      onClick={() => toggleCoupon(index)}
-                      className="px-5 py-2 bg-gradient-to-tr from-purple-700 to-pink-500 text-white text-sm rounded-full font-semibold hover:scale-105 transition"
-                    >
-                      {coupon.buttonText}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+export default function CouponDeals() {
+  const [query, setQuery] = useState("");
+  const list = coupons.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()));
+
+  return (
+    <div className="bg-mist">
+      <PageHero
+        eyebrow="Save more"
+        title="Coupons"
+        highlight="& Deals"
+        subtitle="Post your events, seminars, webinars, festivals, and more"
+        waveFill="#F4F5FB"
+      >
+        <HeroSearch placeholder="Search deals in your city..." value={query} onChange={(e) => setQuery(e.target.value)} />
+      </PageHero>
+
+      <div className="container-x pb-16">
+        <Stagger gap={0.08} className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          {list.map((coupon) => (
+            <StaggerItem key={coupon.title}>
+              <CouponCard coupon={coupon} />
+            </StaggerItem>
           ))}
-        </div>
-      </section>
+        </Stagger>
+        {list.length === 0 && <p className="py-16 text-center text-slate-400">No deals match “{query}”.</p>}
+      </div>
     </div>
   );
 }

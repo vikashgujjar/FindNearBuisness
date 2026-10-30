@@ -1,196 +1,71 @@
 "use client";
-import React, { useState } from "react";
-import DashLeft from "./DashLeft";
-import DashRight from "./DashRight";
+import React from "react";
+import Link from "next/link";
+import { FaStar, FaEye, FaPen, FaTrash, FaArrowUpRightFromSquare, FaPlus } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
+import { DashCard, StatusChip, TableWrap } from "../ui/page";
+import { cityHref, useUserLocation } from "../context/LocationContext";
+
+const listings = [
+  { id: 1, name: "test", date: "28, Mar 2021", rating: 0, views: 1, status: "Active" },
+  { id: 2, name: "dfzhfhd", date: "25, Mar 2021", rating: 0, views: 7, status: "Inactive" },
+  { id: 3, name: "Iei", date: "25, Mar 2021", rating: 0, views: 15, status: "Active" },
+  { id: 4, name: "Phoenix Mall", date: "13, Mar 2021", rating: 0, views: 10, status: "Active" },
+  { id: 5, name: "Ocha Thai Cuisine", date: "12, Mar 2021", rating: 5, views: 9, status: "Active" },
+  { id: 6, name: "Core Real Estates", date: "11, Mar 2021", rating: 0, views: 18, status: "Active" },
+  { id: 7, name: "Gill Automobiles and Services", date: "20, Feb 2021", rating: 0, views: 30, status: "Active" },
+  { id: 8, name: "Titan Wedding Hall", date: "07, Feb 2021", rating: 5, views: 27, status: "Active" },
+  { id: 9, name: "Taj Hotels", date: "24, Dec 2020", rating: 0, views: 16, status: "Active" },
+];
+
+export const iconBtn = "grid h-8 w-8 place-items-center rounded-full bg-mist text-slate-500 transition hover:bg-brand-500 hover:text-white";
+
 export default function AllListing() {
-  const listings = [
-    {
-      id: 1,
-      imgage: "/img/dashboard/listing.webp",
-      name: "test",
-      date: "28, Mar 2021",
-      rating: 0,
-      views: 1,
-      status: "Active",
-    },
-    {
-      id: 2,
-      imgage: "/img/dashboard/listing.webp",
-      name: "dfzhfhd",
-      date: "25, Mar 2021",
-      rating: 0,
-      views: 7,
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Iei",
-      date: "25, Mar 2021",
-      rating: 0,
-      views: 15,
-      status: "Active",
-    },
-    {
-      id: 4,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Phoenix Mall",
-      date: "13, Mar 2021",
-      rating: 0,
-      views: 10,
-      status: "Active",
-    },
-    {
-      id: 5,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Ocha Thai Cuisine",
-      date: "12, Mar 2021",
-      rating: 5,
-      views: 9,
-      status: "Active",
-    },
-    {
-      id: 6,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Core Real Estates",
-      date: "11, Mar 2021",
-      rating: 0,
-      views: 18,
-      status: "Active",
-    },
-    {
-      id: 7,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Gill Automobiles and Services",
-      date: "20, Feb 2021",
-      rating: 0,
-      views: 30,
-      status: "Active",
-    },
-    {
-      id: 8,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Titan Wedding Hall",
-      date: "07, Feb 2021",
-      rating: 5,
-      views: 27,
-      status: "Active",
-    },
-    {
-      id: 9,
-      imgage: "/img/dashboard/listing.webp",
-      name: "Taj Hotels",
-      date: "24, Dec 2020",
-      rating: 0,
-      views: 16,
-      status: "Active",
-    },
-  ];
+  const { location } = useUserLocation();
 
   return (
-    <>
-      <CommonDashLayout>
-        <div className="container mx-auto  bg-white p-4">
-          <div className="bg-white ">
-            <div className="w-full h-2 bg-gradient-to-r from-[#7FCCBB] to-[#588EE3] mb-6 rounded" />
-
-            {/* Title Section */}
-            <div className="bg-teal-400 rounded-md text-white text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-4 uppercase w-fit">
-              All Listing
-            </div>
-            <div className="p-4  ">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-sm font-bold">Listing Details</h2>
-                <a
-                  href="/blog-form"
-                  className="bg-gradient-to-t from-[#697480] to-[#9ba3ab] text-white px-2 py-1 text-xs font-semibold rounded hover:bg-blue-600"
-                >
-                  Add new Listing
-                </a>
-              </div>
-              <div className="w-[300px] md:w-auto  overflow-x-auto  ">
-                <table className="md:w-full w-[700px] table-auto border-collapse ">
-                  <thead>
-                    <tr className="">
-                      <th className="border-y   p-2">No</th>
-                      <th className="border-y   p-2">Listing Name</th>
-                      <th className="border-y   p-2">Rating</th>
-                      <th className="border-y   p-2">Views</th>
-                      <th className="border-y   p-2">Status</th>
-                      <th className="border-y   p-2">Edit</th>
-                      <th className="border-y   p-2">Delete</th>
-                      <th className="border-y   p-2">Preview</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {listings.map((listing, index) => (
-                      <tr key={listing.id} className="text-start border-b">
-                        <td className="border-y p-2">{index + 1}</td>
-                        <td className="border-y p-2 flex items-center gap-2">
-                          <img
-                            src={listing.imgage}
-                            alt={listing.name}
-                            className="w-10 h-10 rounded-full"
-                          />
-                          <div>
-                            <span className="font-semibold text-xs">
-                              {listing.name}
-                            </span>
-                            <p className="text-xs text-gray-500">
-                              {listing.date}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="border-y text-xs ">
-                          <span className="px-2 py-1 bg-[#F7ED94]">
-                            {" "}
-                            {listing.rating}
-                          </span>
-                        </td>
-                        <td className="border-y text-xs p-2">
-                          <span className="px-2 py-1 bg-[#F7ED94]">
-                            {listing.views}
-                          </span>{" "}
-                        </td>
-                        <td className={`border-y p-2 text-xs   `}>
-                          <span className="border-2 border-gray-100 px-2 rounded bg-[#579EDC] text-white">
-                            {listing.status}
-                          </span>
-                        </td>
-                        <td className="border-y p-2 text-xs">
-                          <a
-                            href="/newlisting"
-                            className=" border-2 px-2 border-gray-200hover:underline"
-                          >
-                            Edit
-                          </a>
-                        </td>
-                        <td className="border-y p-2 text-xs">
-                          <a
-                            href="/NabhaTahsil/listing"
-                            className=" border-2 px-2 border-gray-200 hover:underline"
-                          >
-                            Delete
-                          </a>
-                        </td>
-                        <td className="border-y p-2 text-xs">
-                          <a
-                            href="/all"
-                            className=" hover:underline border-2 px-2 border-gray-200"
-                          >
-                            Preview
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CommonDashLayout>
-    </>
+    <CommonDashLayout>
+      <DashCard
+        badge="All Listing"
+        title="Listing Details"
+        action={<Link href="/newlisting" className="btn-primary btn-sm"><FaPlus /> Add new Listing</Link>}
+      >
+        <TableWrap>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>No</th><th>Listing Name</th><th>Rating</th><th>Views</th><th>Status</th><th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listings.map((listing, index) => (
+                <tr key={listing.id}>
+                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <img src="/img/dashboard/listing.webp" alt="" className="h-10 w-10 rounded-xl object-cover" />
+                      <div>
+                        <p className="font-semibold text-night-900">{listing.name}</p>
+                        <p className="text-xs text-slate-400">{listing.date}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span className="chip bg-pin-400/20 text-amber-600"><FaStar /> {listing.rating}</span></td>
+                  <td><span className="flex items-center gap-1.5"><FaEye className="text-slate-300" /> {listing.views}</span></td>
+                  <td><StatusChip status={listing.status} /></td>
+                  <td>
+                    <div className="flex justify-end gap-1.5">
+                      <Link href="/newlisting" className={iconBtn} title="Edit"><FaPen className="text-xs" /></Link>
+                      <Link href={cityHref(location, "listing")} className={iconBtn} title="Delete"><FaTrash className="text-xs" /></Link>
+                      <Link href="/all" className={iconBtn} title="Preview"><FaArrowUpRightFromSquare className="text-xs" /></Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableWrap>
+      </DashCard>
+    </CommonDashLayout>
   );
 }

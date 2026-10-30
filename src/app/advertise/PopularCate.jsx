@@ -1,3 +1,6 @@
+"use client";
+import { Reveal } from "../ui/motion";
+
 const PopularCate = () => {
   const popularCategories = [
     "Body Massage Centres", "Cinema Halls", "Schools", "Beauty Spas", "Dermatologists",
@@ -49,34 +52,29 @@ const PopularCate = () => {
     "Thrissur", "Kolhapur", "Salem", "Meerut", "Mangalore", "Gorakhpur", "Jabalpur", "Jalandhar", "Gwalior"
   ];
 
-  const renderList = (data) =>
-    data.map((item, index) => (
-      <span key={index} className="text-gray-600 text-sm leading-relaxed flex items-center gap-1">
-        {item}
-        {index !== data.length - 1 && <span className="text-gray-300">|</span>}
-      </span>
-    ));
-
   return (
-    <div className="space-y-10 px-5 md:px-12 xl:px-32 py-6 md:py-12">
-      <Section title="Popular Categories" data={popularCategories} />
-      <Section title="Deals and Offers" data={dealsAndOffers} />
-      <Section title="Explore Future Touch Collections" data={futureTocuhCollection} />
-      <Section title="Popular Cities" data={popularCities} />
-    </div>
+    <section className="bg-mist py-14 sm:py-20">
+      <div className="container-x space-y-6">
+        <Section title="Popular Categories" data={popularCategories} />
+        <Section title="Deals and Offers" data={dealsAndOffers} />
+        <Section title="Explore Future Touch Collections" data={futureTocuhCollection} />
+        <Section title="Popular Cities" data={popularCities} />
+      </div>
+    </section>
   );
 };
 
 const Section = ({ title, data }) => (
-  <div>
-    <h6 className="font-semibold text-gray-700 capitalize text-lg mb-4">{title}</h6>
-    <div className="flex flex-wrap gap-2">{data.map((item, idx) => (
-      <span key={idx} className="text-gray-600 text-sm flex items-center gap-1">
-        {item}
-        {idx !== data.length - 1 && <span className="text-gray-300">|</span>}
-      </span>
-    ))}</div>
-  </div>
+  <Reveal className="panel p-5 sm:p-7">
+    <h3 className="mb-4 font-bold text-night-900">{title}</h3>
+    <div className="flex flex-wrap gap-2">
+      {data.map((item, idx) => (
+        <span key={idx} className="rounded-full bg-mist px-3 py-1.5 text-xs text-slate-600 transition hover:bg-brand-50 hover:text-brand-600 sm:text-sm">
+          {item}
+        </span>
+      ))}
+    </div>
+  </Reveal>
 );
 
 export default PopularCate;

@@ -1,5 +1,10 @@
+"use client";
 import React from "react";
-import Link from "next/link"; // Ensure you import Link if using Next.js
+import Link from "next/link";
+import { FaStar, FaArrowRight } from "react-icons/fa6";
+import { Blob, SectionHeading } from "../ui/decor";
+import { Stagger, StaggerItem } from "../ui/motion";
+import { cityHref } from "../context/LocationContext";
 
 const cityData = [
   {
@@ -105,69 +110,67 @@ const cityData = [
   },
 ];
 
+const headers = [
+  "from-brand-500 to-magenta-500",
+  "from-cyan-400 to-brand-500",
+  "from-magenta-500 to-pin-500",
+];
+
 const Citycategoire = ({ loc }) => {
-  const getLocationHref = () => {
-    const location =
-      loc?.county || (loc?.Name === "NA" ? loc?.State : loc?.Name);
-    return `${location?.replace(/\s+/g, "") || "default-location"}/all`;
-  };
+  const href = cityHref(loc, "all");
 
   return (
-    <section className="py-5 md:py-10 space-y-10 px-5 md:px-8 xl:px-32">
-      <div className="text-center space-y-3 ">
-        <h5 className="text-2xl md:text-3xl font-bold">
-          Explore City Category
-        </h5>
-        <p>
-          lacinia viverra lectus. Fusce imperdiet ullamcorper metus eu
-          fringilla.
-        </p>
-      </div>
+    <section className="relative overflow-hidden py-14 sm:py-20">
+      <Blob className="-right-32 top-10 h-96 w-96 opacity-60" />
 
-      <div className="">
-        {/* First Div */}
-        <div className="grid grid-cols-1 gap-5  md:grid-cols-2  lg:grid-cols-3  my-5 lg:my-0 mx-auto lg:mx-2  overflow-hidden relative w-full">
+      <div className="container-x relative">
+        <SectionHeading
+          eyebrow="Leaderboard"
+          title="Top brands in"
+          highlight="your city"
+          subtitle="lacinia viverra lectus. Fusce imperdiet ullamcorper metus eu fringilla."
+        />
+
+        <Stagger gap={0.12} className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
           {cityData.map((categoryData, index) => (
-            <div key={index} className="shadow-md border rounded-xl">
-              <div className="city-head bg-[#0291d2] text-center rounded-t-xl">
-                <h4 className="text-white text-lg font-semibold py-3">
-                  {categoryData.category}
-                </h4>
+            <StaggerItem
+              key={categoryData.category}
+              className={`overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-slate-100 ${index === 2 ? "md:col-span-2 lg:col-span-1" : ""}`}
+            >
+              <div className={`relative overflow-hidden bg-gradient-to-r ${headers[index % headers.length]} px-5 py-5 text-white`}>
+                <span aria-hidden className="absolute -right-4 -top-8 font-display text-[110px] font-extrabold leading-none text-white/15">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p className="relative text-[11px] font-bold uppercase tracking-[0.16em] text-white/70">Top 5</p>
+                <h3 className="relative text-lg font-bold">{categoryData.category}</h3>
               </div>
-              <div>
-                {categoryData.items.map((imageData, i) => (
-                  <Link
-                    href={getLocationHref()}
-                    className="items-center border-b px-4 flex hover:shadow-lg cursor-pointer"
-                    key={i}
-                  >
-                    <div className="city-image">
-                      <img
-                        src={imageData.image}
-                        alt={imageData.title}
-                        className="rounded-full h-9 object-cover w-9"
-                      />
-                    </div>
 
-                    <div className="px-4 w-full ">
-                      {imageData.rating && (
-                        <span className="text-white mt-5 float-right text-xs bg-green-600 px-2 py-1 rounded">
-                          {imageData.rating}
+              <ol className="divide-y divide-slate-100">
+                {categoryData.items.map((imageData, i) => (
+                  <li key={i}>
+                    <Link href={href} className="group flex items-center gap-3 px-5 py-3.5 transition hover:bg-mist">
+                      <span className="w-6 font-display text-sm font-extrabold text-slate-300 group-hover:text-brand-500">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <img src={imageData.image} alt={imageData.title} className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-white shadow" />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="truncate text-sm font-semibold text-night-900">{imageData.title}</h4>
+                        <p className="truncate text-xs text-slate-500">{imageData.description}</p>
+                      </div>
+                      {imageData.rating ? (
+                        <span className="flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-600">
+                          <FaStar className="text-[10px]" /> {imageData.rating.toFixed(1)}
                         </span>
+                      ) : (
+                        <FaArrowRight className="shrink-0 text-xs text-slate-300 transition group-hover:translate-x-1 group-hover:text-brand-500" />
                       )}
-                      <h3 className="text-sm font-semibold mb-0 mt-4">
-                        {imageData.title}
-                      </h3>
-                      <p className="text-[#525252] text-nowrap text-xs font-normal mb-5 pt-1">
-                        {imageData.description}
-                      </p>
-                    </div>
-                  </Link>
+                    </Link>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ol>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

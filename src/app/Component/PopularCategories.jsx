@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { SectionHeading } from "../ui/decor";
 
 export default function PopularCategories() {
   const Accommodation = () => {
@@ -238,68 +240,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -544,68 +531,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -840,68 +812,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -1147,68 +1104,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -1439,68 +1381,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -1745,68 +1672,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -2050,68 +1962,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -2356,68 +2253,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -2661,68 +2543,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -2967,68 +2834,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -3271,68 +3123,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -3571,68 +3408,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -3860,68 +3682,53 @@ export default function PopularCategories() {
     ];
 
     return (
-      <div className="space-y-6 ">
-        <div className="mt-6 flex flex-wrap gap-x-2">
-          {services.map((elm) => (
-            <>
-              <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-              <span className="text-gray-700">|</span>
-            </>
+      <div className="space-y-8">
+        <div className="mt-3 flex flex-wrap gap-x-2">
+          {services.map((elm, i) => (
+              <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
           ))}
         </div>
 
         <div className="">
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Trending Searches
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {trendingSearches.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {trendingSearches.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Deals and Offers
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {dealsAndOffers.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {dealsAndOffers.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Explore Future Tocuh Collections
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {futureTocuhCollection.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {futureTocuhCollection.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
 
         <div>
-          <h6 className="font-semibold text-gray-700 capitalize text-lg">
+          <h6 className="font-display text-base font-bold capitalize text-night-900">
             Popular Cities
           </h6>
-          <div className="mt-6 flex flex-wrap gap-x-2 ">
-            {popularCities.map((elm) => (
-              <>
-                <p className="text-gray-600 text-sm leading-relaxed">{elm}</p>
-                <span className="text-gray-700">|</span>
-              </>
+          <div className="mt-3 flex flex-wrap gap-x-2">
+            {popularCities.map((elm, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm leading-7 text-slate-500 transition hover:text-brand-600">{elm}<span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" /></span>
             ))}
           </div>
         </div>
@@ -3945,27 +3752,66 @@ export default function PopularCategories() {
     { tab: <Travel />, tabval: "Travel" },
   ];
   const [currentTab, setCurrentTab] = useState("Accommodation");
+  const [showAll, setShowAll] = useState(false);
 
   return (
-    <div className="popular-categories px-5 md:px-8 xl:px-32 py-5 md:py-10 lg:py-12">
-      <h5 className="font-bold text-lg  text-gray-700">Popular Categories</h5>
+    <section className="relative bg-mist py-14 sm:py-20">
+      <div className="container-x">
+        <SectionHeading
+          align="left"
+          eyebrow="Directory"
+          title="Popular"
+          highlight="categories"
+          subtitle="Browse the most searched services, deals and cities."
+        />
 
-      <div className="flex mt-4 gap-x-4 overflow-x-auto scrollbar-hide">
-        {footerTabs.map((elm, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentTab(elm.tabval)}
-            className={`${
-              elm.tabval == currentTab ? "bg-gray-200" : "bg-gray-100"
-            }  text-nowrap px-4 text-black  text- py-2 rounded-lg `}
+        <div className="no-scrollbar -mx-4 mt-8 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0" role="tablist">
+          {footerTabs.map((elm) => {
+            const active = elm.tabval == currentTab;
+            return (
+              <button
+                key={elm.tabval}
+                role="tab"
+                aria-selected={active}
+                onClick={() => {
+                  setCurrentTab(elm.tabval);
+                  setShowAll(false);
+                }}
+                className={`relative shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  active ? "text-white" : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-brand-600"
+                }`}
+              >
+                {active && (
+                  <motion.span layoutId="popular-tab" className="absolute inset-0 rounded-full bg-night-900" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+                )}
+                <span className="relative">{elm.tabval}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentTab}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3 }}
+            className="relative mt-6 rounded-3xl bg-white p-5 shadow-card sm:p-8"
+            role="tabpanel"
           >
-            {elm.tabval}
-          </button>
-        ))}
+            <div className={`overflow-hidden transition-[max-height] duration-500 ${showAll ? "max-h-[9999px]" : "max-h-[420px] sm:max-h-[520px]"}`}>
+              {footerTabs.find((elm) => elm.tabval == currentTab)?.tab}
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <button type="button" onClick={() => setShowAll((v) => !v)} aria-expanded={showAll} className="btn-ghost">
+                {showAll ? "Show less" : "Show all"}
+              </button>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-      <div className="mt-4">
-        {footerTabs.map((elm) => elm.tabval == currentTab && elm.tab)}
-      </div>
-    </div>
+    </section>
   );
 }

@@ -1,319 +1,185 @@
+"use client";
 import Link from "next/link";
 import React from "react";
+import { FaPhoneVolume, FaEnvelope, FaLocationDot } from "react-icons/fa6";
+import { MapGrid, Skyline } from "../ui/decor";
+import { Reveal, Stagger, StaggerItem } from "../ui/motion";
+
+const countries = [
+  { name: "Australia", url: "http://www.domainname.au" },
+  { name: "UK", url: "http://www.domainname.uk" },
+  { name: "USA", url: "http://www.domainname.usa" },
+  { name: "India", url: "http://www.domainname.in" },
+  { name: "Germany", url: "http://www.domainname.ge" },
+  { name: "China", url: "http://www.domainname.ch" },
+  { name: "France", url: "http://www.domainname.fr" },
+];
+
+const columns = [
+  {
+    title: "Top Category",
+    links: ["Digital Products", "Spa and Facial", "Real Estate", "Sports", "Education", "Electricals", "Automobiles", "Transportation"].map(
+      (label) => ({ label, href: "/realestate" })
+    ),
+  },
+  {
+    title: "Trending Category",
+    links: ["Hospitals", "Hotels And Resorts", "Automobiles", "Real Estate", "Sports", "Education", "Electricals"].map((label) => ({
+      label,
+      href: "/realestate",
+    })),
+  },
+  {
+    title: "Help & Support",
+    links: [
+      { label: "About Us", href: "/about" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Feedback", href: "/feedback" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Use", href: "/terms" },
+    ],
+  },
+  {
+    title: "Popular Categories",
+    links: [
+      { label: "Wedding halls in London", href: "/realestate" },
+      { label: "Schools in Chennai", href: "/realestate" },
+      { label: "Schools in New York", href: "/dashboard" },
+      { label: "Real estate in Illinois", href: "/dashboard" },
+      { label: "Real estate in Chennai", href: "/dashboard" },
+      { label: "Events in Thailand", href: "/dashboard" },
+      { label: "Flat for rent in melborn", href: "/dashboard" },
+    ],
+  },
+];
+
+const socials = [
+  { href: "https://www.linkedin.com/feed/", img: "/img/social/linkdinFuture.webp", label: "LinkedIn" },
+  { href: "https://x.com/?lang=en", img: "/img/social/twitter.webp", label: "Twitter" },
+  { href: "https://www.facebook.com/", img: "/img/social/fb.webp", label: "Facebook" },
+  { href: "https://www.google.com/", img: "/img/social/google.webp", label: "Google" },
+  { href: "https://www.youtube.com/", img: "/img/social/youtube.webp", label: "YouTube" },
+];
 
 const Footer = () => {
-  const countries = [
-    { name: "Australia", url: "http://www.domainname.au" },
-    { name: "UK", url: "http://www.domainname.uk" },
-    { name: "USA", url: "http://www.domainname.usa" },
-    { name: "India", url: "http://www.domainname.in" },
-    { name: "Germany", url: "http://www.domainname.ge" },
-    { name: "China", url: "http://www.domainname.ch" },
-    { name: "France", url: "http://www.domainname.fr" },
-  ];
-
   const currentYear = new Date().getFullYear();
 
   return (
-    <section className="bg-[#191919] text-white">
-      <div className="wed-hom-footer  px-5 md:px-8 xl:px-32  md:text-xs  lg:text-base pt-10">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row items-center text-center md:justify-center gap-2 md:gap-4 mb-8 border-b-2 border-dotted border-[#ffffff51] pb-4">
-            <h2 className="text-sm md:text-base font-bold text-white flex flex-wrap justify-center items-center gap-x-2">
-              <span className="text-gray-400">Free support:</span>
-              <a href="tel:+917056997000" className="text-white">
-                +91-70569 97000
-              </a>
-              <span className="hidden md:inline text-gray-400">|</span>
-              <br className="block md:hidden" />
-              <span className="text-gray-400">Email:</span>
-              <a
-                href="mailto:info@futureittouch.com"
-                className="text-white break-all"
-              >
-                info@futureittouch.com
-              </a>
-            </h2>
-          </div>
+    <footer className="relative mt-24 bg-night-950 text-slate-300 sm:mt-32">
+      {/* skyline sits on top of the footer */}
+      <Skyline className="-top-[59px] left-0 h-[60px] w-full sm:-top-[89px] sm:h-[90px]" fill="#070920" />
+      <MapGrid className="inset-0 h-full w-full" opacity={0.5} />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div className="border-r-2 border-dotted border-[#ffffff51]">
-              <h4 className="text-xl font-bold mb-4">Top Category</h4>
-              <ul className="grid grid-cols-2 gap-4">
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Digital Products
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Spa and Facial
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Real Estate
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Sports
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Education
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Electricals
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Automobiles
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Transportation
-                  </Link>
-                </li>
-              </ul>
+      <div className="container-x relative pb-8 pt-4">
+        {/* support card */}
+        <Reveal className="relative -mt-4 overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white shadow-glow sm:p-8">
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/20 blur-2xl" />
+          <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/70">Free support</p>
+              <h3 className="mt-1 text-xl font-bold sm:text-2xl">We’re here whenever you need us.</h3>
             </div>
-            <div className="border-r-2 border-dotted border-[#ffffff51]">
-              <h4 className="text-xl font-bold mb-4">Trending Category</h4>
-              <ul className="grid grid-cols-2 gap-4">
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Hospitals
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Hotels And Resorts
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Automobiles
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Real Estate
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Sports
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Education
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/realestate" className="hover:text-gray-400">
-                    Electricals
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="border-r-2 border-dotted border-[#ffffff51]">
-              <h4 className="text-xl font-bold mb-4">Help & Support</h4>
-              <ul className="grid grid-cols-2 gap-4">
-                <li>
-                  <Link href="/about" className="hover:text-gray-400">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/faq" className="hover:text-gray-400">
-                    FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/feedback" className="hover:text-gray-400">
-                    Feedback
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-gray-400">
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-gray-400">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="hover:text-gray-400">
-                    Terms of Use
-                  </Link>
-                </li>
-              </ul>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a href="tel:+917056997000" className="flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-night-900 transition hover:-translate-y-0.5">
+                <FaPhoneVolume className="text-brand-600" /> +91-70569 97000
+              </a>
+              <a href="mailto:info@futureittouch.com" className="flex items-center gap-2 rounded-full bg-white/15 px-5 py-3 text-sm font-semibold ring-1 ring-white/30 transition hover:bg-white/25">
+                <FaEnvelope /> info@futureittouch.com
+              </a>
             </div>
           </div>
+        </Reveal>
 
-          <div className="mb-8 ">
-            <h4 className="text-xl font-bold text-start mb-4">
-              Popular Categories
-            </h4>
-            <ul className="flex flex-wrap gap-4 lg:gap-6">
-              <li>
-                <Link href="/realestate" className="hover:text-gray-400">
-                  Wedding halls in London
-                </Link>
+        <div className="mt-14 grid gap-10 lg:grid-cols-[1.2fr_2.8fr]">
+          {/* brand + contact */}
+          <Reveal className="space-y-6">
+            <div className="inline-block rounded-2xl bg-white p-3">
+              <img src="/img/logo/logo.webp" alt="Future IT Touch" className="w-[170px]" />
+            </div>
+            <ul className="space-y-3 text-sm">
+              <li className="flex gap-3">
+                <FaLocationDot className="mt-1 shrink-0 text-magenta-400" />
+                Sector 34 A, Near Mukat Hospital, Chandigarh 160022
               </li>
-              <li>
-                <Link href="/realestate" className="hover:text-gray-400">
-                  Schools in Chennai
-                </Link>
+              <li className="flex gap-3">
+                <FaPhoneVolume className="mt-1 shrink-0 text-cyan-300" />
+                <a href="tel:+917056997000" className="hover:text-white">+91-70569 97000</a>
               </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-gray-400">
-                  Schools in New York
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-gray-400">
-                  Real estate in Illinois
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-gray-400">
-                  Real estate in Chennai
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-gray-400">
-                  Events in Thailand
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-gray-400">
-                  Flat for rent in melborn
-                </Link>
+              <li className="flex gap-3">
+                <FaEnvelope className="mt-1 shrink-0 text-brand-400" />
+                <a href="mailto:info@futureittouch.com" className="break-all hover:text-white">info@futureittouch.com</a>
               </li>
             </ul>
-          </div>
-
-          <div className="flex flex-wrap justify-between gap-8 border-b-2 border-dotted border-[#ffffff51] pb-4">
-            <div className="space-y-3">
-              <h4 className="text-xl font-bold mb-2">Get In Touch</h4>
-              <p>
-                Address: Sector 34 A, Near Mukat Hospital, Chandigarh <br />{" "}
-                160022
-              </p>
-              <p>
-                Phone:{" "}
-                <a href="tel: +91-70569 97000" className="text-white ">
-                  +91-70569 97000
-                </a>
-              </p>
-              <p>
-                Email:{" "}
-                <a href="mailto:info@futureittouch.com" className="text-white ">
-                  mailto:info@futureittouch.com
-                </a>
-              </p>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-white">Download Our Free Mobile Apps</h4>
+              <div className="flex gap-3">
+                <Link href="/"><img src="/img/fotter/gplay.webp" alt="Google Play" className="h-10 w-auto" /></Link>
+                <Link href="/"><img src="/img/fotter/appstore.webp" alt="App Store" className="h-10 w-auto" /></Link>
+              </div>
             </div>
-            <div className="space-y-3">
-              <h4 className="text-xl font-bold mb-2">
-                Download Our Free Mobile Apps
-              </h4>
-              <ul className="flex gap-4 ">
-                <li>
-                  <Link href="/">
-                    <img
-                      src="/img/fotter/gplay.webp"
-                      className="h-[45px] w-full"
-                      alt="Google Play"
-                    />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">
-                    <img
-                      src="/img/fotter/appstore.webp"
-                      className="h-[45px] w-full"
-                      alt="Apple Store"
-                    />
-                  </Link>
-                </li>
+            <div>
+              <h4 className="mb-3 text-sm font-bold text-white">Follow Us</h4>
+              <ul className="flex gap-2">
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="grid h-10 w-10 place-items-center rounded-full bg-white/10 transition hover:-translate-y-1 hover:bg-white/20"
+                    >
+                      <img src={s.img} alt="" className="h-5 w-5 object-contain" />
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="space-y-3">
-              <h4 className="text-xl font-bold mb-2">Follow Us</h4>
-              <ul className="flex gap-4">
-                <li>
-                  <a href="https://www.linkedin.com/feed/">
-                    <img src="/img/social/linkdinFuture.webp" alt="Social" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://x.com/?lang=en">
-                    <img src="/img/social/twitter.webp" alt="Twitter" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://twitter.com/Google">
-                    <img src="/img/social/fb.webp" alt="Twitter" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.facebook.com/">
-                    <img src="/img/social/google.webp" alt="Twitter" />
-                  </a>
-                </li>
+          </Reveal>
 
-                <li>
-                  <a href="https://www.youtube.com/">
-                    <img src="/img/social/youtube.webp" alt="Twitter" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="py-5">
-            <ul className="flex text-base flex-wrap  md:justify-center gap-x-3 md:gap-x-5">
-              {countries.map((country, index) => (
-                <li
-                  key={index}
-                  className="md:border-r-2 gap-x-1 md:px-5 border-dotted border-[#5d5b5b]"
-                >
-                  <a
-                    href={country.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {country.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* link columns */}
+          <Stagger className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            {columns.map((col) => (
+              <StaggerItem key={col.title}>
+                <h4 className="mb-4 text-sm font-bold text-white">{col.title}</h4>
+                <ul className="space-y-2.5 text-sm">
+                  {col.links.map((l) => (
+                    <li key={l.label}>
+                      <Link href={l.href} className="inline-block text-slate-400 transition hover:translate-x-1 hover:text-cyan-300">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
-      </div>
-      <div className="text-center md:text-xs lg:text-base bg-[#040404] py-2">
-        <p>
-          Copyright © 2017- {currentYear} . Proudly powered by{" "}
-          <a
-            href="https://futuretouch.in/"
-            target="_blank"
-            rel="noopener noreferrer "
-            className="text-[#0d6efd] font-semibold"
-          >
-            Future IT Touch Pvt Lmt
+
+        <ul className="mt-12 flex flex-wrap gap-2 border-t border-white/10 pt-6">
+          {countries.map((c) => (
+            <li key={c.name}>
+              <a
+                href={c.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-full border border-white/10 px-3 py-1 text-xs text-slate-400 transition hover:border-cyan-300/50 hover:text-white"
+              >
+                {c.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 text-center text-xs text-slate-500 sm:text-left">
+          Copyright © 2017-{currentYear}. Proudly powered by{" "}
+          <a href="https://futuretouch.in/" target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-300 hover:text-white">
+            Future IT Touch Pvt Ltd
           </a>
         </p>
       </div>
-    </section>
+    </footer>
   );
 };
 

@@ -1,18 +1,21 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Sora, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Component/Navbar";
 import Footer from "./Component/Footer";
 import HelpSupport from "./Component/HelpSupport";
 import FixedFooterLinks from "./Component/FixedFooterLinks";
+import Providers from "./Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Sora({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const body = Plus_Jakarta_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -20,18 +23,24 @@ export const metadata = {
   description: "Innovating technology solutions for a brighter future",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#070920",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar/>
-        {children}
-        <Footer/>
-        <FixedFooterLinks/>
-        <HelpSupport/>
+      <body className={`${display.variable} ${body.variable} antialiased`}>
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+          <FixedFooterLinks />
+          <HelpSupport />
+        </Providers>
       </body>
     </html>
   );

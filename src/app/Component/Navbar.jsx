@@ -1,598 +1,404 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
-import { usePathname } from "next/navigation";
-import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import LocationModal from "./LoactionModal";
+import { AnimatePresence, motion } from "framer-motion";
 import { IoMdMenu } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
-import { ImCross } from "react-icons/im";
-import { FcAdvertising } from "react-icons/fc";
-import { FaAd } from "react-icons/fa";
-import { FaStore } from "react-icons/fa6";
-import LanguagePop from "./LanguagePop";
 import { IoIosArrowDown } from "react-icons/io";
+import { FaAd } from "react-icons/fa";
+import {
+  FaStore,
+  FaLocationDot,
+  FaMagnifyingGlass,
+  FaBullhorn,
+  FaArrowRight,
+  FaPhoneVolume,
+  FaLanguage,
+  FaTableCellsLarge,
+} from "react-icons/fa6";
+import LanguagePop from "./LanguagePop";
 import DashLeft from "./DashLeft";
+import { cityHref, toSlug, useUserLocation } from "../context/LocationContext";
+
+const allService = [
+  { name: "All Service", img: "/img/navbar/service1.webp", link: "/service" },
+  { name: "Events", img: "/img/navbar/service2.webp", link: "/events" },
+  { name: "Products", img: "/img/navbar/service3.webp", link: "/products" },
+  { name: "Coupon & Deal", img: "/img/navbar/service4.webp", link: "/Coupon-deals" },
+  { name: "Blogs", img: "/img/navbar/service5.webp", link: "/blogs" },
+  { name: "Community", img: "/img/navbar/service6.webp", link: "/community" },
+];
+
+const allCategory = [
+  { category: "Wedding halls", count: 3 },
+  { category: "Hotel & Food", count: 1 },
+  { category: "Pet shop", count: 12 },
+  { category: "Digital Products", count: 31 },
+  { category: "Spa And Facial", count: 10 },
+  { category: "Real Estate", count: 23 },
+  { category: "Sports", count: 5 },
+  { category: "Education", count: 5 },
+  { category: "Electricals", count: 6 },
+  { category: "Automobiles", count: 6 },
+  { category: "Transportation", count: 2 },
+  { category: "Hospitals", count: null },
+  { category: "Hotel And Resorts", count: null },
+];
+
+const sideBarCategory = [
+  "Automobiles", "Technology", "Electricals", "Education", "Sports", "Real Estate",
+  "Wedding Halls", "Hospitals", "Pet Shop", "Restaurants", "Spa and Facial", "Transportation",
+];
+
+const placeholders = ["4 Crore+ Businesses", "3.3 Crore+ Products & Services", "Doctors, Hotels, Salons…"];
 
 function NavBar() {
-  const [sessions, setsessions] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [location, setLocation] = useState(null);
-  const [postcode, setPostcode] = useState("");
-  const [error, setError] = useState("");
-  const [pin, setPin] = useState("");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isSwapped, setIsSwapped] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { location, cityLabel, pincode, openModal } = useUserLocation();
 
-  const togglePopup = () => setIsPopupOpen(!isPopupOpen);
+  const [megaOpen, setMegaOpen] = useState(false);
+  const [drawer, setDrawer] = useState(false);
+  const [langPop, setLangPop] = useState(false);
+  const [dashOpen, setDashOpen] = useState(false);
+  const [catQuery, setCatQuery] = useState("");
+  const [query, setQuery] = useState("");
+  const [placeholderIdx, setPlaceholderIdx] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const megaRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsSwapped((prevState) => !prevState);
-    }, 2000);
-
-    return () => clearInterval(interval);
+    const t = setInterval(() => setPlaceholderIdx((i) => (i + 1) % placeholders.length), 2600);
+    return () => clearInterval(t);
   }, []);
 
   useEffect(() => {
-    const locData = localStorage.getItem("location");
-    setLocation(locData ? JSON.parse(locData) : null);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        `https://api.postalpincode.in/pincode/${pin}`
-      );
-
-      const data = await response.json();
-
-      console.log(pin);
-      if (
-        data &&
-        data.length > 0 &&
-        data[0].PostOffice &&
-        data[0].PostOffice.length > 0
-      ) {
-        const postOfficeData = data[0].PostOffice[0];
-        setPostcode(postOfficeData.Pincode);
-        setLocation(postOfficeData);
-        localStorage.setItem("location", JSON.stringify(postOfficeData));
-        setIsPopupOpen(false);
-        setPin("");
-        window.location.reload(); // Reload page after successful location update
-      } else {
-        setError("No city found for the given PIN code");
-      }
-    } catch (error) {
-      setError("Failed to fetch city details. Please try again.");
-    }
-  };
+  // Close menus whenever the route changes.
+  useEffect(() => {
+    setDrawer(false);
+    setMegaOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const data = await axios.get(
-              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-            );
-            const address = data.data.address;
-            localStorage.setItem("location", JSON.stringify(address));
-            setLocation(address);
-          } catch (error) {
-            console.error("Error fetching location:", error);
-          }
-        },
-        (error) => console.error("Error getting location:", error)
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  }, []);
+    document.body.style.overflow = drawer ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawer]);
 
   useEffect(() => {
-    const username = localStorage.getItem("userName");
-    setsessions(!!username);
-  }, []);
+    if (!megaOpen) return;
+    const onKey = (e) => e.key === "Escape" && setMegaOpen(false);
+    const onClick = (e) => megaRef.current && !megaRef.current.contains(e.target) && setMegaOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [megaOpen]);
 
-  const categories = [
-    { name: "Wedding halls - 03" },
-    { name: "Hotel & Food - 01" },
-    { name: "Pet shop - 12" },
-    { name: "Digital Products - 31" },
-    { name: "Spa And Facial - 10" },
-    { name: "Real Estate - 23" },
-    { name: "Sports - 05" },
-    { name: "Education - 05" },
-    { name: "Electricals - 06" },
-    { name: "Automobiles - 06" },
-    { name: "Transportation - 02" },
-    { name: "Hospitals" },
-    { name: "Hotel And Resorts..." },
-  ];
+  // Hooks above must always run; the advertise page has its own navbar.
+  if (pathname?.includes("/advertise")) return null;
 
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = allCategory.filter((c) =>
+    c.category.toLowerCase().includes(catQuery.toLowerCase())
   );
 
-  const [sideBar, setSideBar] = useState(false);
-
-  const [loc, setLoc] = useState();
-
-  useEffect(() => {
-    const loc = localStorage.getItem("location");
-    console.log(JSON.parse(loc));
-    setLoc(JSON.parse(loc));
-    console.log(JSON.parse(loc));
-  }, []);
-
-  const getLocationHref = (cate) => {
-    const location =
-      loc?.county || (loc?.Name === "NA" ? loc?.State : loc?.Name);
-    return `${location?.replace(/\s+/g, "") || "default-location"}/${cate
-      .toLowerCase()
-      .split(" ")
-      .join("-")}`;
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) router.push(cityHref(location, toSlug(query)));
   };
-
-  const sideBarCategory = [
-    {
-      name: "Automobiles",
-    },
-    {
-      name: "Technology",
-    },
-    {
-      name: "Electricals",
-    },
-    {
-      name: "Education",
-    },
-    {
-      name: "Sports",
-    },
-    {
-      name: "Real Estate",
-    },
-    {
-      name: "Wedding Halls",
-    },
-    {
-      name: "Hospitals",
-    },
-    {
-      name: "Pet Shop",
-    },
-    {
-      name: "Restaurants",
-    },
-    {
-      name: "Spa and Facial",
-    },
-    {
-      name: "Transportation",
-    },
-  ];
-
-  const allCategory = {
-    allService: [
-      {
-        name: "All Service",
-        img: "/img/navbar/service1.webp",
-        link: "/service",
-      },
-      {
-        name: "Events",
-        img: "/img/navbar/service2.webp",
-        link: "/events",
-      },
-      {
-        name: "Products",
-        img: "/img/navbar/service3.webp",
-        link: "/products",
-      },
-      {
-        name: "Coupon & Deal",
-        img: "/img/navbar/service4.webp",
-        link: "/Coupon-deals",
-      },
-      {
-        name: "Blogs",
-        img: "/img/navbar/service5.webp",
-        link: "/blogs",
-      },
-      {
-        name: "Community",
-        img: "/img/navbar/service6.webp",
-        link: "/community",
-      },
-    ],
-    allCategory: [
-      {
-        category: "Wedding halls",
-        count: 3,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Hotel & Food",
-        count: 1,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Pet shop",
-        count: 12,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Digital Products",
-        count: 31,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Spa And Facial",
-        count: 10,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Real Estate",
-        count: 23,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Sports",
-        count: 5,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Education",
-        count: 5,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Electricals",
-        count: 6,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Automobiles",
-        count: 6,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Transportation",
-        count: 2,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Hospitals",
-        count: null,
-        link: "/RajpuraTahsil/realestate",
-      },
-      {
-        category: "Hotel And Resorts...",
-        count: null,
-        link: "/RajpuraTahsil/realestate",
-      },
-    ],
-  };
-
-  const [hoverCatgory, setHoverCategoty] = useState(false);
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const [filterCategory, setFilterCategory] = useState([]);
-
-  const [inpurCategory, setInputCatgory] = useState("");
-  const filterCategoryData = () => {
-    const filterData = allCategory.allCategory.filter((elm) => {
-      return elm.category.includes(inpurCategory);
-    });
-    setFilterCategory(filterData);
-  };
-  useEffect(() => {
-    filterCategoryData();
-  }, [inpurCategory]);
-
-  useEffect(() => {
-    const username = localStorage.getItem("userName");
-
-    if (username) {
-      console.log("fff");
-      setsessions(false);
-    } else {
-      setsessions(true);
-    }
-  }, []);
-
-  const path = usePathname();
-  const isAdvertisePage = path.includes("/advertise");
-  if (isAdvertisePage) {
-    return;
-  }
-
-  const [langPop, setLangPop] = useState(false);
-
-  useEffect(() => {
-    document.body.style.overflow = sideBar ? "hidden" : "auto";
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [sideBar]);
 
   return (
     <>
-      <nav className="bg-white z-50  text-black shadow-md sticky top-0  py-2 lg:py-4 px-5 md:px-8 xl:px-32">
-        <div className="container relative mx-auto flex justify-between items-center ">
-          <Link href="/">
-            <img
-              src="/img/logo/logo.webp"
-              alt="logo"
-              className="h-10 lg:h-12 w-auto"
-            />
+      <header
+        className={`sticky top-0 z-[60] w-full transition-all duration-300 ${
+          scrolled ? "bg-white/85 shadow-card backdrop-blur-xl" : "bg-white"
+        }`}
+      >
+        <nav className="container-x flex h-16 items-center gap-3 lg:h-[76px] lg:gap-5" aria-label="Main">
+          <Link href="/" className="shrink-0" aria-label="Future Touch home">
+            <img src="/img/logo/logo.webp" alt="Future IT Touch" className="h-auto w-[132px] sm:w-[150px] xl:w-[176px]" />
           </Link>
 
-          <button
-            onClick={() => setSideBar(!sideBar)}
-            className="text-xl lg:hidden bg-[#3b83ef] text-[#fff] rounded-full p-1"
+          {/* Desktop: categories mega menu */}
+          <div
+            ref={megaRef}
+            className="relative hidden lg:block"
+            onMouseEnter={() => setMegaOpen(true)}
+            onMouseLeave={() => setMegaOpen(false)}
           >
-            {sideBar ? <RxCross1 /> : <IoMdMenu />}
-          </button>
+            <button
+              type="button"
+              onClick={() => setMegaOpen((v) => !v)}
+              aria-expanded={megaOpen}
+              className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                megaOpen ? "bg-night-900 text-white" : "bg-mist text-night-900 hover:bg-brand-50"
+              }`}
+            >
+              <FaTableCellsLarge className="text-[13px]" />
+              Categories
+              <IoIosArrowDown className={`transition-transform ${megaOpen ? "rotate-180" : ""}`} />
+            </button>
 
-          <div className="hidden lg:flex items-center lg:space-x-4 xl:space-x-6">
-            <div className=" group">
-              <button
-                onMouseEnter={() => setHoverCategoty(true)}
-                className="text-black  xl:border-l border-black pl-5 font-semibold hover:text-gray-600 transition duration-200"
-              >
-                All Categories
-              </button>
-
-              {/* category hover  */}
-
-              {hoverCatgory && (
-                <div
-                  onMouseLeave={() => setHoverCategoty(false)}
-                  className="absolute top-14 xl:w-[90%] xl:left-20 inset-x-0 bg-white shadow-lg  border-t mt-2 z-50  px-8 pt-5 hidden lg:block"
+            <AnimatePresence>
+              {megaOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.22 }}
+                  className="absolute left-0 top-full w-[min(920px,calc(100vw-80px))] pt-3"
                 >
-                  <div className="lg:grid lg:grid-cols-4 w-full">
-                    {/* Categories List */}
-                    <div className="col-span-1">
-                      <ul className="p-4">
-                        {allCategory.allService.map((elm, index) => (
-                          <Link href={elm.link} key={index}>
-                            <li className="flex items-center gap-x-3 py-4 px-3 hover:bg-gradient-to-r hover:from-[#EBF6FA] hover:via-[#D1E9F5] hover:to-[#a0d8e42d] hover:text-blue-500 border-b border-[#f1efec] transition-all">
-                              <img src={elm.img} alt="" className="w-5 h-5" />
-                              <span className="text-sm font-semibold">
-                                {elm.name}
-                              </span>
-                            </li>
+                  <div className="grid grid-cols-[220px_1fr_240px] overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-card-hover">
+                    <ul className="space-y-1 border-r border-slate-100 bg-mist/60 p-4">
+                      {allService.map((s) => (
+                        <li key={s.name}>
+                          <Link
+                            href={s.link}
+                            className="group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-night-900 transition hover:bg-white hover:shadow-card"
+                          >
+                            <img src={s.img} alt="" className="h-8 w-8 rounded-xl object-cover" />
+                            {s.name}
+                            <FaArrowRight className="ml-auto text-xs opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" />
                           </Link>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="p-5">
+                      <div className="flex items-center justify-between gap-4">
+                        <h4 className="text-base font-bold text-night-900">All Categories</h4>
+                        <input
+                          type="search"
+                          value={catQuery}
+                          onChange={(e) => setCatQuery(e.target.value)}
+                          placeholder="Search category"
+                          className="w-48 rounded-full border border-slate-200 bg-mist px-4 py-2 text-sm outline-none focus:border-brand-500"
+                        />
+                      </div>
+                      <ul className="mt-4 grid grid-cols-2 gap-1">
+                        {filteredCategories.map((c) => (
+                          <li key={c.category}>
+                            <Link
+                              href={cityHref(location, toSlug(c.category))}
+                              className="flex items-center justify-between rounded-xl px-3 py-2 text-sm text-slate-600 transition hover:bg-brand-50 hover:text-brand-600"
+                            >
+                              {c.category}
+                              {c.count != null && (
+                                <span className="rounded-full bg-mist px-2 py-0.5 text-[11px] font-bold text-slate-500">{c.count}</span>
+                              )}
+                            </Link>
+                          </li>
                         ))}
+                        {filteredCategories.length === 0 && (
+                          <li className="col-span-2 px-3 py-6 text-sm text-slate-400">No category matches “{catQuery}”.</li>
+                        )}
                       </ul>
                     </div>
 
-                    {/* Category Details */}
-                    <div className="col-span-3 border-l border-gray-400 pl-5">
-                      <div>
-                        <h4 className="font-semibold text-2xl mb-3">
-                          All Categories
-                        </h4>
-                        <div className="mb-4">
-                          <input
-                            type="search"
-                            className="bg-transparent border-0 w-full px-4 py-2 border-b border-gray-300  focus:outline-none rounded "
-                            placeholder="Search Category"
-                            value={inpurCategory}
-                            onChange={(e) => setInputCatgory(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <ul className="grid grid-cols-4 gap-4">
-                          {filterCategory.map((elm, index) => (
-                            <li key={index} className="">
-                              <Link
-                                href="/realestate"
-                                className="flex text-nowrap items-center gap-x-2 text-sm font-semibold text-[#58677b] hover:text-blue-500"
-                              >
-                                <img
-                                  src="/img/navbar/categoryArrow.webp"
-                                  alt="category"
-                                  className="w-2 h-2"
-                                />
-                                <span>{elm.category}</span>
-                                <span>-</span>
-                                <span>{elm.count}</span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                    <div className="relative overflow-hidden bg-night-900 p-5 text-white">
+                      <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-magenta-500/40 blur-3xl" />
+                      <p className="relative text-sm text-slate-300">A few reasons you’ll love Online Business Directory</p>
+                      <a href="tel:+917056997000" className="relative mt-3 flex items-center gap-2 text-sm font-bold text-cyan-300">
+                        <FaPhoneVolume /> +91-70569 97000
+                      </a>
+                      <div className="relative mt-6 space-y-2">
+                        <Link href="/user-login/sign" className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold transition hover:bg-white/20">
+                          <FaAd /> Advertise with us
+                        </Link>
+                        <Link href="/mybusiness" className="flex items-center gap-2 rounded-2xl bg-brand-gradient px-4 py-3 text-sm font-semibold">
+                          <FaStore /> Add your business
+                        </Link>
                       </div>
                     </div>
                   </div>
-                  {/* Footer Section */}
-                  <div className="pt-5 grid grid-cols-2 w-full">
-                    <div className="px-4 font-semibold">
-                      <p className="">
-                        A few reasons you’ll love Online Business Directory
-                      </p>
-                      <h6 className="text-[#6f6347] font-semibold text-2xl">
-                        Call us on: +91-70569 97000
-                      </h6>
-                    </div>
-                    <div className="navCategroy  text-white flex items-center justify-end gap-x-2 ">
-                      <Link
-                        href="/user-login/sign"
-                        className="px-5  rounded-md py-3 flex items-center gap-x-2 font-semibold  "
-                      >
-                        <FaAd />
-                        Advertise with us
-                      </Link>
-                      <Link
-                        href="/mybusiness"
-                        className="px-5  rounded-md py-3 flex items-center gap-x-2 font-semibold"
-                      >
-                        <FaStore />
-                        Add your business
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Background Image Section */}
-                  <div className=" bg-image"></div>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </AnimatePresence>
+          </div>
 
-            <div className="relative flex items-center">
-              <img
-                src="/img/navbar/locationmap.webp"
-                alt="map"
-                className="w-5 h-5 absolute left-2"
-              />
-              <span
-                className="text-sm font-medium cursor-pointer ml-8 hover:text-blue-500 transition duration-200"
-                onClick={togglePopup}
-              >
-                {location?.county || location?.Name === "NA"
-                  ? location?.State
-                  : location?.Name}{" "}
-                {location?.postcode || location?.Pincode}
-                <p className="text-xs text-blue-400">Update location ⌵</p>
-              </span>
-            </div>
-
-            <form className="relative hidden xl:flex items-center">
+          {/* Desktop: location + search */}
+          <div className="hidden min-w-0 flex-1 items-center rounded-full border border-slate-200 bg-mist p-1 transition focus-within:border-brand-500 focus-within:bg-white focus-within:shadow-glow lg:flex">
+            <button
+              type="button"
+              onClick={openModal}
+              className="flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-2 text-left shadow-sm transition hover:text-brand-600"
+            >
+              <FaLocationDot className="text-magenta-500" />
+              <span className="max-w-[120px] truncate text-sm font-semibold">{cityLabel || "Set location"}</span>
+              {pincode && <span className="text-xs text-slate-400">{pincode}</span>}
+              <IoIosArrowDown className="text-xs text-slate-400" />
+            </button>
+            <form onSubmit={handleSearch} className="flex min-w-0 flex-1 items-center" role="search">
               <input
                 type="text"
-                placeholder={`${
-                  isSwapped
-                    ? "3.3 Crore+' Products & Services"
-                    : "4 Crore+' Business"
-                }`}
-                className="py-2 pl-10 pr-4 rounded-md border border-black text-black bg-white focus:outline-none w-96 transition duration-300 ease-in-out "
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={`Search ${placeholders[placeholderIdx]}`}
+                aria-label="Search businesses"
+                className="min-w-0 flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-slate-400"
               />
-              <img
-                src="/img/navbar/search.webp"
-                alt="search"
-                className="w-5 h-5 absolute left-3 text-gray-500"
-              />
+              <button type="submit" aria-label="Search" className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-gradient text-white">
+                <FaMagnifyingGlass className="text-sm" />
+              </button>
             </form>
           </div>
 
-          <div className="hidden lg:block  text-nowrap">
-            <div className="flex items-center gap-x-1 xl:gap-x-3">
-              <Link
-                href="/advertise"
-                className="flex text-[12px] items-center text-white font-semibold bg-[#0337f4] gap-x-1 py-2 px-3 rounded-md"
-              >
-                Advertise <FcAdvertising className="text-sm" />
-              </Link>
-
-              {/* <button
-                onClick={() => setLangPop(!langPop)}
-                className="flex text-[12px] items-center text-black font-semibold bg-[#bec5df] gap-x-1 py-1 px-2 rounded-md"
-              >
-                Language{" "}
-                <IoIosArrowDown
-                  className={`text-xs ${
-                    langPop ? "rotate-180" : ""
-                  } duration-200 transition-all`}
-                />
-              </button> */}
-
-              <Link
-                href="/user-login/sign/"
-                className="text-black text-[12px] font-semibold hover:text-gray-400 transition duration-200"
-              >
-                Sign in
-              </Link>
-
-              <Link
-                href="/user-login"
-                className="bg-[#0337f4] text-[12px] py-2 px-3 font-semibold text-white rounded-md transition duration-200"
-              >
-                Create an account
-              </Link>
-            </div>
+          {/* Desktop: actions */}
+          <div className="ml-auto hidden items-center gap-1 lg:flex xl:gap-2">
+            <Link href="/advertise" className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-night-900 transition hover:text-brand-600">
+              <FaBullhorn className="text-magenta-500" /> Advertise
+            </Link>
+            <Link href="/user-login/sign/" className="rounded-full px-3 py-2 text-sm font-semibold text-night-900 transition hover:text-brand-600">
+              Sign in
+            </Link>
+            <Link href="/user-login" className="btn-primary whitespace-nowrap">
+              Create account
+            </Link>
           </div>
-        </div>
 
-        {/* mobile sidebar  */}
-        <div
-          className={`${
-            sideBar ? "right-0" : "-right-[1000px] "
-          } fixed lg:hidden pt-16  overflow-y-scroll   bg-white inset-y-0 h-screen w-[90%] md:w-3/4 sm:w-4/5 py-4 px-4 shadow-lg transition-all duration-300`}
-        >
-          <div className=" md:hidden">
-            <DashLeft />
-          </div>
-          <ul className="text-base mb-6 space-y-4 px-4 font-medium">
-            <li>
-              <button
-                onClick={() => setLangPop(!langPop)}
-                className="flex text-[12px] items-center text-black font-semibold bg-[#bec5df] gap-x-1 py-1 px-2 rounded-md"
-              >
-                Language{" "}
-                <IoIosArrowDown
-                  className={`text-xs ${
-                    langPop ? "rotate-180" : ""
-                  } duration-200 transition-all`}
-                />
-              </button>
-            </li>
-            <li className="border-b text-gray-700 cursor-pointer pb-3 hover:text-blue-500">
-              <Link href="/advertise"> Advertise</Link>
-            </li>
-            <li className="border-b text-gray-700 cursor-pointer pb-3 hover:text-blue-500">
-              <Link href="/user-login/sign"> Sign In</Link>
-            </li>
-            <li className="border-b text-gray-700 cursor-pointer pb-3 hover:text-blue-500">
-              <Link href="/user-login">Create an Account</Link>
-            </li>
-          </ul>
-          <h5 className="text-lg font-semibold mb-4 px-4 text-gray-900">
-            All Categories
-          </h5>
-          <ul className="text-base font-medium flex flex-col space-y-3 px-4">
-            {sideBarCategory.map((elm, index) => (
-              <li
-                key={index}
-                className="border-b text-gray-700 cursor-pointer pb-3 hover:text-blue-500 transition duration-150"
-              >
-                <Link href={getLocationHref(elm.name)}>{elm.name}</Link>
-              </li>
-            ))}
-          </ul>
+          {/* Mobile / tablet: menu button */}
           <button
-            onClick={() => setSideBar(false)}
-            className="text-base md:text-xs absolute right-6 top-4 bg-red-500 text-white rounded-full p-2"
+            type="button"
+            onClick={() => setDrawer(true)}
+            aria-label="Open menu"
+            className="ml-auto grid h-11 w-11 place-items-center rounded-full bg-mist text-2xl text-night-900 lg:hidden"
           >
-            <ImCross />
+            <IoMdMenu />
           </button>
-        </div>
-      </nav>
+        </nav>
+      </header>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {drawer && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-[70] bg-night-950/60 backdrop-blur-sm lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setDrawer(false)}
+            />
+            <motion.aside
+              className="fixed inset-y-0 right-0 z-[80] flex w-[88%] max-w-sm flex-col bg-white shadow-card-hover lg:hidden"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 34 }}
+              aria-label="Mobile menu"
+            >
+              <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                <img src="/img/logo/logo.webp" alt="Future IT Touch" className="w-[130px]" />
+                <button
+                  type="button"
+                  onClick={() => setDrawer(false)}
+                  aria-label="Close menu"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-mist text-night-900"
+                >
+                  <RxCross1 />
+                </button>
+              </div>
+
+              <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDrawer(false);
+                    openModal();
+                  }}
+                  className="flex w-full items-center gap-3 rounded-2xl bg-night-900 p-4 text-left text-white"
+                >
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-gradient">
+                    <FaLocationDot />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs text-slate-400">Your location</span>
+                    <span className="block truncate font-semibold">{cityLabel ? `${cityLabel} ${pincode}` : "Set location"}</span>
+                  </span>
+                  <IoIosArrowDown className="ml-auto" />
+                </button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <Link href="/user-login/sign" className="btn-ghost">Sign in</Link>
+                  <Link href="/user-login" className="btn-primary">Create account</Link>
+                </div>
+
+                <div>
+                  <h5 className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Explore</h5>
+                  <div className="grid grid-cols-3 gap-2">
+                    {allService.map((s) => (
+                      <Link key={s.name} href={s.link} className="flex flex-col items-center gap-2 rounded-2xl bg-mist p-3 text-center text-xs font-semibold text-night-900">
+                        <img src={s.img} alt="" className="h-9 w-9 rounded-xl object-cover" />
+                        {s.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">All Categories</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {sideBarCategory.map((name) => (
+                      <Link
+                        key={name}
+                        href={cityHref(location, toSlug(name))}
+                        className="rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-600 transition hover:border-brand-500 hover:text-brand-600"
+                      >
+                        {name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <Link href="/advertise" className="flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold text-night-900 hover:bg-mist">
+                    <FaBullhorn className="text-magenta-500" /> Advertise
+                  </Link>
+                  <Link href="/mybusiness" className="flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold text-night-900 hover:bg-mist">
+                    <FaStore className="text-brand-500" /> Add your business
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setLangPop(true)}
+                    className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 font-semibold text-night-900 hover:bg-mist"
+                  >
+                    <FaLanguage className="text-cyan-500" /> Language
+                  </button>
+                </div>
+
+                <div className="rounded-2xl border border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setDashOpen((v) => !v)}
+                    aria-expanded={dashOpen}
+                    className="flex w-full items-center justify-between px-4 py-3 font-semibold text-night-900"
+                  >
+                    My Dashboard
+                    <IoIosArrowDown className={`transition-transform ${dashOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {dashOpen && (
+                    <div className="border-t border-slate-100 px-2 pb-2">
+                      <DashLeft />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {langPop && <LanguagePop setLangPop={setLangPop} />}
-
-      {isPopupOpen && (
-        <LocationModal
-          pin={pin}
-          setPin={setPin}
-          handleSubmit={handleSubmit}
-          error={error}
-          togglePopup={togglePopup}
-        />
-      )}
     </>
   );
 }

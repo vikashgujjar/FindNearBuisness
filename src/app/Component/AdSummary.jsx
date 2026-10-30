@@ -1,133 +1,57 @@
 "use client";
-import React, { useState } from "react";
-import DashLeft from "./DashLeft";
-import DashRight from "./DashRight";
+import React from "react";
+import Link from "next/link";
+import { FaEye, FaArrowPointer } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-function AdSummary() {
-  const adsData = [
-    {
-      id: 1,
-      position: "Home page Bottom",
-      startDate: "31, Mar 2021",
-      endDate: "29, Apr 2021",
-      duration: "0 Days",
-      status: "InActive",
-      views: "1k",
-      clicks: "642",
-    },
-    {
-      id: 2,
-      position: "All listing page Top",
-      startDate: "17, Jun 2020",
-      endDate: "30, Jun 2022",
-      duration: "743 Days",
-      status: "Active",
-      views: "1k",
-      clicks: "642",
-    },
-    {
-      id: 3,
-      position: "Listing detail page Bottom",
-      startDate: "03, Jun 2020",
-      endDate: "23, Jul 2020",
-      duration: "50 Days",
-      status: "Active",
-      views: "1k",
-      clicks: "642",
-    },
-  ];
+import { DashCard, StatusChip, TableWrap } from "../ui/page";
 
-  const [activeTab, setActiveTab] = useState("");
+const adsData = [
+  { id: 1, position: "Home page Bottom", startDate: "31, Mar 2021", endDate: "29, Apr 2021", duration: "0 Days", status: "InActive" },
+  { id: 2, position: "All listing page Top", startDate: "17, Jun 2020", endDate: "30, Jun 2022", duration: "743 Days", status: "Active" },
+  { id: 3, position: "Listing detail page Bottom", startDate: "03, Jun 2020", endDate: "23, Jul 2020", duration: "50 Days", status: "Active" },
+].map((a) => ({ ...a, views: "1k", clicks: "642" }));
+
+function AdSummary() {
   return (
     <CommonDashLayout>
-     <div>
-  {/* Top Gradient Bar */}
-  <div className="w-full h-2 bg-gradient-to-br from-[#717e9d] to-[#7fccbb] mb-6 rounded" />
+      <DashCard
+        badge="Paid Ads"
+        title="Your Banner Ads"
+        action={
+          <>
+            <Link href="/ads-form" className="btn-primary btn-sm">Post your Ads</Link>
+            <Link href="/ads-pricing" className="btn-ghost btn-sm">Pricing and other details</Link>
+          </>
+        }
+      >
+        <TableWrap>
+          <table className="data-table min-w-[760px]">
+            <thead>
+              <tr><th>No</th><th>Ads Position</th><th>Start Date</th><th>End Date</th><th>Duration</th><th>Status</th><th>Views</th><th>Clicks</th></tr>
+            </thead>
+            <tbody>
+              {adsData.map((ad, index) => (
+                <tr key={ad.id}>
+                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
+                  <td className="font-semibold text-night-900">{ad.position}</td>
+                  <td>{ad.startDate}</td>
+                  <td>{ad.endDate}</td>
+                  <td>{ad.duration}</td>
+                  <td><StatusChip status={ad.status} /></td>
+                  <td><span className="flex items-center gap-1.5"><FaEye className="text-slate-300" />{ad.views}</span></td>
+                  <td><span className="flex items-center gap-1.5"><FaArrowPointer className="text-slate-300" />{ad.clicks}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableWrap>
 
-  {/* Section Title */}
-  <div className="bg-teal-400 rounded-md text-white text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-4 uppercase w-fit">
-    Paid Ads
-  </div>
-
-  {/* Container */}
-  <div className="container mx-auto px-4 py-6">
-    {/* Heading and Buttons */}
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-      <h2 className="text-base sm:text-lg font-semibold">Your Banner Ads</h2>
-
-      <div className="flex flex-col sm:flex-row gap-2">
-        <a
-          href="/ads-form"
-          className="bg-gradient-to-t from-[#697480] to-[#9ba3ab] text-white px-3 py-2 text-xs font-semibold rounded hover:bg-blue-600 text-center"
-        >
-          Post your Ads
-        </a>
-        <a
-          href="/ads-pricing"
-          className="bg-gradient-to-t from-[#697480] to-[#9ba3ab] text-white px-3 py-2 text-xs font-semibold rounded hover:bg-blue-600 text-center"
-        >
-          Pricing and other details
-        </a>
-      </div>
-    </div>
-
-    {/* Table */}
-  <div className="overflow-x-auto w-[300px] md:w-full">
-  <table className="w-full min-w-[600px] border border-gray-300 text-[10px] sm:text-xs md:text-sm rounded-lg">
-    <thead className="bg-gray-100">
-      <tr className="text-gray-700 text-center">
-        <th className="p-2 sm:p-3 border">No</th>
-        <th className="p-2 sm:p-3 border">Ads Position</th>
-        <th className="p-2 sm:p-3 border">Start Date</th>
-        <th className="p-2 sm:p-3 border">End Date</th>
-        <th className="p-2 sm:p-3 border">Duration</th>
-        <th className="p-2 sm:p-3 border">Status</th>
-        <th className="p-2 sm:p-3 border">Views</th>
-        <th className="p-2 sm:p-3 border">Clicks</th>
-      </tr>
-    </thead>
-    <tbody>
-      {adsData.map((ad, index) => (
-        <tr key={ad.id} className="text-center hover:bg-gray-50">
-          <td className="p-2 sm:p-3 border">{index + 1}</td>
-          <td className="p-2 sm:p-3 border">{ad.position}</td>
-          <td className="p-2 sm:p-3 border">{ad.startDate}</td>
-          <td className="p-2 sm:p-3 border">{ad.endDate}</td>
-          <td className="p-2 sm:p-3 border">{ad.duration}</td>
-          <td className="p-2 sm:p-3 border">
-            <span className="px-2 py-1 rounded text-white bg-[#579edc] text-[10px] sm:text-xs">
-              {ad.status}
-            </span>
-          </td>
-          <td className="p-2 sm:p-3 border">
-            <span className="bg-[#f7ed94] px-2 py-1 rounded text-[10px] sm:text-xs">
-              {ad.views}
-            </span>
-          </td>
-          <td className="p-2 sm:p-3 border">
-            <span className="bg-[#f7ed94] px-2 py-1 rounded text-[10px] sm:text-xs">
-              {ad.clicks}
-            </span>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
-    {/* Notes Section */}
-    <div className="mt-10 p-4 bg-[#e5f7ff] text-[#668796] border border-[#d0e9f4] text-sm sm:text-[13px] leading-relaxed rounded-lg">
-      <p>
-        <b>Notes:</b> Before starting your ad payment, you must check the
-        pricing details and positions. Click the "Pricing and other details"
-        button above to learn more. Once your payment is processed, your
-        invoice will be available in your "Payment Invoice" page, and your ad
-        will run until the end date.
-      </p>
-    </div>
-  </div>
-</div>
-
+        <p className="mt-6 rounded-2xl border-l-4 border-cyan-400 bg-cyan-400/10 p-4 text-sm leading-relaxed text-slate-600">
+          <b>Notes:</b> Before starting your ad payment, you must check the pricing details and positions. Click the &quot;Pricing and other details&quot; button
+          above to learn more. Once your payment is processed, your invoice will be available in your &quot;Payment Invoice&quot; page, and your ad will run until
+          the end date.
+        </p>
+      </DashCard>
     </CommonDashLayout>
   );
 }

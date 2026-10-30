@@ -1,278 +1,130 @@
 "use client";
 import React, { useState } from "react";
-import DashLeft from "./DashLeft";
-import DashRight from "./DashRight";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaStar, FaTrash, FaTriangleExclamation } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-const receivedReviews = [
-  {
-    id: 1,
-    listingName: "Ocha Thai Cuisine",
-    user: "Loki",
-    email: "thedirectoryfinder@gmail.com",
-    phone: "87654567",
-    rating: 5,
-    message: "Perfect service",
-  },
-  {
-    id: 2,
-    listingName: "Titan Wedding Hall",
-    user: "Loki",
-    email: "thedirectoryfinder@gmail.com",
-    phone: "87654567",
-    rating: 5,
-    message:
-      "Best service provider in wedding hall field... I personally recommend Titan Wedding Hall.",
-  },
-  {
-    id: 3,
-    listingName: "Smith Luxury Villas",
-    user: "Leland K Cotter",
-    email: "cotter@business.com",
-    phone: "9255886632",
-    rating: 3,
-    message: "Good experience overall.",
-  },
+import { DashCard, TableWrap } from "../ui/page";
+import { iconBtn } from "./AllListing";
+
+const initialReceived = [
+  { id: 1, listing: "Ocha Thai Cuisine", user: "Loki", email: "thedirectoryfinder@gmail.com", phone: "87654567", rating: 5, message: "Perfect service" },
+  { id: 2, listing: "Titan Wedding Hall", user: "Loki", email: "thedirectoryfinder@gmail.com", phone: "87654567", rating: 5, message: "Best service provider in wedding hall field... I personally recommend Titan Wedding Hall." },
+  { id: 3, listing: "Smith Luxury Villas", user: "Leland K Cotter", email: "cotter@business.com", phone: "9255886632", rating: 3, message: "Good experience overall." },
 ];
 
-const sentReviews = [
-  {
-    id: 4,
-    listing: "Rolexo Villas in California",
-    user: "Rn53 Themes",
-    email: "info@futureittouch.com",
-    phone: "5522114422",
-    city: "Los Angeles",
-    rating: 5,
-    message:
-      "Rolexo Villas is well-known as a premier builder of villas and apartments...",
-  },
-  {
-    id: 5,
-    listing: "The Royal Spa Center for Women",
-    user: "Rn53 Themes",
-    email: "info@futureittouch.com",
-    phone: "5522114422",
-    city: "Sydney",
-    rating: 4,
-    message:
-      "Perfect facial.. I strongly recommend. Writing great reviews may help others discover the places that are just apt for them...",
-  },
+const initialSent = [
+  { id: 4, listing: "Rolexo Villas in California", user: "Rn53 Themes", email: "info@futureittouch.com", phone: "5522114422", city: "Los Angeles", rating: 5, message: "Rolexo Villas is well-known as a premier builder of villas and apartments..." },
+  { id: 5, listing: "The Royal Spa Center for Women", user: "Rn53 Themes", email: "info@futureittouch.com", phone: "5522114422", city: "Sydney", rating: 4, message: "Perfect facial.. I strongly recommend. Writing great reviews may help others discover the places that are just apt for them..." },
 ];
 
-const Ratings = ({ count }) => {
-  return (
-    <div className="flex space-x-1 text-yellow-500">
-      {[...Array(count)].map((_, index) => (
-        <svg
-          key={index}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-5 h-5"
-        >
-          <path d="M12 17l-5.879 3.59L7.72 13.89l-5.23-4.48 6.866-.55L12 2.5l2.645 6.36 6.866.55-5.231 4.48 1.598 6.7L12 17z" />
-        </svg>
-      ))}
-    </div>
-  );
-};
+const Ratings = ({ count }) => (
+  <span className="flex gap-0.5 text-pin-500">
+    {Array.from({ length: 5 }, (_, i) => <FaStar key={i} className={i < count ? "" : "text-slate-200"} />)}
+  </span>
+);
 
 function Reviews() {
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("Received");
+  const [reviewData, setReviewData] = useState({ received: initialReceived, sent: initialSent });
+  const [pendingDelete, setPendingDelete] = useState(null);
 
-  const [deleteConfirmation, setDeleteConfirmation] = useState({
-    isOpen: false,
-    reviewId: null,
-  });
-
-  const handleDelete = (id) => {
-    // Open confirmation dialog
-    setDeleteConfirmation({
-      isOpen: true,
-      reviewId: id,
-    });
-  };
-
-  const handleConfirmation = (confirm) => {
+  const confirmDelete = (confirm) => {
     if (confirm) {
-      // Proceed with deletion
-      const updatedReceivedReviews = reviewData.received.filter(
-        (item) => item.id !== deleteConfirmation.reviewId
-      );
-      const updatedSentReviews = reviewData.sent.filter(
-        (item) => item.id !== deleteConfirmation.reviewId
-      );
-      setReviewData({
-        received: updatedReceivedReviews,
-        sent: updatedSentReviews,
-      });
+      setReviewData((d) => ({
+        received: d.received.filter((r) => r.id !== pendingDelete),
+        sent: d.sent.filter((r) => r.id !== pendingDelete),
+      }));
     }
-    // Close confirmation dialog
-    setDeleteConfirmation({
-      isOpen: false,
-      reviewId: null,
-    });
+    setPendingDelete(null);
   };
+
+  const rows = activeTab === "Received" ? reviewData.received : reviewData.sent;
 
   return (
-    <>
+    <CommonDashLayout>
+      <DashCard badge="Reviews" title="All Listings - Review Details">
+        <div className="mb-6 inline-flex gap-1 rounded-full bg-mist p-1" role="tablist">
+          {[
+            ["Received", `Received (${reviewData.received.length})`],
+            ["Sent", `Sent (${reviewData.sent.length})`],
+          ].map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === id}
+              onClick={() => setActiveTab(id)}
+              className={`relative rounded-full px-4 py-2 text-sm font-semibold transition ${activeTab === id ? "text-white" : "text-slate-500"}`}
+            >
+              {activeTab === id && <motion.span layoutId="review-tab" className="absolute inset-0 rounded-full bg-night-900" />}
+              <span className="relative">{label}</span>
+            </button>
+          ))}
+        </div>
 
-      <CommonDashLayout>
-          {deleteConfirmation.isOpen && (
-          <div className="bg-black/50 h-full hidden  w-full fixed inset-0 z-[40] lg:flex justify-center items-center">
-            <div className="confirmation-dialog bg-white py-10 px-5 rounded-md  ">
-              <p className="text-lg  font-semibold lg:text-xl">
-                Are you sure you want to delete this Review?
-              </p>
-              <div className="flex items-center justify-center gap-x-4 text-white mt-4">
-                <button
-                  className="px-5 rounded-sm py-2 bg-green-700 yes-btn"
-                  onClick={() => handleConfirmation(true)}
-                >
-                  Yes
-                </button>
-                <button
-                  className="px-5 rounded-sm py-2 bg-red-700 no-btn"
-                  onClick={() => handleConfirmation(false)}
-                >
-                  No
-                </button>
+        <TableWrap>
+          <table className="data-table min-w-[900px]">
+            <thead>
+              <tr>
+                <th>No</th><th>Listing</th><th>User</th><th>Contact</th>
+                {activeTab === "Sent" && <th>City</th>}
+                <th>Rating</th><th>Message</th><th className="text-right">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((review, index) => (
+                <tr key={review.id}>
+                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
+                  <td className="font-semibold text-night-900">{review.listing}</td>
+                  <td>{review.user}</td>
+                  <td className="text-xs">
+                    <p>{review.email}</p>
+                    <p className="text-slate-400">{review.phone}</p>
+                  </td>
+                  {activeTab === "Sent" && <td>{review.city}</td>}
+                  <td><Ratings count={review.rating} /></td>
+                  <td className="max-w-[260px] text-xs leading-relaxed">{review.message}</td>
+                  <td className="text-right">
+                    <button type="button" onClick={() => setPendingDelete(review.id)} className={`${iconBtn} ml-auto hover:bg-magenta-500`} title="Delete">
+                      <FaTrash className="text-xs" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableWrap>
+        {rows.length === 0 && <p className="py-10 text-center text-slate-400">No reviews here.</p>}
+      </DashCard>
+
+      <AnimatePresence>
+        {pendingDelete !== null && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-night-950/60 p-4 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => confirmDelete(false)}
+          >
+            <motion.div
+              role="alertdialog"
+              aria-modal="true"
+              className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-card-hover"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-magenta-500/10 text-xl text-magenta-500"><FaTriangleExclamation /></span>
+              <p className="mt-4 font-bold text-night-900">Are you sure you want to delete this review?</p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <button type="button" onClick={() => confirmDelete(false)} className="btn-ghost">No</button>
+                <button type="button" onClick={() => confirmDelete(true)} className="btn-dark bg-magenta-500 hover:bg-magenta-600">Yes, delete</button>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
-          <div >
-              <div className="w-full h-2 bg-gradient-to-r from-[#7FCCBB] to-[#588EE3] mb-6 rounded" />
-
-              {/* Title Section */}
-              <div className="bg-teal-400 rounded-md text-white text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-4 uppercase w-fit">
-                Reviews
-              </div>
-              <div className="py-8 px-7 overflow-x-auto">
-                <h2 className="font-semibold text-base mb-3">
-                  All Listings - Review Details
-                </h2>
-
-                {/* Tabs Navigation */}
-                <div className="flex border-b mb-3">
-                  <button
-                    className={`p-2 text-sm font-semibold ${
-                      activeTab === "Received"
-                        ? "border-b-2 border-blue-500 text-blue-500"
-                        : "text-gray-500"
-                    }`}
-                    onClick={() => setActiveTab("Received")}
-                  >
-                    All Received Reviews
-                  </button>
-                  <button
-                    className={`p-2 text-sm font-semibold ml-4 ${
-                      activeTab === "Sent"
-                        ? "border-b-2 border-blue-500 text-blue-500"
-                        : "text-gray-500"
-                    }`}
-                    onClick={() => setActiveTab("Sent")}
-                  >
-                    All Sent Reviews
-                  </button>
-                </div>
-
-                {/* Conditional Rendering for Different Tables */}
-                {activeTab === "Received" ? (
-                  <div className=" overflow-x-auto w-[310px]  md:w-auto ">
-                    <table className=" md:min-w-full   bg-white border-b border-gray-300 mt-3">
-                      <thead>
-                        <tr className="text-xs md:text-nowrap">
-                          <th className="p-3 text-left">No</th>
-                          <th className="p-3 text-left">Listing Name</th>
-                          <th className="p-3 text-left">User</th>
-                          <th className="p-3 text-left">Email</th>
-                          <th className="p-3 text-left">Phone</th>
-                          <th className="p-3 text-left">Ratings</th>
-                          <th className="p-3 text-left">Message</th>
-                          <th className="p-3 text-left">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {receivedReviews.map((review, index) => (
-                          <tr
-                            key={review.id}
-                            className="border-b hover:bg-gray-100 text-[13px] text-nowrap"
-                          >
-                            <td className="p-3">{index + 1}</td>
-                            <td className="p-3">{review.listingName}</td>
-                            <td className="p-3">{review.user}</td>
-                            <td className="p-3">{review.email}</td>
-                            <td className="p-3">{review.phone}</td>
-                            <td className="p-3">
-                              <Ratings count={review.rating} />
-                            </td>
-                            <td className="p-3">{review.message}</td>
-                            <td className="p-3">
-                              <a
-                                href="/RajpuraTahsil/listing"
-                                className="text-[11px] p-1 border border-gray-300"
-                              >
-                                Delete
-                              </a>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className=" overflow-x-auto w-[310px]  md:w-auto">
-                    <table className="min-w-full bg-white border-b border-gray-300 mt-3">
-                      <thead>
-                        <tr className="text-xs md:text-nowrap">
-                          <th className="p-3 text-left">No</th>
-                          <th className="p-3 text-left">Listing Name</th>
-                          <th className="p-3 text-left">User</th>
-                          <th className="p-3 text-left">Email</th>
-                          <th className="p-3 text-left">Phone</th>
-                          <th className="p-3 text-left">City</th>
-                          <th className="p-3 text-left">Ratings</th>
-                          <th className="p-3 text-left">Message</th>
-                          <th className="p-3 text-left">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {sentReviews.map((review, index) => (
-                          <tr
-                            key={review.id}
-                            className="border-b hover:bg-gray-100 text-[13px] text-nowrap"
-                          >
-                            <td className="p-3">{index + 1}</td>
-                            <td className="p-3">{review.listing}</td>
-                            <td className="p-3">{review.user}</td>
-                            <td className="p-3">{review.email}</td>
-                            <td className="p-3">{review.phone}</td>
-                            <td className="p-3">{review.city}</td>
-                            <td className="p-3">
-                              <Ratings count={review.rating} />
-                            </td>
-                            <td className="p-3">{review.message}</td>
-                            <td className="p-3">
-                              <button
-                                onClick={() => handleDelete(review.id)}
-                                className="text-[11px] p-1 border border-gray-300"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-      </CommonDashLayout>
-
-
-    </>
+      </AnimatePresence>
+    </CommonDashLayout>
   );
 }
 

@@ -1,171 +1,99 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaPlus } from "react-icons/fa6";
 import BusinessDirectory from "../Component/BuinessDirectory";
-export default function page() {
-  const [activeIndex, setActiveIndex] = useState(null);
-  const toggleCollapse = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
+import { PageHero } from "../ui/page";
+import { Stagger, StaggerItem } from "../ui/motion";
 
-  const faq = [
-    {
-      question: "How to create new listing?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-    },
-    {
-      question: "How to change free listing to premium listing?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-      list: [
-        "Readable content of Link page when looking",
-        "Readable content of Link page when looking",
-      ],
-    },
-    {
-      question: "How can I change my user type?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-      list: [
-        "Readable content of Link page when looking",
-        "Readable content of Link page when looking",
-      ],
-    },
-    {
-      question: "How to make Payment?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-      list: [
-        "Readable content of Link page when looking",
-        "Readable content of Link page when looking",
-      ],
-    },
-    {
-      question: "How to create Ads?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-      list: [
-        "Readable content of Link page when looking",
-        "Readable content of Link page when looking",
-      ],
-    },
-    {
-      question: "What is user type?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-      subAnswers: [
-        {
-          title: "General User",
-          text: "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-        },
-        {
-          title: "Service provider",
-          text: "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-        },
-      ],
-    },
-    {
-      question: "How to contact support team?",
-      answer:
-        "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia",
-    },
-  ];
+const answer = "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia";
+const list = ["Readable content of Link page when looking", "Readable content of Link page when looking"];
+
+const faq = [
+  { question: "How to create new listing?", answer },
+  { question: "How to change free listing to premium listing?", answer, list },
+  { question: "How can I change my user type?", answer, list },
+  { question: "How to make Payment?", answer, list },
+  { question: "How to create Ads?", answer, list },
+  {
+    question: "What is user type?",
+    answer,
+    subAnswers: [
+      { title: "General User", text: answer },
+      { title: "Service provider", text: answer },
+    ],
+  },
+  { question: "How to contact support team?", answer },
+];
+
+export default function Page() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <>
-      <div className="bg-[url('/img/sign/sign1.webp')] h-screen bg-center">
-        <div className="bg-[rgba(0,0,0,0.71)] h-full flex items-center">
-          <div className="w-full lg:max-w-[40%] mx-auto bg-white h-auto rounded-md shadow-lg relative">
-            <div className="lg:w-[90%] mx-auto h-2 bg-gradient-to-br from-[#4c7af1] to-[#7fccbb] mb-6 rounded" />
+      <PageHero
+        eyebrow="Help centre"
+        title="Frequently Asked"
+        highlight="Questions"
+        subtitle='Here you can learn about this "Directory Finder Website" and you can find the solution for your doubts.'
+        crumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
+      />
 
-            <div className="bg-teal-400 rounded-md text-white w-fit text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-2 uppercase">
-              Frequently Asked Questions
-            </div>
-
-            <div className="space-y-4 mt-10">
-              <div className="text-center  px-4">
-                <h5 className="text-xl md:text-2xl font-bold text-gray-800">
-                  Frequently Asked Questions
-                </h5>
-                <p className="text-sm md:text-base text-gray-600 mt-2">
-                  Here you can learn about this "Directory Finder Website" and
-                  you can
-                  <br />
-                  find the solution for your doubts.
-                </p>
-              </div>
-
-              <div className="p-8 ">
-                <ul className="">
-                  {faq.map((faq, index) => (
-                    <li
-                      key={index}
-                      className="border list-none border-gray-200 py-4 px-4"
-                    >
-                      <div
-                        className="flex items-center justify-between cursor-pointer"
-                        onClick={() => toggleCollapse(index)}
-                      >
-                        <h4 className="text-lg md:text-xl font-semibold text-gray-700">
-                          {faq.question}
-                        </h4>
-                        <svg
-                          className={`transition-transform duration-300 ${
-                            activeIndex === index ? "transform rotate-180" : ""
-                          }`}
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 24 24"
-                          height="1.5em"
-                          width="1.5em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M12 16L6 10H18L12 16Z"></path>
-                        </svg>
+      <div className="container-x max-w-3xl py-12">
+        <Stagger gap={0.06} as="ul" className="space-y-3">
+          {faq.map((item, index) => {
+            const open = activeIndex === index;
+            return (
+              <StaggerItem
+                as="li"
+                key={index}
+                className={`overflow-hidden rounded-3xl transition ${open ? "bg-white shadow-card-hover ring-1 ring-brand-200" : "bg-white ring-1 ring-slate-100"}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex(open ? null : index)}
+                  aria-expanded={open}
+                  className="flex w-full items-center justify-between gap-4 p-5 text-left"
+                >
+                  <span className="flex items-center gap-4">
+                    <span className={`font-display text-sm font-extrabold ${open ? "text-gradient" : "text-slate-300"}`}>{String(index + 1).padStart(2, "0")}</span>
+                    <span className="font-bold text-night-900 sm:text-lg">{item.question}</span>
+                  </span>
+                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition duration-300 ${open ? "rotate-45 bg-brand-gradient text-white" : "bg-mist text-night-900"}`}>
+                    <FaPlus className="text-xs" />
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {open && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                      <div className="px-5 pb-6 pl-14 text-sm leading-relaxed text-slate-600 sm:text-base">
+                        <p>{item.answer}</p>
+                        {item.list && (
+                          <ol className="mt-3 list-decimal space-y-1 pl-5">
+                            {item.list.map((li, i) => <li key={i}>{li}</li>)}
+                          </ol>
+                        )}
+                        {item.subAnswers && (
+                          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                            {item.subAnswers.map((sub) => (
+                              <div key={sub.title} className="rounded-2xl bg-mist p-4">
+                                <h5 className="font-bold text-night-900">{sub.title}</h5>
+                                <p className="mt-1">{sub.text}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      {activeIndex === index && (
-                        <div className="mt-2 text-gray-600">
-                          <p className="text-sm md:text-base">{faq.answer}</p>
-                          {faq.list && (
-                            <ol className="list-decimal pl-5 mt-2 space-y-1">
-                              {faq.list.map((item, subIndex) => (
-                                <li
-                                  key={subIndex}
-                                  className="text-sm md:text-base"
-                                >
-                                  {item}
-                                </li>
-                              ))}
-                            </ol>
-                          )}
-                          {faq.subAnswers && (
-                            <div className="mt-4 space-y-2">
-                              {faq.subAnswers.map((sub, subIndex) => (
-                                <div key={subIndex}>
-                                  <h5 className="font-semibold text-gray-800 text-sm md:text-base">
-                                    {sub.title}
-                                  </h5>
-                                  <p className="text-sm md:text-base">
-                                    {sub.text}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                <div className="w-full text-center text-lg mt-4">
-                  <Link className="skip " href="/dashboard">
-                    Go to User Dashboard &gt;&gt;
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </StaggerItem>
+            );
+          })}
+        </Stagger>
+        <div className="mt-8 text-center">
+          <Link href="/dashboard" className="btn-dark">Go to User Dashboard →</Link>
         </div>
       </div>
       <BusinessDirectory />

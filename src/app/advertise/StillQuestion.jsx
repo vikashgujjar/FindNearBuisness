@@ -1,37 +1,29 @@
-import React from 'react';
+"use client";
+import React from "react";
+import { FaPaperPlane } from "react-icons/fa6";
+import { Contours } from "../ui/decor";
+import { Reveal } from "../ui/motion";
 
 export default function StillQuestion() {
   return (
-    <div className="bg-[#CEE9FF] px-4 sm:px-6 md:px-12 xl:px-32 py-8 md:py-14 flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-16">
-      
-      {/* TextArea Section */}
-      <div className="w-full lg:w-1/2">
-        <h5 className="font-semibold text-xl sm:text-2xl md:text-3xl mb-4 text-center lg:text-left">
-          Still Having Questions?
-        </h5>
-
+    <section className="container-x py-16 sm:py-20">
+      <Reveal className="relative grid items-center gap-10 overflow-hidden rounded-[2rem] bg-brand-50 p-6 sm:p-10 lg:grid-cols-2">
+        <Contours className="-right-24 -top-24 h-96 w-96" />
         <div className="relative">
-          <textarea
-            className="w-full h-40 sm:h-48 md:h-52 resize-none p-4 pr-24 rounded-xl shadow-sm text-sm md:text-base placeholder:text-gray-500"
-            placeholder="Write your query here and we’ll get back to you within 2 working days..."
-          />
-
-          <button
-            className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-1.5 sm:px-5 sm:py-2 text-sm sm:text-base transition-all duration-200 shadow-md"
-          >
-            Submit
-          </button>
+          <span className="eyebrow">Support</span>
+          <h2 className="mt-3 text-2xl font-extrabold text-night-900 sm:text-3xl">Still having questions?</h2>
+          <form onSubmit={(e) => e.preventDefault()} className="mt-6">
+            <label htmlFor="still-q" className="sr-only">Your question</label>
+            <textarea
+              id="still-q"
+              className="field h-40 resize-none bg-white"
+              placeholder="Write your query here and we’ll get back to you within 2 working days..."
+            />
+            <button type="submit" className="btn-primary mt-3"><FaPaperPlane /> Submit</button>
+          </form>
         </div>
-      </div>
-
-      {/* Image Section */}
-      <div className="w-full lg:w-1/2 flex justify-center">
-        <img
-          src="/img/Advertise/3.svg"
-          alt="still-question"
-          className="max-w-full h-auto object-contain"
-        />
-      </div>
-    </div>
+        <img src="/img/Advertise/3.svg" alt="" className="relative mx-auto max-h-80 w-full object-contain" />
+      </Reveal>
+    </section>
   );
 }

@@ -1,71 +1,85 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { IoIosArrowForward } from "react-icons/io";
+import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import Link from "next/link";
+import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+import "swiper/css/pagination";
+import { SectionHeading } from "../ui/decor";
+import { Reveal } from "../ui/motion";
+import { cityHref } from "../context/LocationContext";
+
+const banners = [
+  { src: "/img/filteredData2/banner1.webp", path: "Coupon-deals" },
+  { src: "/img/Servicelist/serviceBanner2.webp", path: "realestate" },
+  { src: "/img/filteredData2/banner2.webp", path: "Coupon-deals" },
+  { src: "/img/Servicelist/serviceBanner1.webp", path: "realestate" },
+  { src: "/img/filteredData2/banner3.webp", path: "Coupon-deals" },
+];
 
 const ServiceBanner = ({ loc }) => {
-  const getLocationHref = () => {
-    const location =
-      loc?.county || (loc?.Name === "NA" ? loc?.State : loc?.Name);
-    return `/${location?.replace(/\s+/g, "") || "default-location"}/realestate`;
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      document.querySelector(".custom-prev")?.classList.remove("swiper-button-disabled");
-      document.querySelector(".custom-next")?.classList.remove("swiper-button-disabled");
-    }, 500);
-  }, []);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   return (
-    <div className="px-4 sm:px-6 md:px-10 xl:px-32 py-6 md:py-10 xl:py-16 max-w-screen-2xl mx-auto">
-      <div className="relative">
-        <Swiper
-          loop={true}
-          navigation={{ nextEl: ".custom-next", prevEl: ".custom-prev" }}
-          modules={[Navigation]}
-          className="mySwiper"
-        >
-          {/* Slide 1 */}
-          <SwiperSlide>
-            <Link href={getLocationHref()} className="block">
-              <img
-                src="/img/Servicelist/serviceBanner2.webp"
-                alt="banner"
-                className="w-full h-[140px] xs:h-[160px] sm:h-[180px] md:h-[190px] lg:h-[220px] object-cover rounded-md"
-              />
-            </Link>
-          </SwiperSlide>
+    <section className="relative py-14 sm:py-20">
+      <div className="container-x">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeading
+            align="left"
+            eyebrow="Offers"
+            title="Hot deals on"
+            highlight="your street"
+            subtitle="Fresh coupons and promotions from businesses around you."
+          />
+          <div className="hidden gap-2 sm:flex">
+            <button ref={prevRef} aria-label="Previous deal" className="grid h-12 w-12 place-items-center rounded-full border border-slate-200 text-lg transition hover:border-brand-500 hover:bg-brand-500 hover:text-white">
+              <IoArrowBack />
+            </button>
+            <button ref={nextRef} aria-label="Next deal" className="grid h-12 w-12 place-items-center rounded-full bg-night-900 text-lg text-white transition hover:bg-brand-600">
+              <IoArrowForward />
+            </button>
+          </div>
+        </div>
 
-          {/* Slide 2 */}
-          <SwiperSlide>
-            <Link href={getLocationHref()} className="block">
-              <img
-                src="/img/Servicelist/serviceBanner1.webp"
-                alt="banner"
-                className="w-full h-[140px] xs:h-[160px] sm:h-[180px] md:h-[190px] lg:h-[220px] object-cover rounded-md"
-              />
-            </Link>
-          </SwiperSlide>
-        </Swiper>
-
-        {/* Custom Navigation Buttons */}
-        <button className="custom-prev absolute top-1/2 -translate-y-1/2 left-2 sm:left-4 bg-white hover:bg-[#ffffff90] text-black p-2 sm:p-3 md:p-4 rounded-full shadow z-10">
-          <IoIosArrowForward className="-rotate-180 text-lg sm:text-xl" />
-        </button>
-        <button className="custom-next absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 bg-white hover:bg-[#ffffff90] text-black p-2 sm:p-3 md:p-4 rounded-full shadow z-10">
-          <IoIosArrowForward className="text-lg sm:text-xl" />
-        </button>
+        <Reveal className="mt-8">
+          <Swiper
+            modules={[Navigation, Autoplay, Pagination]}
+            loop
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+            }}
+            navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
+            spaceBetween={16}
+            slidesPerView={1.08}
+            breakpoints={{
+              640: { slidesPerView: 1.4, spaceBetween: 20 },
+              1024: { slidesPerView: 2, spaceBetween: 24 },
+            }}
+            className="deals-swiper !pb-10"
+          >
+            {banners.map((b, i) => (
+              <SwiperSlide key={i}>
+                <Link href={cityHref(loc, b.path)} className="group block overflow-hidden rounded-3xl shadow-card">
+                  <img
+                    src={b.src}
+                    alt="Offer banner"
+                    className="aspect-[2.4/1] w-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Reveal>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default ServiceBanner;
-
-

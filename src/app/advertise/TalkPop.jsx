@@ -1,73 +1,72 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { RxCross1 } from "react-icons/rx";
-import { FaArrowRightLong } from "react-icons/fa6";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import { FaArrowRightLong, FaHeadset } from "react-icons/fa6";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 export default function PopUpForm({ setTalkPop }) {
-  const [focus, setFocus] = useState(false);
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-  
+    const onKey = (e) => e.key === "Escape" && setTalkPop(false);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
     };
-  }, []);
-  
+  }, [setTalkPop]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-20 flex justify-center items-center px-4">
-      <div className="w-full max-w-md lg:max-w-xl bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="w-full h-20 bg-sky-100 flex justify-end items-center px-4">
-          <button onClick={() => setTalkPop(false)} className="text-xl text-gray-700">
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-night-950/60 backdrop-blur-sm sm:items-center sm:p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      onClick={() => setTalkPop(false)}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Talk to us"
+        className="w-full max-w-lg overflow-hidden rounded-t-3xl bg-white shadow-card-hover sm:rounded-3xl"
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="relative h-24 bg-brand-gradient">
+          <button onClick={() => setTalkPop(false)} aria-label="Close" className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-white/20 text-white">
             <RxCross1 />
           </button>
         </div>
-
-        <div className="px-6 flex flex-col items-center gap-4 -mt-14 pb-6">
-          <img
-            src="https://www.justdial.com/Advertise/_next/image?url=https%3A%2F%2Fakam.cdn.jdmagicbox.com%2Fimages%2Ficontent%2Flistingbusiness%2Fagent.png&w=256&q=75"
-            alt="talk to us"
-            className="w-20 lg:w-32"
-          />
-
-          <p className="text-sm lg:text-base text-gray-700 text-center">
-            Ms. Neha will assist you on an initial call{" "}
-            <strong className="text-black font-medium">to help select the right plan for your business.</strong>
+        <div className="-mt-10 flex flex-col items-center gap-4 px-6 pb-8 text-center">
+          <span className="relative grid h-20 w-20 place-items-center rounded-full bg-white text-3xl text-brand-600 shadow-card ring-4 ring-white">
+            <span className="absolute inset-0 animate-ping-slow rounded-full bg-brand-500/20" />
+            <FaHeadset />
+          </span>
+          <p className="text-slate-600">
+            Ms. Neha will assist you on an initial call <b className="text-night-900">to help select the right plan for your business.</b>
           </p>
-
-          <form className="border-2 border-blue-200 bg-white rounded-lg shadow p-3 flex items-center gap-3 w-full">
-           
-            <div className="relative flex-1">
-            
-              <PhoneInput
-              country={'in'}
+          <form onSubmit={(e) => e.preventDefault()} className="flex w-full flex-col gap-3 sm:flex-row">
+            <PhoneInput
+              country="in"
               value={phone}
               onChange={setPhone}
-              inputStyle={{ width: '100%' }}
+              inputStyle={{ width: "100%", height: "48px", borderRadius: "14px", border: "1px solid #e2e8f0", background: "#F4F5FB" }}
+              buttonStyle={{ borderRadius: "14px 0 0 14px", border: "1px solid #e2e8f0" }}
               containerStyle={{ flex: 1 }}
             />
-
-            </div>
-
-            <button
-              type="submit"
-              className="bg-blue-600 group  hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md flex items-center gap-2"
-            >
-              Call Now <FaArrowRightLong className="text-base group-hover:translate-x-1 duration-200 transition-transform" />
+            <button type="submit" className="btn-primary group h-12">
+              Call Now <FaArrowRightLong className="transition group-hover:translate-x-1" />
             </button>
           </form>
-
-          <hr className="w-full border-gray-200" />
-
-          <p className="text-sm lg:text-base text-gray-700 text-center">
-            Get a voice call with our advisor now —{" "}
-            <span className="font-semibold text-black">let us answer your questions instantly.</span>
+          <p className="text-sm text-slate-500">
+            Get a voice call with our advisor now — <b className="text-night-900">let us answer your questions instantly.</b>
           </p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

@@ -1,35 +1,69 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import DashLeft from "./DashLeft";
 import DashRight from "./DashRight";
-import Link from "next/link";
 import DashLeftOpen from "./DashLeftOpen";
+import { useUserLocation } from "../context/LocationContext";
+import { dashHref, dashTabs, isActiveTab } from "./dashNav";
+import { DotGrid } from "../ui/decor";
+
+// Swipeable tab strip so phones can move between dashboard pages.
+function MobileTabs() {
+  const pathName = usePathname();
+  const { location } = useUserLocation();
+  const activeRef = useRef(null);
+
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [pathName]);
+
+  return (
+    <nav aria-label="Dashboard" className="no-scrollbar -mx-4 mb-5 flex gap-2 overflow-x-auto px-4 md:hidden">
+      {dashTabs.map((tab) => {
+        const active = isActiveTab(pathName, tab);
+        return (
+          <Link
+            key={tab.title}
+            ref={active ? activeRef : null}
+            href={dashHref(location, tab)}
+            aria-current={active ? "page" : undefined}
+            className={`flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-xs font-semibold transition ${
+              active ? "bg-night-900 text-white" : "bg-white text-slate-600 ring-1 ring-slate-200"
+            }`}
+          >
+            <img src={tab.icon} alt="" className="h-4 w-4" />
+            {tab.title}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
 
 function CommonDashLayout({ children }) {
   return (
-    <div className="px-5 md:pr-16  py-10 bg-[#F5F6FA] relative ">
-      <div className="grid md:grid-cols-2 gap-y-10 gap-x-4  lg:grid-cols-4   ">
-        <div className="hidden  xl:block xl:col-span-1   p-2 xl:p-5  ">
-          <div className="sticky top-5">
+    <div className="relative bg-mist">
+      <DotGrid className="inset-x-0 top-0 h-80 w-full [mask-image:linear-gradient(to_bottom,#000,transparent)]" />
+      <div className="container-x relative py-6 sm:py-10">
+        <MobileTabs />
+        <div className="flex items-start gap-5 xl:grid xl:grid-cols-[250px_minmax(0,1fr)_300px] xl:gap-6">
+          <aside className="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto pb-4 no-scrollbar xl:block">
             <DashLeft />
-          </div>
-        </div>
-
-        <div className="md:col-span-2 lg:col-span-4 xl:col-span-2 flex items-start gap-4 xl:block ">
-          <div className="sticky top-24 hidden md:block  xl:hidden">
+          </aside>
+          <div className="sticky top-24 hidden md:block xl:hidden">
             <DashLeftOpen />
           </div>
-          <div className=" w-full space-y-4">
+          <main className="min-w-0 flex-1 space-y-6">
             {children}
-            <div className="xl:hidden w-full mt-4">
+            <div className="xl:hidden">
               <DashRight />
             </div>
-          </div>
-        </div>
-
-        <div className=" hidden xl:block md:col-span-2 lg:col-span-4   xl:col-span-1   bg-[#F5F6FA] sm:p-5">
-          {/* right side  */}
-          <DashRight />
+          </main>
+          <aside className="hidden xl:block">
+            <DashRight />
+          </aside>
         </div>
       </div>
     </div>

@@ -1,85 +1,94 @@
-'use client'
-import React, { useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaPhoneVolume } from "react-icons/fa6";
-import { IoMdMenu, IoMdClose } from 'react-icons/io';
-import PopUpForm from './TalkPop';
-import HaveAnAccount from './HaveAnAccount';
-import Link from 'next/link';
+import { IoMdMenu, IoMdClose } from "react-icons/io";
+import PopUpForm from "./TalkPop";
+import HaveAnAccount from "./HaveAnAccount";
+
+const menuItems = [
+  { title: "Success Stories", href: "#Success" },
+  { title: "Benefits", href: "#Benefits" },
+  { title: "Plans", href: "#Plans" },
+  { title: "Features", href: "#Features" },
+  { title: "FAQs", href: "#FAQs" },
+];
 
 export default function AdvertiseNav() {
-    const menuItems = [
-        { title: 'Success Stories', href:"#Success" },
-        { title: 'Benefits', href:"#Benefits"  },
-        { title: 'Plans',href:"#Plans" },
-        { title: 'Features', href:"#Features" },
-        { title: 'FAQs' ,href:"#FAQs"}
-    ];
+  const [mobileBar, setMobileBar] = useState(false);
+  const [talkPop, setTalkPop] = useState(false);
+  const [haveAccountCheck, setHaveAccountCheck] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-    const [mobileBar, setMobileBar] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    const [talkPop,setTalkPop] = useState(false)
+  return (
+    <header className={`sticky top-0 z-50 w-full transition ${scrolled ? "bg-white/85 shadow-card backdrop-blur-xl" : "bg-white"}`}>
+      <nav className="container-x flex h-16 items-center justify-between gap-4 lg:h-[76px]">
+        <Link href="/" aria-label="Future Touch home">
+          <img src="/img/logo/logo.webp" alt="Future IT Touch" className="w-[130px] lg:w-[170px]" />
+        </Link>
 
-    const [haveAccountCheck,setHaveAccountCheck] = useState(false)
-    
-    const [losginPop,setLoginPop] = useState(false)
+        <ul className="hidden items-center gap-1 lg:flex">
+          {menuItems.map((item) => (
+            <li key={item.title}>
+              <a href={item.href} className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-mist hover:text-night-900">
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-    return (
-      <header className='bg-white shadow-md px-5 md:px-12 xl:px-32 sticky z-50 w-full top-0'>
-          <nav className='container mx-auto    py-4 flex justify-between items-center relative  '>
-            <div className='flex items-center gap-6'>
-                    <Link href="/">
-                <img 
-                    src="/img/logo/logo.webp" 
-                  
-                    alt="img" 
-                    className='h-auto w-[120px] lg:w-[180px]' 
-                />
-                </Link>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setTalkPop(true)} className="btn-primary hidden sm:inline-flex">
+            <FaPhoneVolume /> Talk to Us
+          </button>
+          <button onClick={() => setHaveAccountCheck(true)} className="hidden rounded-full px-3 py-2 text-sm font-semibold text-night-900 hover:text-brand-600 lg:block">
+            Login
+          </button>
+          <button
+            onClick={() => setMobileBar(!mobileBar)}
+            aria-label={mobileBar ? "Close menu" : "Open menu"}
+            aria-expanded={mobileBar}
+            className="grid h-11 w-11 place-items-center rounded-full bg-mist text-2xl lg:hidden"
+          >
+            {mobileBar ? <IoMdClose /> : <IoMdMenu />}
+          </button>
+        </div>
+      </nav>
 
-                <ul className='hidden absolute lg:left-[50%] xl:left-[60%] top-[50%] lg:-translate-x-[50%] xl:-translate-x-[90%] -translate-y-[50%] lg:flex xl:gap-x-4 text-[15px]  font-medium'>
-                    {menuItems.map((item, index) => (
-                        <li key={index} className='hover:bg-gray-100 px-2 py-2 rounded-md transition duration-300'>
-                           <Link href={item.href}>{item.title}</Link> 
-                        </li>
-                    ))}
-                </ul>
-            </div>
+      <AnimatePresence>
+        {mobileBar && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-slate-100 bg-white lg:hidden"
+          >
+            <ul className="container-x space-y-1 py-4">
+              {menuItems.map((item) => (
+                <li key={item.title}>
+                  <a href={item.href} onClick={() => setMobileBar(false)} className="block rounded-2xl px-4 py-3 font-semibold text-night-900 hover:bg-mist">
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+              <li className="grid grid-cols-2 gap-2 pt-2">
+                <button onClick={() => setTalkPop(true)} className="btn-primary"><FaPhoneVolume /> Talk to Us</button>
+                <button onClick={() => setHaveAccountCheck(true)} className="btn-ghost">Login</button>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className='flex gap-5 items-center'>
-                <button onClick={()=>setTalkPop(!talkPop)} className='flex lg:hidden xl:flex items-center gap-2 bg-blue-600 px-5 py-2 rounded-full text-white font-semibold text-md shadow-md transition duration-300 hover:bg-blue-700'>
-                    <FaPhoneVolume />
-                    <span>Talk to Us</span>
-                </button>
-
-                <button onClick={() => setMobileBar(!mobileBar)} className='lg:hidden text-2xl'>
-                    {mobileBar ? <IoMdClose /> : <IoMdMenu />}
-                </button>
-
-                <div className='hidden lg:flex items-center gap-3'>
-                    <button onClick={()=>setHaveAccountCheck(true)} className='font-medium text-sm'>Have an Account?</button>
-                    <button onClick={()=>setLoginPop(true)} className='text-blue-600 font-semibold hover:underline'>Login</button>
-                </div>
-            </div>
-
-            {mobileBar && (
-                <ul className='absolute top-full left-0 w-full bg-white shadow-lg flex flex-col gap-4 py-5 px-6 text-[15px] font-medium lg:hidden z-50'>
-                    {menuItems.map((item, index) => (
-                        <li key={index} className='hover:bg-gray-100 px-4 py-2 rounded-md transition duration-300'>
-                            {item.title}
-                        </li>
-                    ))}
-                    <button onClick={()=>setHaveAccountCheck(true)} className='w-fit lg:hidden xl:flex items-center gap-2 bg-blue-600 px-5 py-2 rounded-full text-white font-semibold text-md shadow-md transition duration-300 hover:bg-blue-700'>Have an Account?</button>
-                    <button onClick={()=>setLoginPop(true)} className='w-fit lg:hidden xl:flex items-center gap-2 bg-blue-600 px-5 py-2 rounded-full text-white font-semibold text-md shadow-md transition duration-300 hover:bg-blue-700'>Login</button>
-                </ul>
-            )}
-        </nav>
-        
-
-            {talkPop && <PopUpForm setTalkPop={setTalkPop}/>}
-            {haveAccountCheck && <HaveAnAccount setHaveAccountCheck={setHaveAccountCheck} />}
-            
-            {losginPop && <HaveAnAccount setHaveAccountCheck={setLoginPop} />}
-
-      </header>
-    );
+      {talkPop && <PopUpForm setTalkPop={setTalkPop} />}
+      {haveAccountCheck && <HaveAnAccount setHaveAccountCheck={setHaveAccountCheck} />}
+    </header>
+  );
 }

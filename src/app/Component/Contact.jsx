@@ -1,117 +1,96 @@
+"use client";
 import React from "react";
+import { motion } from "framer-motion";
+import { MapGrid, Glow, SectionHeading, Wave } from "../ui/decor";
+import { Reveal, Stagger, StaggerItem } from "../ui/motion";
+
+const steps = [
+  {
+    imgSrc: "/img/contactimg/blog.webp",
+    title: "Tell us more about your requirements",
+    description: "Imagine making your presence known online through a local directory. Your competitors are already...",
+  },
+  {
+    imgSrc: "/img/contactimg/shield.webp",
+    title: "We connect with the right service provider",
+    description: "Advertising your business to local audiences opens up numerous opportunities...",
+  },
+  {
+    imgSrc: "/img/contactimg/general.webp",
+    title: "Happy with our service",
+    description: "Even local businesses need brand management and a strong image. Build yours effectively...",
+  },
+];
+
+const field =
+  "w-full rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-400 focus:border-cyan-300/60 focus:bg-white/10";
 
 const Contact = () => {
   return (
-    <section className="px-5 md:px-8 xl:px-32 py-8 xl:py-16 bg-gray-50">
-      <div className="grid grid-cols-1  lg:grid-cols-2 gap-12 items-center">
-        {/* Left Section */}
-        <div>
-          <h2 className="text-2xl md:text-3xl xl:text-4xl font-extrabold mb-6">
-            What service do you need? <br />
-            <span className="text-[#5b4ad8]">Future Touch</span>
-          </h2>
-          <p className="mb-8 text-gray-700 text-sm md:text-base leading-relaxed">
-            Share your requirements with us, and we’ll connect you with the
-            right service providers to fulfill your needs effectively.
-          </p>
-          <ul className="space-y-6">
-            {[
-              {
-                imgSrc: "/img/contactimg/blog.webp",
-                alt: "Blog",
-                title: "Tell us more about your requirements",
-                description:
-                  "Imagine making your presence known online through a local directory. Your competitors are already...",
-              },
-              {
-                imgSrc: "/img/contactimg/shield.webp",
-                alt: "Shield",
-                title: "We connect with the right service provider",
-                description:
-                  "Advertising your business to local audiences opens up numerous opportunities...",
-              },
-              {
-                imgSrc: "/img/contactimg/general.webp",
-                alt: "General",
-                title: "Happy with our service",
-                description:
-                  "Even local businesses need brand management and a strong image. Build yours effectively...",
-              },
-            ].map((item, index) => (
-              <li
-                key={index}
-                className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-              >
-                <img
-                  src={item.imgSrc}
-                  alt={item.alt}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+    <section className="relative overflow-hidden bg-night-950 py-24 text-white sm:py-32 lg:py-40">
+      <Wave flip fill="#F4F5FB" />
+      <Wave fill="#fff" />
+      <MapGrid opacity={0.45} />
+      <Glow className="-left-20 top-1/3 h-80 w-80" color="bg-brand-600/30" />
+      <Glow className="-right-20 bottom-0 h-80 w-80" color="bg-cyan-400/15" />
 
-                <div>
-                  <h3 className="font-semibold text-lg md:text-xl mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                    {item.description}
-                  </p>
+      <div className="container-x relative grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <SectionHeading
+            dark
+            align="left"
+            eyebrow="How it works"
+            title="What service do you need?"
+            highlight="Future Touch"
+            subtitle="Share your requirements with us, and we’ll connect you with the right service providers to fulfill your needs effectively."
+          />
+
+          <Stagger gap={0.18} className="relative mt-10">
+            {/* route line linking the steps */}
+            <motion.span
+              aria-hidden
+              className="absolute bottom-10 left-[27px] top-8 w-0.5 origin-top rounded-full bg-gradient-to-b from-cyan-400 via-brand-500 to-magenta-500"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.6, ease: "easeInOut" }}
+            />
+
+            {steps.map((item, index) => (
+              <StaggerItem key={item.title} className="relative flex gap-5 pb-8 last:pb-0">
+                <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-night-800 ring-1 ring-white/15">
+                  <img src={item.imgSrc} alt="" className="h-8 w-8 rounded-full object-cover" />
+                  <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-brand-gradient text-[11px] font-bold">
+                    {index + 1}
+                  </span>
+                </span>
+                <div className="pt-1">
+                  <h3 className="text-lg font-bold sm:text-xl">{item.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-400 sm:text-base">{item.description}</p>
                 </div>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
 
-        {/* Right Section */}
-        <div className="bg-white p-5 sm:p-8 rounded-xl shadow-lg">
-          <form className="space-y-3" role="form" aria-label="Contact Form">
-            <h3 className="text-2xl text-nowrap xl:text-3xl font-bold text-center mb-6 text-gray-800">
-              What Are You Looking For?
-            </h3>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Enter your name"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                aria-label="Enter your name"
-              />
+        <Reveal y={40} className="glass relative rounded-[2rem] p-6 shadow-2xl sm:p-8">
+          <form className="space-y-4" aria-label="Contact Form">
+            <h3 className="text-2xl font-bold sm:text-3xl">What are you looking for?</h3>
+            <p className="text-sm text-slate-400">We usually reply within a few hours.</p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="name" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">Name</label>
+                <input type="text" id="name" placeholder="Enter your name" className={field} />
+              </div>
+              <div>
+                <label htmlFor="email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" className={field} />
+              </div>
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                aria-label="Enter your email"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="service"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Service Required
-              </label>
-              <select
-                id="service"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                aria-label="Select a service"
-              >
-                <option value="" disabled selected>
-                  Select a service
-                </option>
+              <label htmlFor="service" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">Service Required</label>
+              <select id="service" defaultValue="" className={`${field} [&>option]:text-night-900`}>
+                <option value="" disabled>Select a service</option>
                 <option value="web-development">Web Development</option>
                 <option value="seo">SEO</option>
                 <option value="graphic-design">Graphic Design</option>
@@ -119,28 +98,12 @@ const Contact = () => {
               </select>
             </div>
             <div>
-              <label
-                htmlFor="message"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                rows="4"
-                placeholder="Enter your message"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                aria-label="Enter your message"
-              ></textarea>
+              <label htmlFor="message" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">Message</label>
+              <textarea id="message" rows="4" placeholder="Enter your message" className={field} />
             </div>
-            <button
-              type="submit"
-              className="w-full bg-[#5b4ad8] text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 hover:bg-pink-600 transition-colors"
-            >
-              Submit
-            </button>
+            <button type="submit" className="btn-primary w-full py-3.5 text-base">Submit</button>
           </form>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

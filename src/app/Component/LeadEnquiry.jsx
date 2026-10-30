@@ -1,130 +1,74 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import DashLeft from "./DashLeft";
-import DashRight from "./DashRight";
-import { usePathname } from "next/navigation";
-import { includes } from "lodash";
+import React from "react";
+import Link from "next/link";
+import { FaPhone, FaEnvelope, FaLocationDot, FaClock, FaTrash } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
+import { DashCard, StatusChip, TableWrap } from "../ui/page";
+import { cityHref, useUserLocation } from "../context/LocationContext";
+import { iconBtn } from "./AllListing";
+
+const leads = [
+  { id: 1, name: "Saurabh", phone: "7417143645" },
+  { id: 2, name: "Saurabsdsh", phone: "7417199645" },
+  { id: 3, name: "Saurxssabh", phone: "7417143775" },
+].map((l) => ({
+  ...l,
+  date: "16, Apr 2024",
+  email: "imsaurabhk2002@gmail.com",
+  location: "Dallas",
+  time: "5:00 AM",
+  message: "This is only for testing",
+  status: "New",
+}));
 
 function LeadEnquiry() {
-  const leads = [
-    {
-      id: 1,
-      name: "Saurabh",
-      date: "16, Apr 2024",
-      phone: "7417143645",
-      email: "imsaurabhk2002@gmail.com",
-      location: "Dallas",
-      time: "5:00 AM",
-      message: "This is only for testing",
-      status: "New",
-    },
-    {
-      id: 2,
-      name: "Saurabsdsh",
-      date: "16, Apr 2024",
-      phone: "7417199645",
-      email: "imsaurabhk2002@gmail.com",
-      location: "Dallas",
-      time: "5:00 AM",
-      message: "This is only for testing",
-      status: "New",
-    },
-    {
-      id: 3,
-      name: "Saurxssabh",
-      date: "16, Apr 2024",
-      phone: "7417143775",
-      email: "imsaurabhk2002@gmail.com",
-      location: "Dallas",
-      time: "5:00 AM",
-      message: "This is only for testing",
-      status: "New",
-    },
-  ];
+  const { location } = useUserLocation();
+  const leadHref = cityHref(location, "lead");
 
-  const pathName = usePathname();
   return (
-<CommonDashLayout>
-  <div className="bg-white">
-    {/* Gradient bar */}
-    <div className="w-full h-2 bg-gradient-to-r from-[#7FCCBB] to-[#588EE3] mb-6 rounded" />
-
-    {/* Title */}
-    <div className="bg-teal-400 rounded-md text-white text-xs font-medium tracking-wide leading-5 -mt-10 mx-auto py-1 px-4 uppercase w-fit">
-      All Service Experts Leads
-    </div>
-
-    {/* Table Section */}
-    <div className="p-4">
-      <h2 className="text-base font-semibold mb-4">Leads</h2>
-      <div className="overflow-x-auto w-[300px] md:w-auto">
-        <table className="min-w-[700px]  w-full border border-gray-200 shadow-sm rounded-md text-sm">
-          <thead className="bg-gray-100 text-xs text-gray-700 uppercase">
-            <tr>
-              <th className="p-3 text-left">No</th>
-              <th className="p-3 text-left">Lead Details</th>
-              <th className="p-3 text-left">Enquiry Details</th>
-              <th className="p-3 text-left">Message</th>
-              <th className="p-3 text-left">Lead Status</th>
-              <th className="p-3 text-left">Status</th>
-              <th className="p-3 text-left">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leads.map((lead) => (
-              <tr key={lead.id} className="border-t hover:bg-gray-50">
-                <td className="p-3">{lead.id}</td>
-                <td className="p-3 flex items-center gap-3">
-                  <img
-                    src="/img/dashboard/lead.webp"
-                    alt="Lead"
-                    className="w-10 h-10 object-cover rounded-full"
-                  />
-                  <div>
-                    <p className="font-medium">{lead.name}</p>
-                    <p className="text-xs text-gray-500">Date: {lead.date}</p>
-                  </div>
-                </td>
-                <td className="p-3 text-xs leading-5 space-y-1">
-                  <div><b>Phone:</b> {lead.phone}</div>
-                  <div><b>Email:</b> {lead.email}</div>
-                  <div><b>Location:</b> {lead.location}</div>
-                  <div><b>Date:</b> {lead.date}</div>
-                  <div><b>Time:</b> {lead.time}</div>
-                </td>
-                <td className="p-3 text-xs">{lead.message}</td>
-                <td className="p-3 text-[11px]">
-                  <a
-                    href="/RajpuraTahsil/lead"
-                    className="bg-blue-500 text-nowrap text-white px-2 py-1 rounded hover:bg-blue-600"
-                  >
-                    Lead Status
-                  </a>
-                </td>
-                <td className="p-3 text-[11px]">
-                  <span className="bg-yellow-200 px-2 py-1 rounded font-semibold">
-                    {lead.status}
-                  </span>
-                </td>
-                <td className="p-3 text-[11px]">
-                  <a
-                    href="/RajpuraTahsil/lead"
-                    className="border border-gray-300 px-2 py-1 rounded hover:bg-gray-100"
-                  >
-                    Delete
-                  </a>
-                </td>
+    <CommonDashLayout>
+      <DashCard badge="All Service Experts Leads" title="Leads">
+        <TableWrap>
+          <table className="data-table min-w-[820px]">
+            <thead>
+              <tr>
+                <th>No</th><th>Lead</th><th>Enquiry Details</th><th>Message</th><th>Status</th><th className="text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</CommonDashLayout>
-
+            </thead>
+            <tbody>
+              {leads.map((lead) => (
+                <tr key={lead.id}>
+                  <td className="font-semibold text-slate-400">{String(lead.id).padStart(2, "0")}</td>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <img src="/img/dashboard/lead.webp" alt="" className="h-10 w-10 rounded-full object-cover" />
+                      <div>
+                        <p className="font-semibold text-night-900">{lead.name}</p>
+                        <p className="text-xs text-slate-400">{lead.date}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="space-y-1 text-xs">
+                    <p className="flex items-center gap-2"><FaPhone className="text-brand-500" /> {lead.phone}</p>
+                    <p className="flex items-center gap-2"><FaEnvelope className="text-cyan-500" /> {lead.email}</p>
+                    <p className="flex items-center gap-2"><FaLocationDot className="text-magenta-500" /> {lead.location}</p>
+                    <p className="flex items-center gap-2"><FaClock className="text-slate-400" /> {lead.date}, {lead.time}</p>
+                  </td>
+                  <td className="max-w-[200px] text-xs">{lead.message}</td>
+                  <td><StatusChip status={lead.status} /></td>
+                  <td>
+                    <div className="flex justify-end gap-1.5">
+                      <Link href={leadHref} className="btn-dark btn-sm whitespace-nowrap">Lead Status</Link>
+                      <Link href={leadHref} className={iconBtn} title="Delete"><FaTrash className="text-xs" /></Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableWrap>
+      </DashCard>
+    </CommonDashLayout>
   );
 }
 

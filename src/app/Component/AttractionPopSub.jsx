@@ -1,69 +1,80 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { FaMagnifyingGlass, FaXmark, FaArrowRight } from "react-icons/fa6";
 
 export default function AttractionPopSub({ categories = [], onClose }) {
   const [searchTerm, setSearchTerm] = useState("");
   const popupRef = useRef();
 
-  const filtered = categories.filter((cat) =>
-    cat.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = categories.filter((cat) => cat.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  // Handle outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        onClose();
-      }
+      if (popupRef.current && !popupRef.current.contains(event.target)) onClose();
     };
-
+    const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", onKey);
+    };
   }, [onClose]);
 
   return (
-    <div className="fixed top-0 left-0 z-[9999] w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-      <div
+    <motion.div
+      className="fixed inset-0 z-[9999] flex items-end justify-center bg-night-950/60 backdrop-blur-sm sm:items-center sm:p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <motion.div
         ref={popupRef}
-        className="w-full max-w-2xl bg-white shadow-xl p-6 rounded-md overflow-y-auto max-h-[90vh]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Sub categories"
+        className="max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-t-3xl bg-white p-6 shadow-card-hover sm:rounded-3xl"
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30 }}
       >
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Search All Category</h2>
-          <button
-            className="text-gray-500 text-2xl font-bold hover:text-red-500"
-            onClick={onClose}
-          >
-            &times;
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-night-900">Choose a sub-category</h2>
+          <button onClick={onClose} aria-label="Close" className="grid h-10 w-10 place-items-center rounded-full bg-mist text-night-900">
+            <FaXmark />
           </button>
         </div>
 
-        {/* Search Input */}
-        <input
-          type="text"
-          placeholder="Search category..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        <label className="mt-4 flex items-center gap-3 rounded-full border border-slate-200 bg-mist px-4 focus-within:border-brand-500 focus-within:bg-white">
+          <FaMagnifyingGlass className="text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search category..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full bg-transparent py-3 text-sm outline-none"
+          />
+        </label>
 
-        {/* Filtered Categories */}
-        <ul className="space-y-3">
+        <ul className="mt-4 space-y-2">
           {filtered.length > 0 ? (
             filtered.map((item, index) => (
               <li
                 key={index}
-                className="p-3 bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer transition"
+                className="group flex cursor-pointer items-center justify-between rounded-2xl bg-mist px-4 py-3 font-medium capitalize text-night-900 transition hover:bg-brand-50 hover:text-brand-600"
               >
-                {item.icon && <span className="mr-2">{item.icon}</span>}
-                {item.title}
+                <span>
+                  {item.icon && <span className="mr-2">{item.icon}</span>}
+                  {item.title}
+                </span>
+                <FaArrowRight className="text-xs opacity-0 transition group-hover:opacity-100" />
               </li>
             ))
           ) : (
-            <li className="text-gray-500 text-center">No categories found.</li>
+            <li className="py-6 text-center text-slate-400">No categories found.</li>
           )}
         </ul>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

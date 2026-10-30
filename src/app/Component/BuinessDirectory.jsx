@@ -1,33 +1,37 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa6";
+import { Contours } from "../ui/decor";
+import { Reveal } from "../ui/motion";
 
 export default function BusinessDirectory() {
   return (
-    <div className="bg-[#20344c] px-5 md:px-8 xl:px-32 py-10">
-      <div className="flex items-center justifys-center bg-gradient-to-b from-[#ffea31] to-[#ffbe5e] rounded-lg shadow-xl shadow-black/80 overflow-hidden py-0 lg:py-5 text-center w-full">
-        <div className="flex lg:grid grid-cols-6 xl:flex py-8 flex-col lg:flex-row w-full  items-center justify-between px-5">
+    <section className="container-x py-12 sm:py-16">
+      <Reveal className="relative overflow-hidden rounded-[2rem] bg-brand-gradient p-6 text-white shadow-glow sm:p-10">
+        <Contours className="-right-20 -top-24 h-96 w-96" stroke="rgba(255,255,255,.18)" />
+        <div className="relative flex flex-col items-start gap-6 md:flex-row md:items-center">
           <img
             src="/img/business Directory/business Directory.webp"
-            alt="Business Directory"
-            className="mb-6 lg:col-span-1 w-[80px] xl:w-[100px] rounded-lg  h-auto"
+            alt=""
+            className="h-16 w-16 shrink-0 rounded-2xl bg-white/15 object-contain p-2 sm:h-20 sm:w-20"
           />
-          <div className="lg:col-span-4">
-            <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-              #1 Business Directory and Service Provider
-            </h4>
-            <p className="text-gray-800 lg:max-w-[80%] mx-auto  text-center text-sm font-semibold mb-6">
-              There are many variations of passages of Lorem Ipsum available,
-              but the majority have suffered alteration in some form, by
-              injected humour.
+          <div className="flex-1">
+            <h2 className="text-xl font-extrabold sm:text-2xl lg:text-3xl">#1 Business Directory and Service Provider</h2>
+            <p className="mt-2 max-w-2xl text-sm text-white/80 sm:text-base">
+              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
+              in some form, by injected humour.
             </p>
           </div>
-          <Link href="/mybusiness" className="col-span-1">
-            <span className="bg-[#20344c]  text-white font-medium text-xs py-3 px-6 rounded-full hover:bg-[#162a3a] transition duration-300">
-              Add my business
-            </span>
+          <Link
+            href="/mybusiness"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-night-900 transition hover:-translate-y-0.5"
+          >
+            Add my business
+            <FaArrowRight className="text-xs transition group-hover:translate-x-1" />
           </Link>
         </div>
-      </div>
-    </div>
+      </Reveal>
+    </section>
   );
 }

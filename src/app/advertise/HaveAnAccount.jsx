@@ -1,90 +1,69 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { RxCross1 } from "react-icons/rx";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function HaveAnAccount({ setHaveAccountCheck }) {
-  const [focus, setFocus] = useState(false);
-  const [value, setValue] = useState("");
   const [phone, setPhone] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    const onKey = (e) => e.key === "Escape" && setHaveAccountCheck(false);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [setHaveAccountCheck]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center px-4">
-      <div className="w-full max-w-md lg:max-w-lg bg-white rounded-xl shadow-xl relative overflow-hidden">
-        {/* Close Button */}
-        <button
-          onClick={() => setHaveAccountCheck(false)}
-          className="absolute right-4 top-4 text-xl text-gray-600 hover:text-black transition"
-          aria-label="Close Login Modal"
-        >
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-night-950/60 backdrop-blur-sm sm:items-center sm:p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      onClick={() => setHaveAccountCheck(false)}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Login"
+        className="relative w-full max-w-md rounded-t-3xl bg-white p-6 shadow-card-hover sm:rounded-3xl sm:p-8"
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={() => setHaveAccountCheck(false)} aria-label="Close" className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-mist text-night-900">
           <RxCross1 />
         </button>
 
-        <div className="p-6">
-          {/* Logo and Heading */}
-          <div className="flex items-center gap-4 mb-6">
-            <img
-              src="/img/logo/logo.webp"
-              alt="Logo"
-              className="w-[40%] object-contain"
-            />
-            <div>
-              <h6 className="text-lg font-semibold text-gray-800">Welcome</h6>
-              <p className="text-sm text-gray-500">Login for a seamless experience</p>
-            </div>
-          </div>
+        <img src="/img/logo/logo.webp" alt="Future IT Touch" className="w-36" />
+        <h2 className="mt-5 text-2xl font-extrabold text-night-900">Welcome</h2>
+        <p className="text-sm text-slate-500">Login for a seamless experience</p>
 
-          {/* Mobile Number Input */}
-          <form className="border border-blue-200 text-black bg-white rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <form onSubmit={(e) => e.preventDefault()} className="mt-6 space-y-4">
           <PhoneInput
-              placeholder="Enter mobile number"
-
-              country={'in'}
-              value={phone}
-              onChange={setPhone}
-              inputStyle={{ width: '100%' }}
-              containerStyle={{ flex: 1 }}
-
-            />
-
-          </form>
-
-
-
-          <div className="flex  justify-center items-start gap-2 mt-4 text-sm text-gray-600">
-            <input type="checkbox" className="mt-1" id="terms" />
-            <label htmlFor="terms" className="cursor-pointer">
-              <p>I agree to the terms and conditions</p>
-              <p className="text-xs text-gray-400">T&C's · Privacy Policy</p>
-            </label>
-          </div>
-
-          <div className="mt-6 space-y-3">
-            <button
-              type="submit"
-              className="w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 rounded-lg transition text-sm lg:text-base"
-            >
-              Login With OTP
-            </button>
-            <button
-              type="button"
-              className="w-full border border-gray-300 hover:bg-gray-100 text-gray-700 py-2 rounded-lg transition text-sm"
-              onClick={() => setHaveAccountCheck(false)}
-            >
-              Skip
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+            placeholder="Enter mobile number"
+            country="in"
+            value={phone}
+            onChange={setPhone}
+            inputStyle={{ width: "100%", height: "48px", borderRadius: "14px", border: "1px solid #e2e8f0", background: "#F4F5FB" }}
+            buttonStyle={{ borderRadius: "14px 0 0 14px", border: "1px solid #e2e8f0" }}
+          />
+          <label htmlFor="terms" className="flex cursor-pointer items-start gap-3 text-sm text-slate-600">
+            <input type="checkbox" id="terms" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 h-4 w-4 accent-brand-500" />
+            <span>
+              I agree to the terms and conditions
+              <span className="block text-xs text-slate-400">T&amp;C&apos;s · Privacy Policy</span>
+            </span>
+          </label>
+          <button type="submit" disabled={!agreed} className="btn-primary w-full py-3.5 disabled:cursor-not-allowed disabled:opacity-50">Login With OTP</button>
+          <button type="button" onClick={() => setHaveAccountCheck(false)} className="btn-ghost w-full">Skip</button>
+        </form>
+      </motion.div>
+    </motion.div>
   );
 }

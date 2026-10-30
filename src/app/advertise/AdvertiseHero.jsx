@@ -1,127 +1,119 @@
 "use client";
-import React, { useState } from "react";
-import { FaLongArrowAltRight } from "react-icons/fa";
+import React from "react";
+import { motion } from "framer-motion";
+import { FaCheck, FaArrowTrendUp, FaPhoneVolume, FaTrophy } from "react-icons/fa6";
+import { Glow, MapGrid, Wave } from "../ui/decor";
+import { CountUp, Stagger, StaggerItem } from "../ui/motion";
+import PhoneStart from "./PhoneStart";
+
+const growBenefits = ["Rank Ahead of Your Competition", "Find Ready to Buy Customers Instantly", "Track Leads & Competition Trends"];
+const bars = [28, 40, 34, 52, 61, 74, 92];
+
+// Animated "your growth" dashboard (replaces the external stock image).
+function GrowthVisual() {
+  return (
+    <div className="relative mx-auto w-full max-w-[460px]">
+      <motion.div
+        className="glass rounded-[2rem] p-6 shadow-2xl"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs text-slate-400">Monthly leads</p>
+            <p className="font-display text-4xl font-extrabold text-white"><CountUp to={1284} /></p>
+          </div>
+          <span className="chip bg-emerald-400/15 text-emerald-300"><FaArrowTrendUp /> +38%</span>
+        </div>
+        <div className="mt-6 flex h-40 items-end gap-2.5">
+          {bars.map((h, i) => (
+            <motion.span
+              key={i}
+              className={`flex-1 rounded-t-xl ${i === bars.length - 1 ? "bg-brand-gradient" : "bg-white/15"}`}
+              initial={{ height: 0 }}
+              animate={{ height: `${h}%` }}
+              transition={{ delay: 0.4 + i * 0.08, type: "spring", stiffness: 120, damping: 16 }}
+            />
+          ))}
+        </div>
+        <div className="mt-2 flex justify-between text-[10px] text-slate-500">
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => <span key={d}>{d}</span>)}
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute -left-3 -top-6 flex items-center gap-3 rounded-2xl bg-white p-3 pr-4 shadow-2xl sm:-left-10"
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.1 }}
+      >
+        <span className="grid h-10 w-10 place-items-center rounded-xl bg-pin-400 text-night-900"><FaTrophy /></span>
+        <div>
+          <p className="text-[10px] font-bold uppercase text-slate-400">Search rank</p>
+          <p className="font-display font-extrabold text-night-900">#1 in your area</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute -bottom-6 -right-2 flex items-center gap-3 rounded-2xl bg-white p-3 pr-4 shadow-2xl sm:-right-8"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.4 }}
+      >
+        <span className="relative grid h-10 w-10 place-items-center rounded-xl bg-brand-gradient text-white">
+          <span className="absolute inset-0 animate-ping-slow rounded-xl bg-brand-500/40" />
+          <FaPhoneVolume />
+        </span>
+        <div>
+          <p className="text-[10px] font-bold uppercase text-slate-400">New enquiry</p>
+          <p className="text-sm font-bold text-night-900">Customer is calling…</p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function AdvertiseHero() {
-  const growBenefits = [
-    { desc: "Rank Ahead of Your Competition" },
-    { desc: "Find Ready to Buy Customers Instantly" },
-    { desc: "Track Leads & Competition Trends" },
-  ];
-
-  const [focus, setFocus] = useState(false);
-
   return (
-    <div className="px-5 md:px-8 xl:px-32 py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
-      {/* Left Section */}
-      <div className="w-full lg:w-1/2">
-        <div className="p-4 sm:p-6 md:p-10 bg-gray-50 rounded-lg shadow-lg max-w-2xl mx-auto">
-          {/* Heading */}
-          <div className="flex gap-2 items-center font-bold text-2xl lg:text-4xl xl:text-5xl">
-            <img
-              src="/img/Advertise/grow.svg"
-              alt="Grow"
-              className="w-20 sm:w-24 md:w-32"
-            />
-            <h5 className="text-gray-800">Your Business</h5>
-          </div>
+    <section className="relative overflow-hidden bg-night-950 text-white">
+      <MapGrid opacity={0.6} />
+      <Glow className="-left-24 top-0 h-96 w-96" color="bg-brand-600/40" />
+      <Glow className="-right-24 bottom-10 h-96 w-96" color="bg-magenta-500/25" />
 
-          {/* Subheading */}
-          <p className="text-base sm:text-lg md:text-xl font-semibold text-gray-700 mt-2">
-            Advertise with <span className="text-blue-600">FutureTouch</span> –
-            Your Gateway to Digital Success!
-          </p>
-
-          {/* Mobile Number Form */}
-          <form className="relative flex items-center gap-2 mt-5 border rounded-lg p-2 sm:p-3 shadow-md bg-white flex-wrap sm:flex-nowrap">
-            {/* Country Code */}
-            <span className="flex items-center gap-1 text-gray-700 font-medium text-sm sm:text-base">
-              <span
-                className="w-5 h-5 bg-cover bg-center"
-                style={{ backgroundImage: "url('/india-flag.png')" }}
-              ></span>
-              <span>+91</span>
-            </span>
-
-            {/* Input */}
-            <input
-              aria-label="Enter Mobile Number"
-              aria-required="true"
-              className="border-0 outline-none px-3 py-2 w-full text-gray-700 text-sm sm:text-base"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              name="mobile"
-              autoComplete="off"
-              maxLength="10"
-              onFocus={() => setFocus(true)}
-              onBlur={() => setFocus(false)}
-              required
-            />
-
-            {/* Floating Label */}
-            <span
-              className={`absolute transition-all duration-300 ease-in-out pointer-events-none text-xs sm:text-sm ${
-                focus
-                  ? "left-16 sm:left-20 top-[-10px] bg-white px-1 text-blue-600 font-semibold"
-                  : "left-16 sm:left-20 top-[50%] transform -translate-y-1/2 text-gray-400"
-              }`}
-            >
-              Enter Mobile No
-            </span>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="bg-blue-600 text-nowrap group flex items-center gap-2 rounded-md text-white font-semibold px-4 py-2 mt-3 sm:mt-0 w-full sm:w-auto justify-center"
-            >
-              <span>Get Started</span>
-              <FaLongArrowAltRight className="text-lg mt-[2px] group-hover:translate-x-1 transition-transform duration-200" />
-            </button>
-          </form>
-
-          {/* Benefits */}
-          <div className="mt-6 space-y-3">
-            {growBenefits.map((item, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <img
-                  src="/img/Advertise/1.svg"
-                  alt="Grow"
-                  className="w-5 h-5 sm:w-6 sm:h-6"
-                />
-                <p className="text-sm sm:text-base font-semibold text-gray-700">
-                  {item.desc}
-                </p>
-              </div>
+      <div className="container-x relative grid items-center gap-16 pb-28 pt-12 sm:pb-36 sm:pt-16 lg:grid-cols-2 lg:pb-44">
+        <Stagger onLoad gap={0.1}>
+          <StaggerItem>
+            <span className="eyebrow-dark">Advertise with Future Touch</span>
+          </StaggerItem>
+          <StaggerItem as="h1" className="mt-5 text-4xl font-extrabold leading-[1.08] sm:text-6xl">
+            <span className="text-gradient-cool">Grow</span> your business, <br className="hidden sm:block" />
+            one search at a time.
+          </StaggerItem>
+          <StaggerItem as="p" className="mt-5 max-w-lg text-base text-slate-300 sm:text-lg">
+            Advertise with <b className="text-white">FutureTouch</b> – your gateway to digital success.
+          </StaggerItem>
+          <StaggerItem className="mt-8 max-w-xl">
+            <PhoneStart dark />
+          </StaggerItem>
+          <StaggerItem as="ul" className="mt-6 space-y-2.5">
+            {growBenefits.map((b) => (
+              <li key={b} className="flex items-center gap-3 text-sm font-semibold text-slate-200 sm:text-base">
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-cyan-400/20 text-[11px] text-cyan-300"><FaCheck /></span>
+                {b}
+              </li>
             ))}
-          </div>
-
-          {/* Terms */}
-          <p className="text-xs text-gray-500 font-medium mt-5">
+          </StaggerItem>
+          <StaggerItem as="p" className="mt-6 text-xs text-slate-500">
             By continuing, you agree to our{" "}
-            <span className="text-blue-600 cursor-pointer hover:underline">
-              Terms of Use
-            </span>
-            ,{" "}
-            <span className="text-blue-600 cursor-pointer hover:underline">
-              Privacy
-            </span>
-            , &{" "}
-            <span className="text-blue-600 cursor-pointer hover:underline">
-              Infringement Policy
-            </span>
-            .
-          </p>
-        </div>
-      </div>
+            <a href="/terms" className="text-slate-300 hover:underline">Terms of Use</a>, <a href="/privacy" className="text-slate-300 hover:underline">Privacy</a>, &amp;{" "}
+            <span className="text-slate-300">Infringement Policy</span>.
+          </StaggerItem>
+        </Stagger>
 
-      {/* Right Image */}
-      <div className="w-full lg:w-1/2 flex justify-center">
-        <img
-          src="https://images.businessnewsdaily.com/app/uploads/2016/05/06125310/hire-the-right-people.png"
-          alt="Advertise Visual"
-          className="w-full max-w-[500px] h-auto object-contain"
-        />
+        <GrowthVisual />
       </div>
-    </div>
+      <Wave fill="#fff" />
+    </section>
   );
 }

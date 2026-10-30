@@ -1,80 +1,53 @@
+"use client";
 import React from "react";
+import Link from "next/link";
+import { FaCheck, FaBriefcase, FaUser } from "react-icons/fa6";
+import { PageHero } from "../ui/page";
+import { Stagger, StaggerItem } from "../ui/motion";
+
+const types = [
+  {
+    title: "Service Provider",
+    icon: FaBriefcase,
+    accent: "from-brand-500 to-magenta-500",
+    items: ["User dashboard", "Profile page", "Reviews", "Like listings", "Get quote & send enquiry", "Followings", "Notifications", "Create new listing"],
+  },
+  {
+    title: "General User",
+    icon: FaUser,
+    accent: "from-cyan-400 to-brand-500",
+    items: ["User dashboard", "Profile page", "Reviews", "Followings", "Post your Ads", "Lead management", "Payment invoices", "Manage listing, event & blogs"],
+  },
+];
 
 export default function Usertype() {
-  const userType = {
-    serviceProvider: [
-      "User dashboard",
-      "Profile page",
-      "Reviews",
-      "Like listings",
-      "Get quote & send enquiry",
-      "Followings",
-      "Notifications",
-      "Create new listing",
-    ],
-    generalUser: [
-      "User dashboard",
-      "Profile page",
-      "Reviews",
-      "Followings",
-      "Post your Ads",
-      "Lead management",
-      "Payment invoices",
-      "Manage listing, event & blogs",
-    ],
-  };
   return (
-    <div className="bg-[url('/img/sign/sign1.webp')]  bg-center md:min-h-screen ">
-      <div className="bg-[rgba(0,0,0,0.75)] h-full py-10 px-6 md:px-8 xl:px-32  ">
-        <img
-          src="/img/sign/usertypelunch.webp"
-          alt="userType"
-          className="w-[200px] mx-auto  my-5 md:my-10"
-        />
-        <div className="grid md:grid-cols-2 items-center gap-6 h-full">
-          {/* Service Provider Section */}
-          <div className="bg-white p-8 rounded-xl shadow-lg transition-transform hover:scale-105">
-            <h5 className="font-bold text-lg lg:text-2xl text-center uppercase text-gray-800 mb-6">
-              Service Provider Can
-            </h5>
-            <ul className="space-y-4">
-              {userType.serviceProvider.map((elm, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-x-4 text-gray-700 text-sm md:text-base"
-                >
-                  <span className="font-bold text-gray-900">{index + 1}.</span>
-                  <span>{elm}</span>
+    <div className="bg-mist">
+      <PageHero eyebrow="Account types" title="Choose your" highlight="user type" subtitle="Pick what fits you best — you can change it later from your dashboard." waveFill="#F4F5FB" />
+      <Stagger gap={0.15} className="container-x grid max-w-5xl gap-6 pb-16 md:grid-cols-2">
+        {types.map(({ title, icon: Icon, accent, items }) => (
+          <StaggerItem key={title} className="panel flex flex-col overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-card-hover">
+            <div className={`flex items-center gap-4 bg-gradient-to-r ${accent} p-6 text-white`}>
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/20 text-xl"><Icon /></span>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/70">{title}</p>
+                <h2 className="text-xl font-extrabold">{title} can</h2>
+              </div>
+            </div>
+            <ul className="flex-1 space-y-3 p-6">
+              {items.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-sm text-slate-600 sm:text-base">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-50 text-[11px] text-emerald-600"><FaCheck /></span>
+                  {item}
                 </li>
               ))}
             </ul>
-            <button className="mt-6 w-full  py-2 bg-[#8d4adae2] text-white font-semibold hover:bg-[#8D4ADA] uppercase rounded-md hover:bg-green-600">
-              Get Started
-            </button>
-          </div>
-
-          {/* General User Section */}
-          <div className="bg-white p-8 rounded-xl shadow-lg transition-transform hover:scale-105">
-            <h5 className="font-bold text-lg lg:text-2xl text-center uppercase text-gray-800 mb-6">
-              General User Can
-            </h5>
-            <ul className="space-y-4">
-              {userType.generalUser.map((elm, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-x-4 text-gray-700 text-sm md:text-base"
-                >
-                  <span className="font-bold text-gray-900">{index + 1}.</span>
-                  <span>{elm}</span>
-                </li>
-              ))}
-            </ul>
-            <button className="mt-6 w-full py-2 bg-[#8d4adae2] text-white font-semibold uppercase rounded-md hover:bg-[#8D4ADA]">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </div>
+            <div className="p-6 pt-0">
+              <Link href="/user-login" className="btn-primary w-full py-3">Get Started</Link>
+            </div>
+          </StaggerItem>
+        ))}
+      </Stagger>
     </div>
   );
 }
