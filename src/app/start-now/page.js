@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 export default function page() {
   return (

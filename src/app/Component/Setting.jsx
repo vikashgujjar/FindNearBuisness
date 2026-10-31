@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaTriangleExclamation } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard } from "../ui/page";
+import { DashCard } from "../ui/blocks";
 
 const activeOptions = [
   { label: "Active", value: "0" },

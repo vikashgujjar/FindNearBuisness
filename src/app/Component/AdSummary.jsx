@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { FaEye, FaArrowPointer } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, StatusChip, TableWrap } from "../ui/page";
+import { DashCard, StatusChip, TableWrap } from "../ui/blocks";
 
 const adsData = [
   { id: 1, position: "Home page Bottom", startDate: "31, Mar 2021", endDate: "29, Apr 2021", duration: "0 Days", status: "InActive" },

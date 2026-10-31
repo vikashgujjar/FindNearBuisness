@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const ads = [

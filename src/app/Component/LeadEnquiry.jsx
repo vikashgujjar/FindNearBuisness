@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { FaPhone, FaEnvelope, FaLocationDot, FaClock, FaTrash } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, StatusChip, TableWrap } from "../ui/page";
+import { DashCard, StatusChip, TableWrap } from "../ui/blocks";
 import { cityHref, useUserLocation } from "../context/LocationContext";
 import { iconBtn } from "./AllListing";
 

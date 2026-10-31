@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 const methods = ["Paytm", "PayPal", "Stripe", "RazorPay"];
 

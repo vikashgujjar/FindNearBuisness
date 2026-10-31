@@ -1,7 +1,7 @@
 import React from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal } from "../ui/motion";
 
 const socials = [

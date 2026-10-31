@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { FaCheck, FaBriefcase, FaUser } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const types = [

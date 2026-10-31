@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/navigation";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 export default function Page() {
   const router = useRouter();

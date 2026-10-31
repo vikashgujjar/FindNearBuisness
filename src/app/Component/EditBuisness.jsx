@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 function Group({ title, children }) {
   return (

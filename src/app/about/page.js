@@ -1,7 +1,7 @@
 import React from "react";
 import Choose from "../Component/Choose";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 import { SectionHeading } from "../ui/decor";
 

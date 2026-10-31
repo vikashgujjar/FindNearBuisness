@@ -2,17 +2,17 @@
 import React from "react";
 import Link from "next/link";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { Glow, MapGrid, Wave } from "./decor";
+import { DotGrid, Glow, MapGrid, Wave } from "./decor";
 import { Reveal, Stagger, StaggerItem } from "./motion";
 
-// Dark "night map" banner used at the top of inner pages.
+// Light banner used at the top of inner pages.
 export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children, align = "center", compact = false, waveFill = "#fff" }) {
   const center = align === "center";
   return (
-    <section className="relative overflow-hidden bg-night-950 text-white">
-      <MapGrid opacity={0.6} />
-      <Glow className="-left-24 -top-10 h-72 w-72" color="bg-brand-600/40" />
-      <Glow className="-right-24 bottom-0 h-72 w-72" color="bg-magenta-500/25" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-mist text-night-900">
+      <DotGrid className="inset-0 h-full w-full [mask-image:radial-gradient(ellipse_at_top,#000,transparent_70%)]" />
+      <Glow className="-left-24 -top-10 h-72 w-72" color="bg-brand-200/60" />
+      <Glow className="-right-24 bottom-0 h-72 w-72" color="bg-magenta-400/15" />
       <Stagger
         onLoad
         gap={0.08}
@@ -27,14 +27,14 @@ export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children
         )}
         {eyebrow && (
           <StaggerItem>
-            <span className="eyebrow-dark">{eyebrow}</span>
+            <span className="eyebrow">{eyebrow}</span>
           </StaggerItem>
         )}
         <StaggerItem as="h1" className="max-w-3xl text-3xl font-extrabold leading-tight xs:text-4xl sm:text-5xl lg:text-6xl">
-          {title} {highlight && <span className="text-gradient-cool">{highlight}</span>}
+          {title} {highlight && <span className="text-gradient">{highlight}</span>}
         </StaggerItem>
         {subtitle && (
-          <StaggerItem as="p" className="max-w-xl text-sm text-slate-300 sm:text-base">
+          <StaggerItem as="p" className="max-w-xl text-sm text-slate-600 sm:text-base">
             {subtitle}
           </StaggerItem>
         )}
@@ -48,16 +48,16 @@ export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children
 export function Breadcrumbs({ items }) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-1 text-xs text-slate-400 sm:text-sm">
+      <ol className="flex flex-wrap items-center gap-1 text-xs text-slate-500 sm:text-sm">
         {items.map((c, i) => (
           <li key={i} className="flex items-center gap-1">
             {i > 0 && <MdKeyboardArrowRight aria-hidden />}
             {c.href ? (
-              <Link href={c.href} className="transition hover:text-white">
+              <Link href={c.href} className="transition hover:text-brand-600">
                 {c.label}
               </Link>
             ) : (
-              <span className="text-slate-200">{c.label}</span>
+              <span className="font-semibold text-night-900">{c.label}</span>
             )}
           </li>
         ))}
@@ -69,14 +69,14 @@ export function Breadcrumbs({ items }) {
 // Glass search pill used inside PageHero.
 export function HeroSearch({ placeholder = "Search…", value, onChange }) {
   return (
-    <div className="glass flex items-center gap-2 rounded-full p-1.5 shadow-2xl">
+    <div className="flex items-center gap-2 rounded-full bg-white p-1.5 shadow-card-hover ring-1 ring-slate-100 focus-within:ring-brand-300">
       <input
         type="text"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         aria-label={placeholder}
-        className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-400 sm:text-base"
+        className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm text-night-900 outline-none placeholder:text-slate-400 sm:text-base"
       />
       <span className="btn-primary px-4 py-2.5">Search</span>
     </div>

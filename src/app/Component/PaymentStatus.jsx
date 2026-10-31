@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaStar, FaCreditCard } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard } from "../ui/page";
+import { DashCard } from "../ui/blocks";
 
 const details = [
   ["Start Date", "26 Mar 2021"],

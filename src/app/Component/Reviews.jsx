@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaStar, FaTrash, FaTriangleExclamation } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, TableWrap } from "../ui/page";
+import { DashCard, TableWrap } from "../ui/blocks";
 import { iconBtn } from "./AllListing";
 
 const initialReceived = [

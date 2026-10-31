@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa6";
 import PinLocation from "../Component/PinLocation";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const common = ["User dashboard", "Create duplicate listings", "Social media share", "Admin tips"];

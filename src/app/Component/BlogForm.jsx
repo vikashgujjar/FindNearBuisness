@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaCloudArrowUp } from "react-icons/fa6";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 export default function AddBlogPost() {
   const [fileName, setFileName] = useState("");

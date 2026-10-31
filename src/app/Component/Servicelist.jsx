@@ -15,7 +15,7 @@ const featured = {
 
 const services = [
   { title: "Automobiles", image: "/img/Servicelist/serviceList3.webp", rating: 3.0, reviews: 4, listings: 9 },
-  { title: "wedding halls", image: "/img/Servicelist/serviceList4.webp", rating: 3.0, reviews: 2, listings: 6 },
+  { title: "wedding halls", image: "/img/Servicelist/servicelist4.webp", rating: 3.0, reviews: 2, listings: 6 },
   { title: "Digital Products", image: "/img/Servicelist/serviceList5.webp", rating: 3.0, reviews: 3, listings: 23 },
   { title: "Real Estate", image: "/img/Servicelist/serviceList6.webp", rating: 3.0, reviews: 2, listings: 23 },
 ];

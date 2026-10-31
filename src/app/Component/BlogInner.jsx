@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaMagnifyingGlass, FaArrowRight } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal } from "../ui/motion";
 import { ArticleCover, AuthorCard, RegisterForm, ShareBar } from "./ArticleParts";
 

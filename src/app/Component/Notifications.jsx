@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { FaEnvelope, FaStar, FaHeart } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard } from "../ui/page";
+import { DashCard } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 import { cityHref, useUserLocation } from "../context/LocationContext";
 

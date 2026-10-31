@@ -19,7 +19,9 @@ export const popIn = {
   show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 18 } },
 };
 
-const VIEWPORT = { once: true, amount: 0.15 };
+// "some" = start as soon as any part is visible; a fraction would never be
+// reached by tall grids/panels on short screens and leave them blank.
+const VIEWPORT = { once: true, amount: "some", margin: "0px 0px -40px 0px" };
 
 // Fades and lifts its children in when scrolled into view.
 export function Reveal({ as = "div", delay = 0, y = 28, x = 0, className, children, ...rest }) {

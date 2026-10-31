@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa6";
 import BusinessDirectory from "../Component/BuinessDirectory";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const answer = "Taj Luxury Hotels & Resorts presents award winning luxury hotels and resorts in India, Indonesia";

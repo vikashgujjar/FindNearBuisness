@@ -2,7 +2,7 @@ import React from "react";
 import { FaLocationDot, FaPhoneVolume, FaEnvelope, FaGlobe, FaFacebookF, FaTwitter } from "react-icons/fa6";
 import BusinessDirectory from "../Component/BuinessDirectory";
 import PinLocation from "../Component/PinLocation";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 
 export default function page() {

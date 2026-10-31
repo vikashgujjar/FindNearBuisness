@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 const positions = [
   { value: "1", label: "Home page Bottom", price: 70 },

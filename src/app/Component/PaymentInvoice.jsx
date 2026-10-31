@@ -2,7 +2,7 @@
 import React from "react";
 import { FaDownload } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, TableWrap } from "../ui/page";
+import { DashCard, TableWrap } from "../ui/blocks";
 import { cityHref, useUserLocation } from "../context/LocationContext";
 
 const invoicesData = [

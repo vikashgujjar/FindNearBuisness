@@ -6,7 +6,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { FaCircleCheck, FaCheck } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal, Stagger, StaggerItem } from "../ui/motion";
 
 const productFeatures = [

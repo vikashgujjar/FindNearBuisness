@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
-import { PageHero, HeroSearch } from "../ui/page";
+import { PageHero, HeroSearch } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const services = [

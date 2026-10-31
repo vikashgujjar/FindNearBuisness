@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa6";
 import CommonDashLayout from "./CommonDashLayout";
-import { DashCard } from "../ui/page";
+import { DashCard } from "../ui/blocks";
 
 const faqs = [
   { question: "How to create new listing?", answer: "You can create a new listing by navigating to the 'Create Listing' page and filling out the required details." },

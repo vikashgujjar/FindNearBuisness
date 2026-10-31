@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IoStar, IoStarOutline } from "react-icons/io5";
 import { HiCheck } from "react-icons/hi";
 import { FaLocationDot, FaPhone, FaEnvelope, FaWhatsapp, FaHeart, FaRegHeart, FaCircleCheck, FaSliders } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 import { cityHref, getCityLabel, useUserLocation } from "../context/LocationContext";
 

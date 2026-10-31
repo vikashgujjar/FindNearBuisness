@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaSliders } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const categories = [

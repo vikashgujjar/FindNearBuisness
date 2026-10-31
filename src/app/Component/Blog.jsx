@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
-import { PageHero, HeroSearch } from "../ui/page";
+import { PageHero, HeroSearch } from "../ui/blocks";
 import { Stagger, StaggerItem } from "../ui/motion";
 
 const blogData = Array.from({ length: 8 }, (_, i) => ({

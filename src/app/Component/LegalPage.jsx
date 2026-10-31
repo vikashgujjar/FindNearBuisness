@@ -2,7 +2,7 @@
 import React from "react";
 import PinLocation from "./PinLocation";
 import BusinessDirectory from "./BuinessDirectory";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal } from "../ui/motion";
 
 const body =

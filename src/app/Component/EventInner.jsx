@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FaCalendarDays, FaClock, FaLocationDot, FaUser, FaPhone, FaEnvelope, FaGlobe } from "react-icons/fa6";
-import { PageHero } from "../ui/page";
+import { PageHero } from "../ui/blocks";
 import { Reveal } from "../ui/motion";
 import { ArticleCover, AuthorCard, RegisterForm, ShareBar } from "./ArticleParts";
 

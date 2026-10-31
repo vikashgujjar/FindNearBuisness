@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaWandMagicSparkles, FaClone } from "react-icons/fa6";
-import { FormShell } from "../ui/page";
+import { FormShell } from "../ui/blocks";
 
 const existing = [
   ["LIST395", "test"], ["LIST394", "dfzhfhd"], ["LIST393", "Iei"], ["LIST392", "phoenix mall"], ["LIST391", "Ocha Thai Cuisine"],
