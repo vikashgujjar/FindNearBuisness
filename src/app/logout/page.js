@@ -1,24 +1,16 @@
-"use client"
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/navigation';
-const page = () => {
+"use client";
 
-    const router=useRouter()
-
-
-
-      useEffect(()=>{
-        router.push("/")
-      },[])
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
+let LogoutPage = () => {
+  let e = useRouter(),
+    { logout } = useAuth();
   return (
-    <>
-      
-    </>
-  )
-}
-
-export default page 
-
-
-    // localStorage.removeItem("userName");
-    //   window.location.href = "/";
+    useEffect(() => {
+      logout().finally(() => e.replace("/"));
+    }, []),
+    (<p className="py-24 text-center text-slate-500">Signing you out…</p>)
+  );
+};
+export default LogoutPage;

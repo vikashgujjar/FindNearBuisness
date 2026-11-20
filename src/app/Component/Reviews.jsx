@@ -1,124 +1,245 @@
 "use client";
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaStar, FaTrash, FaTriangleExclamation } from "react-icons/fa6";
-import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, TableWrap } from "../ui/blocks";
-import { iconBtn } from "./AllListing";
-
-const initialReceived = [
-  { id: 1, listing: "Ocha Thai Cuisine", user: "Loki", email: "thedirectoryfinder@gmail.com", phone: "87654567", rating: 5, message: "Perfect service" },
-  { id: 2, listing: "Titan Wedding Hall", user: "Loki", email: "thedirectoryfinder@gmail.com", phone: "87654567", rating: 5, message: "Best service provider in wedding hall field... I personally recommend Titan Wedding Hall." },
-  { id: 3, listing: "Smith Luxury Villas", user: "Leland K Cotter", email: "cotter@business.com", phone: "9255886632", rating: 3, message: "Good experience overall." },
-];
-
-const initialSent = [
-  { id: 4, listing: "Rolexo Villas in California", user: "Rn53 Themes", email: "info@futureittouch.com", phone: "5522114422", city: "Los Angeles", rating: 5, message: "Rolexo Villas is well-known as a premier builder of villas and apartments..." },
-  { id: 5, listing: "The Royal Spa Center for Women", user: "Rn53 Themes", email: "info@futureittouch.com", phone: "5522114422", city: "Sydney", rating: 4, message: "Perfect facial.. I strongly recommend. Writing great reviews may help others discover the places that are just apt for them..." },
-];
-
-const Ratings = ({ count }) => (
-  <span className="flex gap-0.5 text-pin-500">
-    {Array.from({ length: 5 }, (_, i) => <FaStar key={i} className={i < count ? "" : "text-slate-200"} />)}
-  </span>
-);
-
-function Reviews() {
-  const [activeTab, setActiveTab] = useState("Received");
-  const [reviewData, setReviewData] = useState({ received: initialReceived, sent: initialSent });
-  const [pendingDelete, setPendingDelete] = useState(null);
-
-  const confirmDelete = (confirm) => {
-    if (confirm) {
-      setReviewData((d) => ({
-        received: d.received.filter((r) => r.id !== pendingDelete),
-        sent: d.sent.filter((r) => r.id !== pendingDelete),
+import Link from "next/link";
+import { CommonDashLayout } from "@/app/Component/CommonDashLayout";
+import { DashCard, TableWrap, iconBtn, StatusChip } from "@/app/ui/blocks";
+import { useAuth } from "@/app/context/AuthContext";
+import { useApi, apiFetch, clearApiCache, listingHref } from "@/app/lib/api";
+let Cm = (props) => {
+  let { count } = props;
+  return (
+    <span className="flex gap-0.5 text-pin-500">
+      {Array.from(
+        {
+          length: 5,
+        },
+        (e, s) => (
+          <FaStar key={s} className={s < count ? "" : "text-slate-200"} />
+        ),
+      )}
+    </span>
+  );
+};
+let Reviews = function () {
+  var e, t, s, h, g, p;
+  let { user } = useAuth(),
+    b = user?.role === "vendor",
+    [j, f] = useState(null),
+    N = j || (b ? "Received" : "Sent"),
+    [w, y] = useState({
+      received: null,
+      sent: null,
+    }),
+    [S, k] = useState(null),
+    [C, P] = useState(null),
+    { data } = useApi("/account/reviews", {
+      cacheable: false,
+    }),
+    { data: E } = useApi("/vendor/reviews", {
+      cacheable: false,
+      skip: !b,
+    });
+  useEffect(() => {
+    E?.data &&
+      y((e) => ({
+        ...e,
+        received: E.data.map((e) => {
+          var t, s;
+          return {
+            id: e.id,
+            listing: e.listing?.name || "—",
+            slug: e.listing?.slug,
+            user: e.name,
+            email: e.email,
+            phone: e.phone,
+            city: e.city,
+            rating: e.rating,
+            message: e.message,
+            status: e.status,
+          };
+        }),
       }));
-    }
-    setPendingDelete(null);
-  };
-
-  const rows = activeTab === "Received" ? reviewData.received : reviewData.sent;
-
+  }, [E]),
+    useEffect(() => {
+      data?.data &&
+        y((e) => ({
+          ...e,
+          sent: data.data.map((e) => {
+            var t, s;
+            return {
+              id: e.id,
+              listing: e.listing?.name || "—",
+              slug: e.listing?.slug,
+              user: e.name,
+              email: e.email,
+              phone: e.phone,
+              city: e.city,
+              rating: e.rating,
+              message: e.message,
+            };
+          }),
+        }));
+    }, [data]);
+  let D = async (e) => {
+      if ((k(null), e))
+        try {
+          await apiFetch(`/account/reviews/${S}`, {
+            method: "DELETE",
+          }),
+            clearApiCache("/account"),
+            y((e) => ({
+              ...e,
+              sent: (e.sent || []).filter((e) => e.id !== S),
+            }));
+        } catch (e) {
+          P(e.message);
+        }
+    },
+    _ = ("Received" === N ? w.received : w.sent) || [],
+    A = b
+      ? [
+          ["Received", `Received (${w.received?.length ?? 0})`],
+          ["Sent", `Sent (${w.sent?.length ?? 0})`],
+        ]
+      : [["Sent", `Sent (${w.sent?.length ?? 0})`]],
+    I = ("Received" === N ? w.received : w.sent) === null;
   return (
     <CommonDashLayout>
       <DashCard badge="Reviews" title="All Listings - Review Details">
         <div className="mb-6 inline-flex gap-1 rounded-full bg-mist p-1" role="tablist">
-          {[
-            ["Received", `Received (${reviewData.received.length})`],
-            ["Sent", `Sent (${reviewData.sent.length})`],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === id}
-              onClick={() => setActiveTab(id)}
-              className={`relative rounded-full px-4 py-2 text-sm font-semibold transition ${activeTab === id ? "text-white" : "text-slate-500"}`}
-            >
-              {activeTab === id && <motion.span layoutId="review-tab" className="absolute inset-0 rounded-full bg-night-900" />}
-              <span className="relative">{label}</span>
-            </button>
-          ))}
+          {A.map((e) => {
+            let [t, s] = e;
+            return (
+              <button
+                key={t}
+                type="button"
+                role="tab"
+                aria-selected={N === t}
+                onClick={() => f(t)}
+                className={`relative rounded-full px-4 py-2 text-sm font-semibold transition ${N === t ? "text-white" : "text-slate-500"}`}
+              >
+                {N === t && (
+                  <motion.span layoutId="review-tab" className="absolute inset-0 rounded-full bg-night-900" />
+                )}
+                <span className="relative">{s}</span>
+              </button>
+            );
+          })}
         </div>
-
         <TableWrap>
           <table className="data-table min-w-[900px]">
             <thead>
               <tr>
-                <th>No</th><th>Listing</th><th>User</th><th>Contact</th>
-                {activeTab === "Sent" && <th>City</th>}
-                <th>Rating</th><th>Message</th><th className="text-right">Delete</th>
+                <th>No</th>
+                <th>Listing</th>
+                <th>User</th>
+                <th>Contact</th>
+                <th>City</th>
+                <th>Rating</th>
+                <th>Message</th>
+                <th className="text-right">{"Sent" === N ? "Delete" : "Status"}</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((review, index) => (
-                <tr key={review.id}>
-                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
-                  <td className="font-semibold text-night-900">{review.listing}</td>
-                  <td>{review.user}</td>
-                  <td className="text-xs">
-                    <p>{review.email}</p>
-                    <p className="text-slate-400">{review.phone}</p>
+              {_.map((e, t) => (
+                <tr key={e.id}>
+                  <td className="font-semibold text-slate-400">{String(t + 1).padStart(2, "0")}</td>
+                  <td className="font-semibold text-night-900">
+                    {e.slug ? (
+                      <Link href={listingHref(e.slug)} className="hover:text-brand-600">
+                        {e.listing}
+                      </Link>
+                    ) : (
+                      e.listing
+                    )}
                   </td>
-                  {activeTab === "Sent" && <td>{review.city}</td>}
-                  <td><Ratings count={review.rating} /></td>
-                  <td className="max-w-[260px] text-xs leading-relaxed">{review.message}</td>
+                  <td>{e.user}</td>
+                  <td className="text-xs">
+                    <p>{e.email}</p>
+                    <p className="text-slate-400">{e.phone}</p>
+                  </td>
+                  <td>{e.city}</td>
+                  <td>
+                    <Cm count={e.rating} />
+                  </td>
+                  <td className="max-w-[260px] text-xs leading-relaxed">{e.message}</td>
                   <td className="text-right">
-                    <button type="button" onClick={() => setPendingDelete(review.id)} className={`${iconBtn} ml-auto hover:bg-magenta-500`} title="Delete">
-                      <FaTrash className="text-xs" />
-                    </button>
+                    {"Sent" === N ? (
+                      <button
+                        type="button"
+                        onClick={() => k(e.id)}
+                        className={`${iconBtn} ml-auto hover:bg-rose-500`}
+                        title="Delete"
+                      >
+                        <FaTrash className="text-xs" />
+                      </button>
+                    ) : (
+                      <StatusChip status={e.status} />
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </TableWrap>
-        {rows.length === 0 && <p className="py-10 text-center text-slate-400">No reviews here.</p>}
+        {C && (
+          <p className="mt-4 text-sm font-semibold text-rose-600" role="alert">
+            {C}
+          </p>
+        )}
+        {I ? (
+          <p className="py-10 text-center text-slate-400">Loading…</p>
+        ) : (
+          0 === _.length && (
+            <p className="py-10 text-center text-slate-400">
+              {"Sent" === N ? "You haven't written any reviews yet." : "Reviews on your listings appear here."}
+            </p>
+          )
+        )}
       </DashCard>
-
       <AnimatePresence>
-        {pendingDelete !== null && (
+        {null !== S && (
           <motion.div
             className="fixed inset-0 z-[100] flex items-center justify-center bg-night-950/60 p-4 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => confirmDelete(false)}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            onClick={() => D(false)}
           >
             <motion.div
               role="alertdialog"
               aria-modal="true"
               className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-card-hover"
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
+              initial={{
+                scale: 0.9,
+                y: 20,
+              }}
+              animate={{
+                scale: 1,
+                y: 0,
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-magenta-500/10 text-xl text-magenta-500"><FaTriangleExclamation /></span>
+              <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-rose-500/10 text-xl text-magenta-500">
+                <FaTriangleExclamation />
+              </span>
               <p className="mt-4 font-bold text-night-900">Are you sure you want to delete this review?</p>
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button type="button" onClick={() => confirmDelete(false)} className="btn-ghost">No</button>
-                <button type="button" onClick={() => confirmDelete(true)} className="btn-dark bg-magenta-500 hover:bg-magenta-600">Yes, delete</button>
+                <button type="button" onClick={() => D(false)} className="btn-ghost">
+                  No
+                </button>
+                <button type="button" onClick={() => D(true)} className="btn-dark bg-rose-500 hover:bg-rose-600">
+                  Yes, delete
+                </button>
               </div>
             </motion.div>
           </motion.div>
@@ -126,6 +247,5 @@ function Reviews() {
       </AnimatePresence>
     </CommonDashLayout>
   );
-}
-
+};
 export default Reviews;

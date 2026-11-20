@@ -1,20 +1,20 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
-import { SectionHeading } from "../ui/decor";
-import { Stagger, StaggerItem, Reveal } from "../ui/motion";
-import { cityHref, toSlug } from "../context/LocationContext";
-
-const service = [
+import { SectionHeading } from "@/app/ui/decor";
+import { Reveal, Stagger, StaggerItem } from "@/app/ui/motion";
+import { cityHref, toSlug } from "@/app/context/LocationContext";
+let K = [
   {
     label: "b2b",
-    desc: "Future IT Touch Pvt Ltd provides cutting-edge B2B solutions tailored to your business needs. Connect with verified vendors, explore enterprise-grade IT services, and leverage seamless integration tools to streamline your business operations.",
+    desc: "Findbee provides cutting-edge B2B solutions tailored to your business needs. Connect with verified vendors, explore enterprise-grade IT services, and leverage seamless integration tools to streamline your business operations.",
   },
   {
     label: "All india",
-    desc: "Expand your business reach across India with our digital IT solutions. From lead generation to product promotion, Future IT Touch empowers businesses with robust online platforms, data-driven insights, and cloud-based management systems.",
+    desc: "Expand your business reach across India with our digital IT solutions. From lead generation to product promotion, Findbee empowers businesses with robust online platforms, data-driven insights, and cloud-based management systems.",
   },
   {
     icon: "",
@@ -23,7 +23,7 @@ const service = [
   },
   {
     label: "Order Food Online",
-    desc: "Our innovative online ordering systems enable restaurants and food businesses to scale. Future IT Touch Pvt Ltd provides seamless food ordering platforms, payment integrations, and AI-driven recommendation engines.",
+    desc: "Our innovative online ordering systems enable restaurants and food businesses to scale. Findbee provides seamless food ordering platforms, payment integrations, and AI-driven recommendation engines.",
   },
   {
     label: "jobs",
@@ -32,7 +32,7 @@ const service = [
   {
     icon: "",
     label: "movies",
-    desc: "Streamline movie ticket bookings and entertainment experiences with our digital solutions. Future IT Touch Pvt Ltd provides secure and scalable online booking platforms, payment gateways, and real-time updates for cinemas.",
+    desc: "Streamline movie ticket bookings and entertainment experiences with our digital solutions. Findbee provides secure and scalable online booking platforms, payment gateways, and real-time updates for cinemas.",
   },
   {
     label: "spa & salon",
@@ -45,7 +45,7 @@ const service = [
   {
     icon: "",
     label: "Doctor Appointment",
-    desc: "Digitize healthcare with our online appointment booking systems. Future IT Touch Pvt Ltd offers secure telemedicine platforms, automated scheduling, and real-time patient-doctor interactions.",
+    desc: "Digitize healthcare with our online appointment booking systems. Findbee offers secure telemedicine platforms, automated scheduling, and real-time patient-doctor interactions.",
   },
   {
     label: "Real Estate Agents",
@@ -53,13 +53,12 @@ const service = [
   },
   {
     label: "online Recharge & bill payment",
-    desc: "Future IT Touch Pvt Ltd offers seamless online recharge and bill payment solutions, ensuring smooth transactions for utilities such as electricity, gas, DTH, and mobile services.",
+    desc: "Findbee offers seamless online recharge and bill payment solutions, ensuring smooth transactions for utilities such as electricity, gas, DTH, and mobile services.",
   },
 ];
-
-export default function OneStop({ loc }) {
-  const [expanded, setExpanded] = useState(false);
-
+function OneStop(props) {
+  let { loc } = props,
+    [t, r] = useState(false);
   return (
     <section className="py-14 sm:py-20">
       <div className="container-x">
@@ -71,19 +70,27 @@ export default function OneStop({ loc }) {
             highlight="every business need"
             subtitle="IT services, digital solutions and everyday services across India."
           />
-
           <Reveal className="text-sm leading-relaxed text-slate-500 sm:text-base">
             <p>
-              Welcome to Future IT Touch, your trusted partner for all IT and digital solutions, helping businesses
-              streamline operations, enhance online presence, and drive growth. We take pride in our commitment to
-              delivering cutting-edge technology solutions tailored to your unique business needs.
+              Welcome to Findbee, your trusted partner for all IT and digital solutions, helping businesses streamline
+              operations, enhance online presence, and drive growth. We take pride in our commitment to delivering
+              cutting-edge technology solutions tailored to your unique business needs.
             </p>
             <AnimatePresence initial={false}>
-              {expanded && (
+              {t && (
                 <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
+                  initial={{
+                    height: 0,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    height: "auto",
+                    opacity: 1,
+                  }}
+                  exit={{
+                    height: 0,
+                    opacity: 0,
+                  }}
                   className="overflow-hidden"
                 >
                   <p className="mt-4">
@@ -93,56 +100,63 @@ export default function OneStop({ loc }) {
                     education, real estate, and more.
                   </p>
                   <p className="mt-4">
-                    Our &apos;Free Consultation&apos; feature allows businesses to explore customized IT strategies. With seamless
-                    support via phone, email, web, and mobile app, we ensure hassle-free service delivery. Our
-                    &apos;Customer Reviews&apos; and &apos;Exclusive IT Deals&apos; sections help you make informed decisions and access the
-                    best offers in the industry.
+                    Our 'Free Consultation' feature allows businesses to explore customized IT strategies. With seamless
+                    support via phone, email, web, and mobile app, we ensure hassle-free service delivery. Our 'Customer
+                    Reviews' and 'Exclusive IT Deals' sections help you make informed decisions and access the best
+                    offers in the industry.
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
             <button
               type="button"
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
+              onClick={() => r((e) => !e)}
+              aria-expanded={t}
               className="mt-3 inline-flex items-center gap-1.5 font-semibold text-brand-600"
             >
-              {expanded ? "Read less" : "Read more"}
-              <IoIosArrowDown className={`transition-transform ${expanded ? "rotate-180" : ""}`} />
+              {t ? "Read less" : "Read more"}
+              <IoIosArrowDown className={`transition-transform ${t ? "rotate-180" : ""}`} />
             </button>
           </Reveal>
         </div>
-
         <h3 className="mt-14 text-lg font-bold text-night-900 sm:text-xl">
           Some of our services that will prove useful to you on a day-to-day basis
         </h3>
         <Stagger gap={0.05} className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {service.map((elm, index) => (
-            <StaggerItem key={elm.label}>
+          {K.map((e, t) => (
+            <StaggerItem key={e.label}>
               <Link
-                href={cityHref(loc, toSlug(elm.label))}
+                href={cityHref(loc, toSlug(e.label))}
                 className="group flex h-full flex-col rounded-3xl border border-slate-100 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-card-hover"
               >
                 <div className="flex items-center gap-3">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-mist transition group-hover:bg-brand-50">
-                    <img src={`/img/homeservice/${index + 1}.svg`} alt="" className="h-7 w-7" />
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={`/img/homeservice/${t + 1}.svg`}
+                      alt=""
+                      className="h-7 w-7"
+                    />
                   </span>
-                  <h4 className="font-bold capitalize text-night-900 transition group-hover:text-brand-600">{elm.label}</h4>
+                  <h4 className="font-bold capitalize text-night-900 transition group-hover:text-brand-600">
+                    {e.label}
+                  </h4>
                 </div>
-                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate-500">{elm.desc}</p>
+                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate-500">{e.desc}</p>
               </Link>
             </StaggerItem>
           ))}
         </Stagger>
-
         <p className="mt-10 text-sm leading-relaxed text-slate-500">
-          Future IT Touch Pvt Ltd brings you a variety of essential services designed for your leisure, health, and home
-          convenience. Whether you&apos;re looking for Pest Control, Skin Care Clinics, Painters, Laundry Services, Interior
-          Designers, Mobile Phone Repair, Vaccination Centres, Internet Service Providers, or more – we&apos;ve got you
-          covered! With an extensive range of solutions under one roof, Future IT Touch Pvt Ltd is your &quot;One-Stop
-          Destination&quot; for all your needs, ensuring seamless access to reliable and top-quality services.
+          Findbee brings you a variety of essential services designed for your leisure, health, and home convenience.
+          Whether you're looking for Pest Control, Skin Care Clinics, Painters, Laundry Services, Interior Designers,
+          Mobile Phone Repair, Vaccination Centres, Internet Service Providers, or more – we've got you covered! With an
+          extensive range of solutions under one roof, Findbee is your "One-Stop Destination" for all your needs,
+          ensuring seamless access to reliable and top-quality services.
         </p>
       </div>
     </section>
   );
 }
+export default OneStop;

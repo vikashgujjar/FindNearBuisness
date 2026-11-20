@@ -10,7 +10,7 @@
 
   body {
     font-family: var(--font-body), system-ui, sans-serif;
-    color: #0d1033;
+    color: #0b1c54;
     background: #fff;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -22,7 +22,7 @@
   }
 
   ::selection {
-    background: #6d4aff;
+    background: #0a8ef8;
     color: #fff;
   }
 }
@@ -116,7 +116,7 @@
 /* Redesigned carousels use brand-coloured pagination */
 .deals-swiper .swiper-pagination-bullet,
 .testimonial-swiper .swiper-pagination-bullet {
-  background-color: #c9bbff !important;
+  background-color: #a9d8ff !important;
   opacity: 1;
   transition: width 0.3s ease;
 }
@@ -124,7 +124,7 @@
 .testimonial-swiper .swiper-pagination-bullet-active {
   width: 24px;
   border-radius: 999px;
-  background-color: #6d4aff !important;
+  background-color: #0a8ef8 !important;
 }
 
 /* Keep room for the fixed mobile bottom bar */
@@ -193,7 +193,7 @@
 }
 
 .navCategroy a {
-  background: linear-gradient(39deg, #d90c55, #8d18ba 80%);
+  background: linear-gradient(39deg, #0a72de, #0aa0f5 80%);
 }
 
 .bg-image {
@@ -305,3 +305,16 @@
   display: none;
 }
 
+
+/* If JavaScript is slow or fails, framer-motion's hidden start state (opacity:0) would hide
+   content forever. Providers adds .motion-ready once React runs; until then, reveal it anyway. */
+@keyframes motion-fallback-reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+html:not(.motion-ready) [style$="opacity:0"],
+html:not(.motion-ready) [style*="opacity:0;"] {
+  animation: motion-fallback-reveal 0.6s ease 1.2s forwards;
+}

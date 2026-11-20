@@ -1,13 +1,22 @@
 "use client";
-import React from "react";
+
 import Link from "next/link";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { DotGrid, Glow, MapGrid, Wave } from "./decor";
-import { Reveal, Stagger, StaggerItem } from "./motion";
-
-// Light banner used at the top of inner pages.
-export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children, align = "center", compact = false, waveFill = "#fff" }) {
-  const center = align === "center";
+import { DotGrid, Glow, Wave, MapGrid } from "@/app/ui/decor";
+import { Stagger, StaggerItem, Reveal } from "@/app/ui/motion";
+function c(props) {
+  let {
+      eyebrow,
+      title,
+      highlight,
+      subtitle,
+      crumbs,
+      children,
+      align = "center",
+      compact = false,
+      waveFill = "#fff",
+    } = props,
+    h = "center" === align;
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-mist text-night-900">
       <DotGrid className="inset-0 h-full w-full [mask-image:radial-gradient(ellipse_at_top,#000,transparent_70%)]" />
@@ -16,13 +25,11 @@ export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children
       <Stagger
         onLoad
         gap={0.08}
-        className={`container-x relative flex flex-col gap-4 ${center ? "items-center text-center" : "items-start"} ${
-          compact ? "pb-16 pt-10 sm:pb-20 sm:pt-12" : "pb-20 pt-12 sm:pb-28 sm:pt-16"
-        }`}
+        className={`container-x relative flex flex-col gap-4 ${h ? "items-center text-center" : "items-start"} ${compact ? "pb-16 pt-10 sm:pb-20 sm:pt-12" : "pb-20 pt-12 sm:pb-28 sm:pt-16"}`}
       >
         {crumbs && (
           <StaggerItem>
-            <Breadcrumbs items={crumbs} />
+            <Cd items={crumbs} />
           </StaggerItem>
         )}
         {eyebrow && (
@@ -30,7 +37,10 @@ export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children
             <span className="eyebrow">{eyebrow}</span>
           </StaggerItem>
         )}
-        <StaggerItem as="h1" className="max-w-3xl text-3xl font-extrabold leading-tight xs:text-4xl sm:text-5xl lg:text-6xl">
+        <StaggerItem
+          as="h1"
+          className="max-w-3xl text-3xl font-extrabold leading-tight xs:text-4xl sm:text-5xl lg:text-6xl"
+        >
           {title} {highlight && <span className="text-gradient">{highlight}</span>}
         </StaggerItem>
         {subtitle && (
@@ -38,26 +48,26 @@ export function PageHero({ eyebrow, title, highlight, subtitle, crumbs, children
             {subtitle}
           </StaggerItem>
         )}
-        {children && <StaggerItem className={`w-full ${center ? "max-w-2xl" : ""}`}>{children}</StaggerItem>}
+        {children && <StaggerItem className={`w-full ${h ? "max-w-2xl" : ""}`}>{children}</StaggerItem>}
       </Stagger>
       <Wave fill={waveFill} />
     </section>
   );
 }
-
-export function Breadcrumbs({ items }) {
+function Cd(props) {
+  let { items } = props;
   return (
     <nav aria-label="Breadcrumb">
       <ol className="flex flex-wrap items-center gap-1 text-xs text-slate-500 sm:text-sm">
-        {items.map((c, i) => (
-          <li key={i} className="flex items-center gap-1">
-            {i > 0 && <MdKeyboardArrowRight aria-hidden />}
-            {c.href ? (
-              <Link href={c.href} className="transition hover:text-brand-600">
-                {c.label}
+        {items.map((e, t) => (
+          <li key={t} className="flex items-center gap-1">
+            {t > 0 && <MdKeyboardArrowRight aria-hidden />}
+            {e.href ? (
+              <Link href={e.href} className="transition hover:text-brand-600">
+                {e.label}
               </Link>
             ) : (
-              <span className="font-semibold text-night-900">{c.label}</span>
+              <span className="font-semibold text-night-900">{e.label}</span>
             )}
           </li>
         ))}
@@ -65,9 +75,8 @@ export function Breadcrumbs({ items }) {
     </nav>
   );
 }
-
-// Glass search pill used inside PageHero.
-export function HeroSearch({ placeholder = "Search…", value, onChange }) {
+function HeroSearch(props) {
+  let { placeholder = "Search…", value, onChange } = props;
   return (
     <div className="flex items-center gap-2 rounded-full bg-white p-1.5 shadow-card-hover ring-1 ring-slate-100 focus-within:ring-brand-300">
       <input
@@ -82,9 +91,8 @@ export function HeroSearch({ placeholder = "Search…", value, onChange }) {
     </div>
   );
 }
-
-// Centered card on a night-map background, used by all stand-alone forms.
-export function FormShell({ badge, title, subtitle, children, width = "max-w-xl", footer }) {
+function FormShell(props) {
+  let { badge, title, subtitle, children, width = "max-w-xl", footer } = props;
   return (
     <section className="relative overflow-hidden bg-night-950 px-4 py-12 sm:py-20">
       <MapGrid opacity={0.55} />
@@ -105,9 +113,8 @@ export function FormShell({ badge, title, subtitle, children, width = "max-w-xl"
     </section>
   );
 }
-
-// Card used for every dashboard page body.
-export function DashCard({ badge, title, action, children, className = "" }) {
+function DashCard(props) {
+  let { badge, title, action, children, className = "" } = props;
   return (
     <Reveal className={`panel overflow-hidden ${className}`}>
       <div className="h-1.5 bg-brand-gradient" />
@@ -126,30 +133,21 @@ export function DashCard({ badge, title, action, children, className = "" }) {
     </Reveal>
   );
 }
-
-// Horizontally scrollable table container (tables never break the layout).
-export function TableWrap({ children }) {
+let iconBtn =
+  "grid h-8 w-8 place-items-center rounded-full bg-mist text-slate-500 transition hover:bg-brand-500 hover:text-white";
+function TableWrap(props) {
+  let { children } = props;
   return <div className="-mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">{children}</div>;
 }
-
-export function StatusChip({ status }) {
-  const s = String(status).toLowerCase();
-  const cls =
-    s === "active" || s === "yes" || s === "paid"
-      ? "bg-emerald-50 text-emerald-600"
-      : s === "new"
-      ? "bg-cyan-400/15 text-cyan-500"
-      : s === "pending"
-      ? "bg-pin-400/20 text-amber-600"
-      : "bg-slate-100 text-slate-500";
-  return <span className={`chip ${cls}`}>{status}</span>;
-}
-
-// Animated grid helper so pages can stagger their cards with one line.
-export function CardGrid({ className, children, gap = 0.06 }) {
+function StatusChip(props) {
+  let { status } = props,
+    s = String(status).toLowerCase();
   return (
-    <Stagger gap={gap} className={className}>
-      {React.Children.map(children, (child) => (child ? <StaggerItem>{child}</StaggerItem> : null))}
-    </Stagger>
+    <span
+      className={`chip ${"active" === s || "yes" === s || "paid" === s ? "bg-emerald-50 text-emerald-600" : "new" === s ? "bg-cyan-400/15 text-cyan-500" : "pending" === s ? "bg-pin-400/20 text-amber-600" : "bg-slate-100 text-slate-500"}`}
+    >
+      {status}
+    </span>
   );
 }
+export { DashCard, TableWrap, HeroSearch, StatusChip, c as PageHero, FormShell, iconBtn };

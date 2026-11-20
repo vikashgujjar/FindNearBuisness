@@ -1,35 +1,39 @@
 "use client";
 
-import React from "react";
-import Herosection from "./Component/Herosection";
-import Attractions from "./Component/Attraction";
-import Choose from "./Component/Choose";
-import Citycategoire from "./Component/Citycategoire";
-import ServiceList from "./Component/Servicelist";
-import Contact from "./Component/Contact";
-import Testmonial from "./Component/Testmonial";
-import OneStop from "./Component/OneStop";
-import PopularCategories from "./Component/PopularCategories";
-import WeddingBeautySpa from "./Component/WeddingBeautySpa";
-import { useUserLocation } from "./context/LocationContext";
-
-const page = () => {
-  const { location: loc } = useUserLocation();
-
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { useUserLocation } from "@/app/context/LocationContext";
+import Choose from "@/app/Component/Choose";
+import { useApi } from "@/app/lib/api";
+import { AdSlot } from "@/app/ui/AdSlot";
+import Herosection from "@/app/Component/Herosection";
+import Attraction from "@/app/Component/Attraction";
+import Contact, { O } from "@/app/Component/Contact";
+import { A } from "@/app/Component/Citycategoire";
+import WeddingBeautySpa from "@/app/Component/WeddingBeautySpa";
+import Testmonial from "@/app/Component/Testmonial";
+import OneStop from "@/app/Component/OneStop";
+import PopularCategories from "@/app/Component/PopularCategories";
+let HomePage = () => {
+  let { location } = useUserLocation(),
+    { data, error } = useApi("/home", {
+      auth: false,
+    });
   return (
     <main>
-      <Herosection loc={loc} />
-      <Attractions loc={loc} />
-      <ServiceList loc={loc} />
-      <Contact />
-      <Citycategoire loc={loc} />
-      <WeddingBeautySpa loc={loc} />
+      <Herosection loc={location} banners={data?.banners} bannersLoading={!data && !error} />
+      <Attraction loc={location} categories={data?.categories} />
+      <Contact loc={location} trending={data?.trending} />
+      <O />
+      <A loc={location} topRated={data?.top_rated} />
+      <WeddingBeautySpa loc={location} />
       <Choose />
-      <Testmonial />
-      <OneStop loc={loc} />
+      <Testmonial testimonials={data?.testimonials} />
+      <OneStop loc={location} />
+      <AdSlot slot="home_bottom" className="container-x py-8" />
       <PopularCategories />
     </main>
   );
 };
-
-export default page;
+export default HomePage;

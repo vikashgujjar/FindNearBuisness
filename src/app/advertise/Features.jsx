@@ -1,15 +1,38 @@
 "use client";
-import React from "react";
-import {
-  FaRankingStar, FaCircleCheck, FaStar, FaMagnifyingGlassChart, FaBullseye, FaShareNodes, FaPhone, FaChartLine,
-  FaComments, FaTags, FaPalette, FaGoogle, FaStarHalfStroke, FaMobileScreen, FaHeadset, FaCartShopping,
-  FaFileInvoiceDollar, FaRobot, FaPager, FaEnvelopesBulk, FaCalendarCheck, FaMapLocationDot, FaQrcode,
-  FaBullhorn, FaWhatsapp, FaGift, FaReply, FaVideo,
-} from "react-icons/fa6";
-import { SectionHeading } from "../ui/decor";
-import { Stagger, StaggerItem } from "../ui/motion";
 
-const features = [
+import {
+  FaRankingStar,
+  FaCircleCheck,
+  FaStar,
+  FaMagnifyingGlassChart,
+  FaBullseye,
+  FaShareNodes,
+  FaPhone,
+  FaChartLine,
+  FaComments,
+  FaTags,
+  FaPalette,
+  FaGoogle,
+  FaStarHalfStroke,
+  FaMobileScreen,
+  FaHeadset,
+  FaCartShopping,
+  FaFileInvoiceDollar,
+  FaRobot,
+  FaPager,
+  FaEnvelopesBulk,
+  FaCalendarCheck,
+  FaMapLocationDot,
+  FaQrcode,
+  FaBullhorn,
+  FaWhatsapp,
+  FaGift,
+  FaReply,
+  FaVideo,
+} from "react-icons/fa6";
+import { SectionHeading } from "@/app/ui/decor";
+import { Stagger, StaggerItem } from "@/app/ui/motion";
+let l = [
   ["Premium Listing", "Boost your business visibility with priority placement.", FaRankingStar],
   ["Verified Badge", "Gain customer trust with a verified business profile.", FaCircleCheck],
   ["Customer Reviews", "Showcase authentic customer feedback and testimonials.", FaStar],
@@ -39,29 +62,47 @@ const features = [
   ["Automated Replies", "Set up auto-responses for common customer queries.", FaReply],
   ["Video Listing", "Enhance your business profile with a promotional video.", FaVideo],
 ];
-
-const tints = ["from-brand-500 to-magenta-500", "from-cyan-400 to-brand-500", "from-magenta-500 to-pin-500", "from-pin-400 to-magenta-500"];
-
-export default function Features() {
+let o = [
+  "from-brand-500 to-cyan-500",
+  "from-cyan-400 to-brand-500",
+  "from-night-700 to-brand-500",
+  "from-pin-400 to-cyan-500",
+];
+function Features() {
   return (
     <section id="Features" className="scroll-mt-20 bg-mist py-16 sm:py-24">
       <div className="container-x">
-        <SectionHeading eyebrow="Features" title="Everything you need to" highlight="win customers" subtitle="28 tools that work together to put your business in front of the right people." />
+        <SectionHeading
+          eyebrow="Features"
+          title="Everything you need to"
+          highlight="win customers"
+          subtitle="28 tools that work together to put your business in front of the right people."
+        />
         <Stagger gap={0.03} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {features.map(([heading, desc, Icon], i) => (
-            <StaggerItem key={heading} className="group panel p-5 transition duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-              <span className={`grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br ${tints[i % tints.length]} text-white transition duration-300 group-hover:rotate-6 group-hover:scale-110`}>
-                <Icon />
-              </span>
-              <h3 className="mt-4 font-bold text-night-900">{heading}</h3>
-              <p className="mt-1 text-sm text-slate-500">{desc}</p>
-            </StaggerItem>
-          ))}
+          {l.map((e, t) => {
+            let [s, i, Cn] = e;
+            return (
+              <StaggerItem
+                key={s}
+                className="group panel p-5 transition duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              >
+                <span
+                  className={`grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br ${o[t % o.length]} text-white transition duration-300 group-hover:rotate-6 group-hover:scale-110`}
+                >
+                  <Cn />
+                </span>
+                <h3 className="mt-4 font-bold text-night-900">{s}</h3>
+                <p className="mt-1 text-sm text-slate-500">{i}</p>
+              </StaggerItem>
+            );
+          })}
         </Stagger>
         <p className="mt-6 text-center text-xs text-slate-500">
-          * To activate the Trust/Verified badge, the business must have its KYC verified and be rated at an average of 3.8+ stars.
+          * To activate the Trust/Verified badge, the business must have its KYC verified and be rated at an average of
+          3.8+ stars.
         </p>
       </div>
     </section>
   );
 }
+export default Features;

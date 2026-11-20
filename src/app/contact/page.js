@@ -15,7 +15,7 @@ export default function page() {
         highlight="Us"
         subtitle="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour."
         crumbs={[{ label: "Home", href: "/" }, { label: "Contact Us" }]}
-        waveFill="#F4F5FB"
+        waveFill="#F3F8FE"
       />
 
       <div className="bg-mist pb-4">
@@ -38,7 +38,7 @@ export default function page() {
             </ul>
           </StaggerItem>
           <StaggerItem className="panel p-6">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-magenta-500 to-pin-500 text-white"><FaGlobe /></span>
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-night-700 to-brand-500 text-white"><FaGlobe /></span>
             <h2 className="mt-4 text-lg font-bold text-night-900">Website & Social Media</h2>
             <ul className="mt-3 space-y-2 text-sm">
               <li><a href="/contact" className="flex items-center gap-2 text-brand-600 hover:underline"><FaGlobe /> www.website.com</a></li>

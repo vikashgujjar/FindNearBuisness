@@ -1,52 +1,73 @@
 "use client";
-import React from "react";
-import { FaDownload } from "react-icons/fa6";
-import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, TableWrap } from "../ui/blocks";
-import { cityHref, useUserLocation } from "../context/LocationContext";
 
-const invoicesData = [
-  { id: 1, paymentDate: "28, Dec 2019", amount: "$150", invoiceName: "Invoice-1", available: true },
-  { id: 2, paymentDate: "28, Dec 2019", amount: "$50", invoiceName: "Invoice-2", available: true },
-  { id: 3, paymentDate: "28, Dec 2019", amount: "$120", invoiceName: "Invoice-3", available: true },
-  { id: 4, paymentDate: "29, Dec 2019", amount: "$15", invoiceName: "N/A", available: false },
-].map((i) => ({ ...i, name: "Premium Plus Plan" }));
-
-function PaymentInvoice() {
-  const { location } = useUserLocation();
-
+import { FaFileInvoice } from "react-icons/fa6";
+import { CommonDashLayout } from "@/app/Component/CommonDashLayout";
+import { DashCard, TableWrap, StatusChip, iconBtn } from "@/app/ui/blocks";
+import { useApi, formatDate, formatPrice } from "@/app/lib/api";
+function Cc() {
+  var e;
+  let { data, error } = useApi("/vendor/payments", {
+      cacheable: false,
+    }),
+    l = data?.data?.filter((e) => "paid" === e.status);
   return (
-    <CommonDashLayout>
-      <DashCard badge="Invoices" title="Payment Invoices">
-        <TableWrap>
-          <table className="data-table">
-            <thead>
-              <tr><th>No</th><th>Name</th><th>Payment Date</th><th>Amount</th><th className="text-right">Download</th></tr>
-            </thead>
-            <tbody>
-              {invoicesData.map((invoice, index) => (
-                <tr key={invoice.id}>
-                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
-                  <td className="font-semibold text-night-900">{invoice.name}</td>
-                  <td>{invoice.paymentDate}</td>
-                  <td><span className="font-display font-extrabold text-night-900">{invoice.amount}</span></td>
-                  <td className="text-right">
-                    {invoice.available ? (
-                      <a href={cityHref(location, "invoice")} download={invoice.invoiceName} className="btn-ghost btn-sm">
-                        <FaDownload /> Download
-                      </a>
-                    ) : (
-                      <span className="text-xs text-slate-400">Invoice N/A</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableWrap>
-      </DashCard>
-    </CommonDashLayout>
+    <DashCard badge="Payment invoice" title="Your Invoices">
+      <TableWrap>
+        <table className="data-table min-w-[620px]">
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th className="text-right">Open</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(l || []).map((e) => (
+              <tr key={e.id}>
+                <td className="font-semibold text-night-900">{e.invoice_number}</td>
+                <td>{formatDate(e.paid_at)}</td>
+                <td>{e.description}</td>
+                <td>{formatPrice(e.amount)}</td>
+                <td>
+                  <StatusChip status={e.status} />
+                </td>
+                <td>
+                  <a
+                    href={e.invoice_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${iconBtn} ml-auto`}
+                    title="Open invoice"
+                    aria-label={`Open invoice ${e.invoice_number}`}
+                  >
+                    <FaFileInvoice className="text-xs" />
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </TableWrap>
+      {!l && !error && <p className="py-10 text-center text-slate-400">Loading…</p>}
+      {error && (
+        <p className="py-10 text-center text-sm text-rose-600" role="alert">
+          {error.message}
+        </p>
+      )}
+      {l?.length === 0 && (
+        <p className="py-10 text-center text-slate-400">Invoices appear here once a payment is confirmed.</p>
+      )}
+    </DashCard>
   );
 }
-
+let PaymentInvoice = function () {
+  return (
+    <CommonDashLayout vendorOnly>
+      <Cc />
+    </CommonDashLayout>
+  );
+};
 export default PaymentInvoice;

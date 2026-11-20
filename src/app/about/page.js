@@ -25,7 +25,7 @@ export default function Page() {
 
       <section className="container-x grid items-center gap-10 py-14 lg:grid-cols-2">
         <Reveal className="relative">
-          <img src="/img/about/about1.webp" alt="" className="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-card-hover" />
+          <img loading="lazy" decoding="async" src="/img/about/about1.webp" alt="" className="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-card-hover" />
           <div className="absolute -bottom-6 -right-2 rounded-3xl bg-brand-gradient p-5 text-white shadow-glow sm:-right-6">
             <p className="font-display text-3xl font-extrabold">2017</p>
             <p className="text-xs text-white/80">Helping local businesses since</p>
@@ -60,7 +60,7 @@ export default function Page() {
           {teamMembers.map((member) => (
             <StaggerItem key={member.name} className="group panel overflow-hidden text-center transition duration-300 hover:-translate-y-2 hover:shadow-card-hover">
               <div className="h-20 bg-brand-gradient" />
-              <img src={member.imgSrc} alt={member.name} className="mx-auto -mt-12 h-24 w-24 rounded-full object-cover ring-4 ring-white transition duration-500 group-hover:scale-105" />
+              <img loading="lazy" decoding="async" src={member.imgSrc} alt={member.name} className="mx-auto -mt-12 h-24 w-24 rounded-full object-cover ring-4 ring-white transition duration-500 group-hover:scale-105" />
               <div className="p-5 pt-3">
                 <h3 className="text-lg font-bold text-night-900">{member.name}</h3>
                 <p className="mt-2 text-sm text-slate-500">Fusce imperdiet ullamcorper metus eu fringilla. From around the world from our partners and friends.</p>

@@ -1,58 +1,92 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { FaEye, FaPen, FaTrash, FaArrowUpRightFromSquare, FaPlus } from "react-icons/fa6";
-import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, TableWrap } from "../ui/blocks";
-import { cityHref, useUserLocation } from "../context/LocationContext";
-import { iconBtn } from "./AllListing";
 
-const blogPosts = [
-  { id: 1, name: "INCEPTION", date: "12, Mar 2021", views: 15 },
-  { id: 2, name: "AVENGERS INFINITY WAR", date: "12, Mar 2021", views: 8 },
-  { id: 3, name: "AVENGERS END GAME", date: "11, Mar 2021", views: 11 },
-  { id: 4, name: "Captain America: Civil War", date: "11, Mar 2021", views: 7 },
-  { id: 5, name: "Samsung M31 Review", date: "22, Feb 2021", views: 10 },
-  { id: 6, name: "Wizard of Oz", date: "21, Feb 2021", views: 8 },
-  { id: 7, name: "Titanic", date: "21, Feb 2021", views: 7 },
-  { id: 8, name: "Digital Marketing", date: "26, Mar 2020", views: 8 },
+import { FaEye } from "react-icons/fa6";
+import { ThumbTitle, DashCrud } from "@/app/Component/DashCrud";
+import { formatDate, blogHref } from "@/app/lib/api";
+let i = [
+  {
+    name: "title",
+    label: "Blog title",
+    required: true,
+    full: true,
+  },
+  {
+    name: "category_id",
+    label: "Category",
+    type: "select",
+    options: (e) =>
+      (e.categories || []).map((e) => ({
+        value: e.id,
+        label: e.name,
+      })),
+  },
+  {
+    name: "image",
+    label: "Image",
+    type: "image",
+  },
+  {
+    name: "excerpt",
+    label: "Short summary",
+    type: "textarea",
+    rows: 2,
+  },
+  {
+    name: "body",
+    label: "Blog post",
+    type: "textarea",
+    required: true,
+    rows: 10,
+    hint: "Leave a blank line between paragraphs.",
+  },
+  {
+    name: "enquiry_enabled",
+    label: "Enquiries",
+    type: "toggle",
+    text: "Show an enquiry form on this post",
+    default: true,
+    full: true,
+  },
 ];
-
-function BlogPosts() {
-  const { location } = useUserLocation();
-
+let o = [
+  {
+    label: "Blog Post",
+    render: (e) => (
+      <ThumbTitle
+        src={e.image}
+        title={e.title}
+        sub={[e.category_name, formatDate(e.created_on)].filter(Boolean).join(" \xb7 ")}
+      />
+    ),
+  },
+  {
+    label: "Views",
+    render: (e) => {
+      var t;
+      return (
+        <span className="flex items-center gap-1.5">
+          <FaEye className="text-slate-300" /> {e.views ?? 0}
+        </span>
+      );
+    },
+  },
+];
+function BlogPosts(props) {
+  let { startNew = false } = props;
   return (
-    <CommonDashLayout>
-      <DashCard badge="Blog Posts" title="Blog Details" action={<Link href="/blog-form" className="btn-primary btn-sm"><FaPlus /> Add new post</Link>}>
-        <TableWrap>
-          <table className="data-table">
-            <thead>
-              <tr><th>No</th><th>Post Name</th><th>Views</th><th className="text-right">Actions</th></tr>
-            </thead>
-            <tbody>
-              {blogPosts.map((post, index) => (
-                <tr key={post.id}>
-                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
-                  <td>
-                    <p className="font-semibold text-night-900">{post.name}</p>
-                    <p className="text-xs text-slate-400">{post.date}</p>
-                  </td>
-                  <td><span className="flex items-center gap-1.5"><FaEye className="text-slate-300" /> {post.views}</span></td>
-                  <td>
-                    <div className="flex justify-end gap-1.5">
-                      <Link href="/newlisting" className={iconBtn} title="Edit"><FaPen className="text-xs" /></Link>
-                      <Link href={cityHref(location, "listing")} className={iconBtn} title="Delete"><FaTrash className="text-xs" /></Link>
-                      <Link href="/all" className={iconBtn} title="Preview"><FaArrowUpRightFromSquare className="text-xs" /></Link>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableWrap>
-      </DashCard>
-    </CommonDashLayout>
+    <DashCrud
+      type="blogs"
+      badge="Blog posts"
+      title="Your Blog Posts"
+      noun="blog post"
+      fields={i}
+      columns={o}
+      startNew={startNew}
+      minWidth="min-w-[600px]"
+      nameOf={(e) => e.title}
+      previewUrl={(e) => blogHref(e.slug)}
+      note="New blog posts go live after our team approves them."
+    />
   );
 }
-
 export default BlogPosts;

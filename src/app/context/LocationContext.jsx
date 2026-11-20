@@ -1,114 +1,84 @@
 "use client";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import axios from "axios";
 
-const LocationContext = createContext(null);
-
-// Slug used in /{city}/... routes. Matches the rule the existing pages use.
-export function getCitySlug(loc) {
-  const name =
-    loc?.county ||
-    (loc?.Name === "NA" ? loc?.State : loc?.Name) ||
-    loc?.city ||
-    loc?.town ||
-    loc?.state_district ||
-    loc?.state;
-  return name?.replace(/\s+/g, "") || "default-location";
-}
-
-// Human readable city name for the UI.
-export function getCityLabel(loc) {
-  if (!loc) return null;
+import { createContext, useState, useEffect, useCallback, useContext } from "react";
+let l = createContext(null);
+function getCityLabel(e) {
   return (
-    loc.city ||
-    loc.town ||
-    loc.village ||
-    loc.county ||
-    loc.state_district ||
-    (loc.Name && loc.Name !== "NA" ? loc.Name : loc.District || loc.State) ||
-    loc.state ||
+    (e &&
+      (e.city ||
+        e.town ||
+        e.village ||
+        e.county ||
+        e.state_district ||
+        (e.Name && "NA" !== e.Name ? e.Name : e.District || e.State) ||
+        e.state)) ||
     null
   );
 }
-
-export function getPincode(loc) {
-  return loc?.postcode || loc?.Pincode || "";
+function toSlug(e) {
+  return e.toLowerCase().trim().split(/\s+/).join("-");
 }
-
-export function toSlug(text) {
-  return text.toLowerCase().trim().split(/\s+/).join("-");
+function cityHref(e, t) {
+  return `/${(function (e) {
+    let t = e?.county || (e?.Name === "NA" ? e?.State : e?.Name) || e?.city || e?.town || e?.state_district || e?.state;
+    return t?.replace(/\s+/g, "") || "default-location";
+  })(e)}/${t}`;
 }
-
-// Always absolute, so links work from any page depth.
-export function cityHref(loc, path) {
-  return `/${getCitySlug(loc)}/${path}`;
-}
-
-export function LocationProvider({ children }) {
-  const [location, setLocation] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
+function LocationProvider(props) {
+  let { children } = props,
+    [s, i] = useState(null),
+    [o, c] = useState(false);
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("location");
-      if (saved) setLocation(JSON.parse(saved));
-    } catch {}
-
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        try {
-          const { data } = await axios.get(
-            `https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`
-          );
-          if (data?.address) {
-            localStorage.setItem("location", JSON.stringify(data.address));
-            setLocation(data.address);
+      let e = localStorage.getItem("location");
+      e && i(JSON.parse(e));
+    } catch (e) {}
+    navigator.geolocation &&
+      navigator.geolocation.getCurrentPosition(
+        async (e) => {
+          let { coords } = e;
+          try {
+            let e = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`,
+              ),
+              s = await e.json();
+            s?.address && (localStorage.setItem("location", JSON.stringify(s.address)), i(s.address));
+          } catch (e) {
+            console.error("Error fetching location:", e);
           }
-        } catch (error) {
-          console.error("Error fetching location:", error);
-        }
-      },
-      // Users may simply deny permission; that's not an error worth surfacing.
-      (error) => console.warn("Location unavailable:", error.message)
-    );
+        },
+        (e) => console.warn("Location unavailable:", e.message),
+      );
   }, []);
-
-  // Returns an error message, or null on success.
-  const lookupPin = useCallback(async (pin) => {
+  let d = useCallback(async (e) => {
     try {
-      const response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-      const data = await response.json();
-      const postOffice = data?.[0]?.PostOffice?.[0];
-      if (!postOffice) return "No city found for the given PIN code";
-      localStorage.setItem("location", JSON.stringify(postOffice));
-      setLocation(postOffice);
-      setModalOpen(false);
-      // Older components read localStorage once on mount, so refresh them.
-      window.location.reload();
-      return null;
-    } catch {
+      var t, s;
+      let a = await fetch(`https://api.postalpincode.in/pincode/${e}`),
+        n = await a.json(),
+        l = n?.[0]?.PostOffice?.[0];
+      if (!l) return "No city found for the given PIN code";
+      return localStorage.setItem("location", JSON.stringify(l)), i(l), c(false), window.location.reload(), null;
+    } catch (e) {
       return "Failed to fetch city details. Please try again.";
     }
   }, []);
-
   return (
-    <LocationContext.Provider
+    <l.Provider
       value={{
-        location,
-        cityLabel: getCityLabel(location),
-        pincode: getPincode(location),
-        modalOpen,
-        openModal: () => setModalOpen(true),
-        closeModal: () => setModalOpen(false),
-        lookupPin,
+        location: s,
+        cityLabel: getCityLabel(s),
+        pincode: s?.postcode || s?.Pincode || "",
+        modalOpen: o,
+        openModal: () => c(true),
+        closeModal: () => c(false),
+        lookupPin: d,
       }}
     >
       {children}
-    </LocationContext.Provider>
+    </l.Provider>
   );
 }
-
-export function useUserLocation() {
-  return useContext(LocationContext);
+function useUserLocation() {
+  return useContext(l);
 }
+export { toSlug, getCityLabel, cityHref, LocationProvider, useUserLocation };

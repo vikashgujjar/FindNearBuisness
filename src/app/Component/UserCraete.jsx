@@ -1,6 +1,7 @@
 "use client";
-import AuthCard from "./AuthCard";
 
-export default function UserCraete() {
+import { AuthCard } from "@/app/Component/AuthCard";
+function UserCraete() {
   return <AuthCard defaultTab="Create" />;
 }
+export default UserCraete;

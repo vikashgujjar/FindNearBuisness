@@ -1,59 +1,146 @@
 "use client";
-import React from "react";
+
 import Link from "next/link";
 import { FaEye, FaArrowPointer } from "react-icons/fa6";
-import CommonDashLayout from "./CommonDashLayout";
-import { DashCard, StatusChip, TableWrap } from "../ui/blocks";
-
-const adsData = [
-  { id: 1, position: "Home page Bottom", startDate: "31, Mar 2021", endDate: "29, Apr 2021", duration: "0 Days", status: "InActive" },
-  { id: 2, position: "All listing page Top", startDate: "17, Jun 2020", endDate: "30, Jun 2022", duration: "743 Days", status: "Active" },
-  { id: 3, position: "Listing detail page Bottom", startDate: "03, Jun 2020", endDate: "23, Jul 2020", duration: "50 Days", status: "Active" },
-].map((a) => ({ ...a, views: "1k", clicks: "642" }));
-
-function AdSummary() {
+import { DashCrud } from "@/app/Component/DashCrud";
+import { formatPrice, formatDate } from "@/app/lib/api";
+let c = [
+  {
+    name: "ad_position_id",
+    label: "Ads position",
+    type: "select",
+    required: true,
+    options: (e) =>
+      (e.ad_positions || []).map((e) => ({
+        value: e.id,
+        label: `${e.name} (${formatPrice(e.price_per_day)} / day)`,
+      })),
+  },
+  {
+    name: "listing_id",
+    label: "Listing",
+    type: "select",
+    options: (e) =>
+      (e.listings || []).map((e) => ({
+        value: e.id,
+        label: e.name,
+      })),
+  },
+  {
+    name: "start_date",
+    label: "Start date",
+    type: "date",
+    required: true,
+  },
+  {
+    name: "end_date",
+    label: "End date",
+    type: "date",
+    required: true,
+  },
+  {
+    name: "link",
+    label: "Link",
+    type: "url",
+    placeholder: "https://...",
+    full: true,
+  },
+  {
+    name: "image",
+    label: "Ad image",
+    type: "image",
+    required: true,
+    full: true,
+  },
+];
+let o = [
+  {
+    label: "Ads Position",
+    render: (e) => <span className="font-semibold text-night-900">{e.position_name}</span>,
+  },
+  {
+    label: "Start Date",
+    render: (e) => formatDate(e.start_date),
+  },
+  {
+    label: "End Date",
+    render: (e) => formatDate(e.end_date),
+  },
+  {
+    label: "Cost",
+    render: (e) => formatPrice(e.total_cost),
+  },
+  {
+    label: "Views",
+    render: (e) => {
+      var t;
+      return (
+        <span className="flex items-center gap-1.5">
+          <FaEye className="text-slate-300" />
+          {e.views ?? 0}
+        </span>
+      );
+    },
+  },
+  {
+    label: "Clicks",
+    render: (e) => {
+      var t;
+      return (
+        <span className="flex items-center gap-1.5">
+          <FaArrowPointer className="text-slate-300" />
+          {e.clicks ?? 0}
+        </span>
+      );
+    },
+  },
+];
+function x(props, t) {
+  var a, n;
+  let l = Number(t?.ad_positions?.find((t) => String(t.id) === String(props.ad_position_id))?.price_per_day) || 0,
+    r =
+      props.start_date && props.end_date
+        ? Math.max(0, Math.round((new Date(props.end_date) - new Date(props.start_date)) / 864e5) + 1)
+        : 0;
   return (
-    <CommonDashLayout>
-      <DashCard
-        badge="Paid Ads"
-        title="Your Banner Ads"
-        action={
-          <>
-            <Link href="/ads-form" className="btn-primary btn-sm">Post your Ads</Link>
-            <Link href="/ads-pricing" className="btn-ghost btn-sm">Pricing and other details</Link>
-          </>
-        }
-      >
-        <TableWrap>
-          <table className="data-table min-w-[760px]">
-            <thead>
-              <tr><th>No</th><th>Ads Position</th><th>Start Date</th><th>End Date</th><th>Duration</th><th>Status</th><th>Views</th><th>Clicks</th></tr>
-            </thead>
-            <tbody>
-              {adsData.map((ad, index) => (
-                <tr key={ad.id}>
-                  <td className="font-semibold text-slate-400">{String(index + 1).padStart(2, "0")}</td>
-                  <td className="font-semibold text-night-900">{ad.position}</td>
-                  <td>{ad.startDate}</td>
-                  <td>{ad.endDate}</td>
-                  <td>{ad.duration}</td>
-                  <td><StatusChip status={ad.status} /></td>
-                  <td><span className="flex items-center gap-1.5"><FaEye className="text-slate-300" />{ad.views}</span></td>
-                  <td><span className="flex items-center gap-1.5"><FaArrowPointer className="text-slate-300" />{ad.clicks}</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableWrap>
-
-        <p className="mt-6 rounded-2xl border-l-4 border-cyan-400 bg-cyan-400/10 p-4 text-sm leading-relaxed text-slate-600">
-          <b>Notes:</b> Before starting your ad payment, you must check the pricing details and positions. Click the &quot;Pricing and other details&quot; button
-          above to learn more. Once your payment is processed, your invoice will be available in your &quot;Payment Invoice&quot; page, and your ad will run until
-          the end date.
-        </p>
-      </DashCard>
-    </CommonDashLayout>
+    <div className="grid grid-cols-3 gap-3 rounded-2xl bg-mist p-4 text-center">
+      <div>
+        <p className="text-[11px] font-bold uppercase text-slate-400">Days</p>
+        <p className="font-display text-xl font-extrabold">{r}</p>
+      </div>
+      <div>
+        <p className="text-[11px] font-bold uppercase text-slate-400">Per day</p>
+        <p className="font-display text-xl font-extrabold">{formatPrice(l)}</p>
+      </div>
+      <div>
+        <p className="text-[11px] font-bold uppercase text-slate-400">Total</p>
+        <p className="font-display text-xl font-extrabold text-gradient">{formatPrice(r * l)}</p>
+      </div>
+    </div>
   );
 }
-
+function AdSummary(props) {
+  let { startNew = false } = props;
+  return (
+    <DashCrud
+      type="ads"
+      badge="Paid Ads"
+      title="Your Banner Ads"
+      noun="ad"
+      fields={c}
+      columns={o}
+      startNew={startNew}
+      extra={x}
+      minWidth="min-w-[820px]"
+      nameOf={(e) => e.position_name || "this ad"}
+      locked={(e) => "pending" !== e.status}
+      action={
+        <Link href="/ads-pricing" className="btn-ghost btn-sm">
+          Pricing and other details
+        </Link>
+      }
+      note="Ads can be changed or deleted while they are pending. Once you submit an ad, our team will contact you about the next steps."
+    />
+  );
+}
 export default AdSummary;

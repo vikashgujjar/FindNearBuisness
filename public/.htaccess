@@ -1,0 +1,17 @@
+# Apache rules for the static export (out/). Copied into out/ by `next build`.
+Options -MultiViews
+RewriteEngine On
+
+# Real files and folders are served as they are.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Listing detail: /{City}/{Business-name--address}/{id}/  ->  the one pre-built detail page.
+RewriteRule ^[^/]+/[^/]+/[0-9]+/?$ /default-location/hotel/0/index.html [L]
+
+# Any other city: /{City}/{page}/  ->  the "default-location" version of that page, if it exists.
+RewriteCond %{DOCUMENT_ROOT}/default-location/$1/index.html -f
+RewriteRule ^[^/]+/([^/]+)/?$ /default-location/$1/index.html [L]
+
+ErrorDocument 404 /404.html

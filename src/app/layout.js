@@ -19,7 +19,7 @@ const body = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "Find Businesses Near You on Local Search Engine - Future Touch",
+  title: "Find Businesses Near You on Local Search Engine - Findbee",
   description: "Innovating technology solutions for a brighter future",
 };
 
