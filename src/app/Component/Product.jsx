@@ -23,112 +23,112 @@ let p = [
   },
 ];
 let x = ["KRISHNA", "Electric toys", "Soft toys", "Diet food", "Health products"];
-let f = ["Above $1000", "$501 - $1000", "$251 - $500", "$101 - $250", "Below $100"];
+let f = ["Above ₹1000", "₹501 - ₹1000", "₹251 - ₹500", "₹101 - ₹250", "Below ₹100"];
 let g = ["Above 70%", "51% - 70%", "26% - 50%", "11% - 25%", "Below 10%"];
 let v = [
   {
     id: 1,
     name: "Clothing1",
-    price: "$1000",
+    price: "₹1000",
     discount: "0% off",
   },
   {
     id: 2,
     name: "Shoes",
-    price: "$1000",
+    price: "₹1000",
     discount: "0% off",
   },
   {
     id: 3,
     name: "Audi q3",
-    price: "$1000",
+    price: "₹1000",
     discount: "0% off",
   },
   {
     id: 4,
     name: "Audi q3",
-    price: "$1000",
+    price: "₹1000",
     discount: "0% off",
   },
   {
     id: 5,
     name: "baby q3",
-    price: "$1000",
+    price: "₹1000",
     discount: "0% off",
   },
   {
     id: 6,
     name: "fruit q3",
-    price: "$1000",
+    price: "₹1000",
     discount: "10% off",
   },
   {
     id: 7,
     name: "mens q3",
-    price: "$1000",
+    price: "₹1000",
     discount: "20% off",
   },
   {
     id: 8,
     name: "health q3",
-    price: "$500",
+    price: "₹500",
     discount: "10% off",
   },
   {
     id: 9,
     name: "sports q3",
-    price: "$500",
+    price: "₹500",
     discount: "20% off",
   },
   {
     id: 10,
     name: "education q3",
-    price: "$250",
+    price: "₹250",
     discount: "40% off",
   },
   {
     id: 11,
     name: "electricals q3",
-    price: "$100",
+    price: "₹100",
     discount: "30% off",
   },
   {
     id: 12,
     name: "auto q3",
-    price: "$100",
+    price: "₹100",
     discount: "40% off",
   },
   {
     id: 13,
     name: "Audi q3",
-    price: "$150",
+    price: "₹150",
     discount: "30% off",
   },
   {
     id: 14,
     name: "Audi q3",
-    price: "$100",
+    price: "₹100",
     discount: "30% off",
   },
   {
     id: 15,
     name: "Audi q3",
-    price: "$100",
+    price: "₹100",
     discount: "10% off",
   },
   {
     id: 16,
     name: "Audi q3",
-    price: "$100",
+    price: "₹100",
     discount: "10% off",
   },
 ];
 let b = {
-  "Above $1000": [1000.01, 1 / 0],
-  "$501 - $1000": [501, 1e3],
-  "$251 - $500": [251, 500],
-  "$101 - $250": [101, 250],
-  "Below $100": [0, 100],
+  "Above ₹1000": [1000.01, 1 / 0],
+  "₹501 - ₹1000": [501, 1e3],
+  "₹251 - ₹500": [251, 500],
+  "₹101 - ₹250": [101, 250],
+  "Below ₹100": [0, 100],
 };
 let j = {
   "Above 70%": [71, 100],

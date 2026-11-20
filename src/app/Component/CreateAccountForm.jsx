@@ -7,6 +7,7 @@ import { FaUser, FaStore, FaCircleCheck } from "react-icons/fa6";
 import { useAuth } from "@/app/context/AuthContext";
 import { PasswordInput } from "@/app/ui/PasswordInput";
 import { useQueryParam } from "@/app/lib/api";
+import { OtpStep, IndianPhoneInput } from "@/app/ui/OtpStep";
 let x = [
   {
     id: "customer",
@@ -26,7 +27,9 @@ let x = [
 function CreateAccountForm(e) {
   let { onLogin } = e,
     a = useRouter(),
-    { register, user, ready } = useAuth(),
+    { register, sendRegisterOtp, user, ready } = useAuth(),
+    // set once the SMS code has been sent: the API's "We sent a code to …" message
+    [otpMessage, setOtpMessage] = useState(""),
     i = useRef(false),
     c = useQueryParam("type"),
     [g, b] = useState({
@@ -60,21 +63,44 @@ function CreateAccountForm(e) {
         undefined !== c &&
         a.replace("vendor" === c && "customer" === user.role ? "/become-vendor" : "/dashboard");
     }, [ready, user, c]);
+  // Step 1: check the form on the server and text the code. Nothing is saved yet.
   let E = async (e) => {
-    e.preventDefault(), (i.current = true), j(true), y("");
+    e.preventDefault(), j(true), y("");
     try {
-      let e = await register(g);
+      const res = await sendRegisterOtp(g);
+      setOtpMessage(res.message);
+    } catch (e) {
+      y(e.message);
+    } finally {
+      j(false);
+    }
+  };
+  // Step 2: create the account with the code. Errors are shown by OtpStep.
+  const verifyAndRegister = async (code) => {
+    i.current = true;
+    try {
+      let e = await register({ ...g, otp: code });
       if (e.pending) {
         S(e.message);
         return;
       }
       a.push("/dashboard");
-    } catch (e) {
-      (i.current = false), y(e.message);
-    } finally {
-      j(false);
+    } catch (err) {
+      i.current = false;
+      throw err;
     }
   };
+  if (!N && otpMessage)
+    return (
+      <OtpStep
+        message={otpMessage}
+        onVerify={verifyAndRegister}
+        onResend={() => sendRegisterOtp(g)}
+        onBack={() => setOtpMessage("")}
+        submitLabel={P ? "Verify & submit for approval" : "Verify & create account"}
+        busyLabel="Creating account…"
+      />
+    );
   return N ? (
     <div className="rounded-2xl bg-mist p-6 text-center" role="status">
       <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-50 text-2xl text-emerald-600">
@@ -163,17 +189,9 @@ function CreateAccountForm(e) {
         </div>
         <div>
           <label htmlFor="ca-phone" className="field-label">
-            Phone
+            Mobile number
           </label>
-          <input
-            id="ca-phone"
-            type="tel"
-            required={P}
-            placeholder={P ? "Phone*" : "Phone"}
-            className="field"
-            value={g.phone}
-            onChange={C("phone")}
-          />
+          <IndianPhoneInput id="ca-phone" value={g.phone} onChange={(v) => b({ ...g, phone: v })} />
         </div>
       </div>
       <div>
@@ -212,8 +230,9 @@ function CreateAccountForm(e) {
         </p>
       )}
       <button type="submit" disabled={w} className="btn-primary w-full py-3.5 text-base disabled:opacity-70">
-        {w ? "Creating account…" : P ? "Submit for approval" : "Register Now"}
+        {w ? "Sending code…" : "Send OTP"}
       </button>
+      <p className="text-center text-xs text-slate-500">We will text a 6-digit code to verify your mobile number.</p>
     </form>
   );
 }

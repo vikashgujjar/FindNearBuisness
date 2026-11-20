@@ -22,17 +22,14 @@ function AuthProvider(props) {
     d();
   }, [d]);
   let m = (e) => (setToken(e.token), r(e.user), clearApiCache(), e),
-    h = async (e, t) =>
-      m(
-        await apiFetch("/auth/login", {
-          method: "POST",
-          body: {
-            email: e,
-            password: t,
-          },
-          auth: false,
-        }),
-      ),
+    // Email + password login always continues with an SMS code: this returns
+    // { otp_required, needs_phone, login_token, message }; finish with verifyLogin().
+    h = (email, password) => apiFetch("/auth/login", { method: "POST", body: { email, password }, auth: false }),
+    loginAddPhone = (login_token, phone) => apiFetch("/auth/login/phone", { method: "POST", body: { login_token, phone }, auth: false }),
+    resendLoginOtp = (login_token) => apiFetch("/auth/login/resend", { method: "POST", body: { login_token }, auth: false }),
+    verifyLogin = async (login_token, otp) =>
+      m(await apiFetch("/auth/login/verify", { method: "POST", body: { login_token, otp }, auth: false })),
+    // Sign-up: register(form + otp) after sendRegisterOtp(form) texted the code.
     u = async (e) => {
       let t = await apiFetch("/auth/register", {
         method: "POST",
@@ -41,6 +38,11 @@ function AuthProvider(props) {
       });
       return t.token ? m(t) : t;
     },
+    sendRegisterOtp = (form) => apiFetch("/auth/register/otp", { method: "POST", body: form, auth: false }),
+    // Mobile login: sendLoginOtp(phone), then loginWithOtp(phone, code).
+    sendLoginOtp = (phone) => apiFetch("/auth/login/otp", { method: "POST", body: { phone }, auth: false }),
+    loginWithOtp = async (phone, otp) =>
+      m(await apiFetch("/auth/login/otp/verify", { method: "POST", body: { phone, otp }, auth: false })),
     x = async () => {
       try {
         await apiFetch("/auth/logout", {
@@ -56,7 +58,13 @@ function AuthProvider(props) {
         ready: o,
         isLoggedIn: !!a,
         login: h,
+        loginAddPhone,
+        resendLoginOtp,
+        verifyLogin,
         register: u,
+        sendRegisterOtp,
+        sendLoginOtp,
+        loginWithOtp,
         logout: x,
         refresh: d,
         setUser: r,

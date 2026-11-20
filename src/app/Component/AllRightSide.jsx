@@ -29,7 +29,7 @@ let f = [
   },
   {
     label: "Booking Advance",
-    value: "$500",
+    value: "₹500",
   },
   {
     label: "Contact Number",

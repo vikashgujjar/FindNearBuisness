@@ -175,8 +175,9 @@ export const formatDate = (value, options = { day: "2-digit", month: "short", ye
   return isNaN(date) ? value : date.toLocaleDateString("en-GB", options);
 };
 
+// Prices are in rupees (Razorpay, INR). 125000 -> "₹1,25,000"
 export const formatPrice = (value) =>
-  value == null ? "" : `$${Number(value).toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+  value == null ? "" : `₹${Number(value).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 
 // ---------- links ----------
 const urlPart = (text) =>
