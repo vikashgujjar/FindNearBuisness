@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaHeadset, FaXmark } from "react-icons/fa6";
 import { useApi, useFormPost } from "@/app/lib/api";
@@ -81,6 +81,11 @@ function HelpSupport() {
       category: e.enquiry_category || undefined,
       message: e.enquiry_message,
     }));
+  useEffect(() => {
+    let open = () => a(true);
+    window.addEventListener("findbee:help", open);
+    return () => window.removeEventListener("findbee:help", open);
+  }, []);
   return (
     <div className="hidden md:block [@media(max-height:500px)]:hidden">
       <AnimatePresence>

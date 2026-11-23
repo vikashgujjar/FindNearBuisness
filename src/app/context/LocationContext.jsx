@@ -18,26 +18,33 @@ function getCityLabel(e) {
 function toSlug(e) {
   return e.toLowerCase().trim().split(/\s+/).join("-");
 }
+// City used in page addresses ("/Barara/hotel"); the label above can be a village inside it.
+function getCityName(e) {
+  return e?.county || (e?.Name === "NA" ? e?.State : e?.Name) || e?.city || e?.town || e?.state_district || e?.state || null;
+}
 function cityHref(e, t) {
-  return `/${(function (e) {
-    let t = e?.county || (e?.Name === "NA" ? e?.State : e?.Name) || e?.city || e?.town || e?.state_district || e?.state;
-    return t?.replace(/\s+/g, "") || "default-location";
-  })(e)}/${t}`;
+  return `/${getCityName(e)?.replace(/\s+/g, "") || "default-location"}/${t}`;
 }
 function LocationProvider(props) {
   let { children } = props,
     [s, i] = useState(null),
-    [o, c] = useState(false);
+    [o, c] = useState(false),
+    [coords, setCoords] = useState(null); // {lat, lng}; unknown after a PIN code
   useEffect(() => {
     try {
       let e = localStorage.getItem("location");
       e && i(JSON.parse(e));
+      let pos = JSON.parse(localStorage.getItem("coords") || "null");
+      pos && setCoords(pos);
     } catch (e) {}
     navigator.geolocation &&
       navigator.geolocation.getCurrentPosition(
         async (e) => {
-          let { coords } = e;
+          let { coords } = e,
+            pos = { lat: coords.latitude, lng: coords.longitude };
+          setCoords(pos);
           try {
+            localStorage.setItem("coords", JSON.stringify(pos));
             let e = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?lat=${coords.latitude}&lon=${coords.longitude}&format=json`,
               ),
@@ -57,7 +64,8 @@ function LocationProvider(props) {
         n = await a.json(),
         l = n?.[0]?.PostOffice?.[0];
       if (!l) return "No city found for the given PIN code";
-      return localStorage.setItem("location", JSON.stringify(l)), i(l), c(false), window.location.reload(), null;
+      localStorage.removeItem("coords");
+      return localStorage.setItem("location", JSON.stringify(l)), setCoords(null), i(l), c(false), window.location.reload(), null;
     } catch (e) {
       return "Failed to fetch city details. Please try again.";
     }
@@ -66,6 +74,7 @@ function LocationProvider(props) {
     <l.Provider
       value={{
         location: s,
+        coords,
         cityLabel: getCityLabel(s),
         pincode: s?.postcode || s?.Pincode || "",
         modalOpen: o,
@@ -81,4 +90,4 @@ function LocationProvider(props) {
 function useUserLocation() {
   return useContext(l);
 }
-export { toSlug, getCityLabel, cityHref, LocationProvider, useUserLocation };
+export { toSlug, getCityLabel, getCityName, cityHref, LocationProvider, useUserLocation };

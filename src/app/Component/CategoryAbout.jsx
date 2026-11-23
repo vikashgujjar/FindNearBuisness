@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { toSlug } from "@/app/context/LocationContext";
 import { useApi } from "@/app/lib/api";
+import { useCategoryPage, usePlace } from "@/app/lib/category";
 
 // Text at the bottom of a category page (/{city}/{category}/), editable in the admin panel:
+//   - text for one city: City pages (SEO)
 //   - the category's own text: Categories → edit → Category page text
 //   - otherwise the default text: Settings → Category pages
 // Format: a blank line starts a paragraph, "## " starts a heading,
@@ -65,8 +67,11 @@ function CategoryAbout({ name, slug }) {
   const { data: categories } = useApi("/categories", { auth: false });
   const { data: settings } = useApi("/settings", { auth: false });
   const category = categories?.data?.find((c) => c.slug === slug || toSlug(c.name) === slug);
-  const text = category?.description?.trim() || settings?.category_text?.trim() || FALLBACK_TEXT;
+  const page = useCategoryPage(slug, usePlace());
+  const text = page?.text?.trim() || category?.description?.trim() || settings?.category_text?.trim() || FALLBACK_TEXT;
   const sections = toSections(text, name, place);
+  // can be switched off in Settings → Category pages
+  if (page && !page.sections.includes("about")) return null;
 
   return (
     <section className="container-x pb-12 sm:pb-16">

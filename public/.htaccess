@@ -1,6 +1,10 @@
 # Apache rules for the static export (out/). Copied into out/ by `next build`.
-Options -MultiViews
+Options -MultiViews -Indexes
 RewriteEngine On
+
+# Old addresses of the legal pages.
+RewriteRule ^privacy/?$ /privacy-policy/ [R=301,L]
+RewriteRule ^(terms|terms-and-condition)/?$ /terms-and-conditions/ [R=301,L]
 
 # Real files and folders are served as they are.
 RewriteCond %{REQUEST_FILENAME} -f [OR]

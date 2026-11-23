@@ -4,6 +4,8 @@ import Link from "next/link";
 import { FaEye, FaArrowPointer } from "react-icons/fa6";
 import { DashCrud } from "@/app/Component/DashCrud";
 import { formatPrice, formatDate } from "@/app/lib/api";
+// "Top placement" keeps a listing at the top of its category and needs no image.
+let isBoost = (values, options) => options.ad_positions?.find((p) => String(p.id) === String(values.ad_position_id))?.slot === "category_boost";
 let c = [
   {
     name: "ad_position_id",
@@ -20,11 +22,20 @@ let c = [
     name: "listing_id",
     label: "Listing",
     type: "select",
+    required: isBoost,
+    hint: "While its ad is running, this listing stays at the top of its category",
     options: (e) =>
       (e.listings || []).map((e) => ({
         value: e.id,
         label: e.name,
       })),
+  },
+  {
+    name: "category_id",
+    label: "Only on this category",
+    type: "select",
+    placeholder: "All categories",
+    options: (e) => (e.categories || []).map((e) => ({ value: e.id, label: e.name })),
   },
   {
     name: "start_date",
@@ -49,7 +60,7 @@ let c = [
     name: "image",
     label: "Ad image",
     type: "image",
-    required: true,
+    required: (values, options) => !isBoost(values, options),
     full: true,
   },
 ];
@@ -57,6 +68,10 @@ let o = [
   {
     label: "Ads Position",
     render: (e) => <span className="font-semibold text-night-900">{e.position_name}</span>,
+  },
+  {
+    label: "Listing",
+    render: (e) => e.listing_name || "\u2014",
   },
   {
     label: "Start Date",

@@ -148,11 +148,11 @@ function AdvertiseHero() {
           </StaggerItem>
           <StaggerItem as="p" className="mt-6 text-xs text-slate-500">
             By continuing, you agree to our{" "}
-            <a href="/terms" className="text-slate-300 hover:underline">
-              Terms of Use
+            <a href="/terms-and-conditions" className="text-slate-300 hover:underline">
+              Terms and Conditions
             </a>
             {", "}
-            <a href="/privacy" className="text-slate-300 hover:underline">
+            <a href="/privacy-policy" className="text-slate-300 hover:underline">
               Privacy
             </a>
             {", &"} <span className="text-slate-300">Infringement Policy</span>.

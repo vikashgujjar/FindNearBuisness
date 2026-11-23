@@ -18,6 +18,7 @@ import { uploadFile, mediaUrl, apiFetch, useApi } from "@/app/lib/api";
 let u = ["images", "tags", "pairs", "services"];
 let h = (e) => {
   var t;
+  if ("features" === e.type || "hours" === e.type) return {};
   return u.includes(e.type) ? [] : "toggle" === e.type ? null !== (t = e.default) && undefined !== t && t : "";
 };
 let initialValues = function (e) {
@@ -237,12 +238,74 @@ function Cw(props) {
     </div>
   );
 }
+// Filters the admin set up for the chosen category.
+const featureFilters = (values, options) => options?.categories?.find((c) => String(c.id) === String(values?.category_id))?.filters || [];
+function FeaturePicker({ filters, value, onChange }) {
+  return (
+    <div className="space-y-4">
+      {filters.map((f) => (
+        <fieldset key={f.key}>
+          <legend className="mb-2 text-sm font-semibold text-night-900">{f.name}</legend>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {f.options.map((o) => {
+              const chosen = value[f.key] || [];
+              return (
+                <label key={o} className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-brand-500"
+                    checked={chosen.includes(o)}
+                    onChange={(e) => onChange({ ...value, [f.key]: e.target.checked ? [...chosen, o] : chosen.filter((x) => x !== o) })}
+                  />
+                  {o}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      ))}
+    </div>
+  );
+}
+const WEEK = { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday", sun: "Sunday" };
+function HoursEditor({ value, onChange }) {
+  const set = (day, part, time) => onChange({ ...value, [day]: { open: null, close: null, ...value[day], [part]: time || null } });
+  const monday = value.mon?.open && value.mon?.close ? value.mon : null;
+  return (
+    <div className="space-y-2">
+      {Object.entries(WEEK).map(([day, label]) => (
+        <div key={day} className="flex items-center gap-3 text-sm text-slate-600">
+          <span className="w-24 shrink-0">{label}</span>
+          {["open", "close"].map((part) => (
+            <input
+              key={part}
+              type="time"
+              aria-label={`${label} ${part === "open" ? "opens" : "closes"}`}
+              className="field w-auto py-2"
+              value={value[day]?.[part] || ""}
+              onChange={(e) => set(day, part, e.target.value)}
+            />
+          ))}
+        </div>
+      ))}
+      {monday && (
+        <button type="button" className="btn-ghost btn-sm" onClick={() => onChange(Object.fromEntries(Object.keys(WEEK).map((d) => [d, { ...monday }])))}>
+          Use Monday’s hours for every day
+        </button>
+      )}
+    </div>
+  );
+}
 function S(props) {
   let t,
-    { field, value, onChange, options, error, onBusy } = props,
+    { field, value, values, onChange, options, error, onBusy } = props,
     o = `vf-${field.name}`,
-    { type = "text", label, required, placeholder, hint, full } = field;
-  if ("textarea" === type)
+    { type = "text", label, placeholder, hint, full } = field,
+    required = "function" == typeof field.required ? field.required(values || {}, options || {}) : field.required;
+  if ("features" === type && !featureFilters(values, options).length) return null;
+  if ("features" === type) t = <FeaturePicker filters={featureFilters(values, options)} value={value || {}} onChange={onChange} />;
+  else if ("hours" === type) t = <HoursEditor value={value || {}} onChange={onChange} />;
+  else if ("textarea" === type)
     t = (
       <textarea
         id={o}
@@ -384,7 +447,7 @@ function S(props) {
           onChange={(e) => onChange(e.target.value)}
         />
       );
-  let b = full || u.includes(type) || "textarea" === type;
+  let b = full || u.includes(type) || ["textarea", "features", "hours"].includes(type);
   return (
     <div className={b ? "sm:col-span-2" : ""}>
       <label htmlFor={o} className="field-label">
@@ -419,6 +482,7 @@ function FormFields(props) {
             key={e.name}
             field={e}
             value={values[e.name]}
+            values={values}
             options={options}
             error={errors?.[e.name]?.[0]}
             onBusy={onBusy}

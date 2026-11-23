@@ -24,6 +24,30 @@ let r = [
       })),
   },
   {
+    name: "tagline",
+    label: "Short line",
+    placeholder: "3 Star Hotel",
+    hint: "Shown next to the name",
+  },
+  {
+    name: "price_min",
+    label: "Price from (\u20b9)",
+    type: "number",
+    min: 0,
+  },
+  {
+    name: "price_max",
+    label: "Price to (\u20b9)",
+    type: "number",
+    min: 0,
+  },
+  {
+    name: "features",
+    label: "Features",
+    type: "features",
+    hint: "Customers can filter by these",
+  },
+  {
     name: "description",
     label: "Description",
     type: "textarea",
@@ -61,6 +85,15 @@ let r = [
     full: true,
   },
   {
+    name: "locality",
+    label: "Area / locality",
+  },
+  {
+    name: "landmark",
+    label: "Landmark",
+    placeholder: "1 km drive to the bus stand",
+  },
+  {
     name: "city",
     label: "City",
   },
@@ -71,6 +104,28 @@ let r = [
   {
     name: "pincode",
     label: "Pincode",
+  },
+  {
+    name: "lat",
+    label: "Latitude",
+    type: "number",
+    step: "any",
+    hint: "Right-click your place in Google Maps to copy it; shows the distance to customers",
+  },
+  {
+    name: "lng",
+    label: "Longitude",
+    type: "number",
+    step: "any",
+  },
+  {
+    section: "Opening hours",
+  },
+  {
+    name: "hours",
+    label: "Opening hours",
+    type: "hours",
+    hint: "Leave a day empty when closed. The same time twice means open 24 hours.",
   },
   {
     section: "Photos",
@@ -167,6 +222,10 @@ let o = [
         </span>
       );
     },
+  },
+  {
+    label: "Calls / WhatsApp",
+    render: (e) => `${e.call_clicks ?? 0} / ${e.whatsapp_clicks ?? 0}`,
   },
 ];
 function AllListing(props) {

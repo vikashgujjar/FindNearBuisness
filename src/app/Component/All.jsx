@@ -35,7 +35,9 @@ import {
   apiFetch,
   clearApiCache,
   formatDate,
+  formatPrice,
 } from "@/app/lib/api";
+import { countContact, priceText, rememberListing, waHref } from "@/app/lib/category";
 import { MapGrid, Glow } from "@/app/ui/decor";
 import AllRightSide from "@/app/Component/AllRightSide";
 let y = [
@@ -166,6 +168,15 @@ function C_(props) {
     </Reveal>
   );
 }
+const WEEK = [
+  ["mon", "Monday"],
+  ["tue", "Tuesday"],
+  ["wed", "Wednesday"],
+  ["thu", "Thursday"],
+  ["fri", "Friday"],
+  ["sat", "Saturday"],
+  ["sun", "Sunday"],
+];
 function All() {
   var e, t, a, i, f, v, C, P, I;
   let A = useRouter(),
@@ -194,7 +205,11 @@ function All() {
       reviewCity: "",
       reviewMessage: "",
     }),
-    [X, J] = useState(null);
+    [X, J] = useState(null),
+    [tags, setTags] = useState([]);
+  useEffect(() => {
+    M?.data?.id && rememberListing(M.data.id);
+  }, [M]);
   useEffect(() => {
     var e;
     U &&
@@ -240,6 +255,7 @@ function All() {
               rating: z,
               message: Y.reviewMessage,
               city: Y.reviewCity,
+              tags,
             },
           });
           J({
@@ -249,6 +265,7 @@ function All() {
               reviewCity: "",
               reviewMessage: "",
             }),
+            setTags([]),
             clearApiCache("/account"),
             reload();
         } catch (e) {
@@ -325,7 +342,11 @@ function All() {
               className="h-24 w-24 shrink-0 rounded-3xl object-cover ring-4 ring-white/20 sm:h-32 sm:w-32"
             />
             <div>
-              <span className="chip bg-emerald-500 text-white">Open now</span>
+              {U.is_open != null && (
+                <span className={`chip text-white ${U.is_open ? "bg-emerald-500" : "bg-slate-500"}`}>
+                  {U.is_open ? "Open now" : "Closed now"}
+                </span>
+              )}
               <h1 className="mt-2 flex flex-wrap items-center gap-2 text-2xl font-extrabold sm:text-4xl">
                 {U.name} {U.is_verified && <FaCircleCheck className="text-xl text-cyan-300" title="Verified" />}
               </h1>
@@ -354,12 +375,13 @@ function All() {
             </div>
           </StaggerItem>
           <StaggerItem className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-            <a href={`tel:${U.phone}`} className="btn-primary">
+            <a href={`tel:${U.phone}`} onClick={() => U.id && countContact(U.id, "call")} className="btn-primary">
               <FaPhoneAlt />
               {" Call Now"}
             </a>
             <a
-              href={`https://wa.me/${U.whatsapp || U.phone}`}
+              href={waHref(U.whatsapp || U.phone)}
+              onClick={() => U.id && countContact(U.id, "whatsapp")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-dark bg-emerald-500 hover:bg-emerald-600"
@@ -421,6 +443,46 @@ function All() {
               )}
             </p>
           </C_>
+          {(U.hours || priceText(U) || U.landmark || U.tagline || Object.keys(U.features || {}).length > 0) && (
+            <C_ id="ld-info" highlight="Good" title="to know">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <ul className="space-y-2 text-sm text-slate-600">
+                  {U.tagline && <li className="font-semibold text-night-900">{U.tagline}</li>}
+                  {priceText(U) && (
+                    <li>
+                      <b className="text-night-900">Price:</b> {priceText(U)}
+                    </li>
+                  )}
+                  {U.landmark && (
+                    <li>
+                      <b className="text-night-900">Landmark:</b> {U.landmark}
+                    </li>
+                  )}
+                  <li className="flex flex-wrap gap-1.5">
+                    {Object.values(U.features || {})
+                      .flat()
+                      .map((f) => (
+                        <span key={f} className="chip bg-mist text-slate-600">
+                          {f}
+                        </span>
+                      ))}
+                  </li>
+                </ul>
+                {U.hours && (
+                  <dl className="space-y-1 text-sm">
+                    {WEEK.map(([day, label]) => (
+                      <div key={day} className="flex justify-between gap-4">
+                        <dt className="text-slate-500">{label}</dt>
+                        <dd className="font-semibold text-night-900">
+                          {!U.hours[day] ? "Closed" : U.hours[day].open === U.hours[day].close ? "Open 24 hours" : `${U.hours[day].open} – ${U.hours[day].close}`}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
+            </C_>
+          )}
           <C_ id="ld-ser" highlight="Service" title="Offered">
             {U.services?.length ? (
               <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -509,7 +571,7 @@ function All() {
                       )}
                       {null != e.price && (
                         <span className="mt-3 font-display text-2xl font-extrabold text-gradient">
-                          ${Number(e.price).toLocaleString("en-US")}
+                          {formatPrice(e.price)}
                         </span>
                       )}
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -602,6 +664,24 @@ function All() {
                 className="field"
                 placeholder="City"
               />
+              {U.review_tags?.length > 0 && (
+                <div className="flex flex-wrap gap-2 sm:col-span-2" role="group" aria-label="What did you like?">
+                  {U.review_tags.map((tag) => {
+                    let on = tags.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() => setTags(on ? tags.filter((x) => x !== tag) : [...tags, tag])}
+                        className={`rounded-full border px-3 py-1.5 text-sm transition ${on ? "border-brand-500 bg-brand-50 text-brand-700" : "border-slate-200 text-slate-600 hover:border-brand-300"}`}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
               <textarea
                 name="reviewMessage"
                 value={Y.reviewMessage}

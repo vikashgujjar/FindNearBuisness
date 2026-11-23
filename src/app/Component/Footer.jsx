@@ -81,11 +81,19 @@ let d = [
       },
       {
         label: "Privacy Policy",
-        href: "/privacy",
+        href: "/privacy-policy",
       },
       {
-        label: "Terms of Use",
-        href: "/terms",
+        label: "Return Policy",
+        href: "/return-policy",
+      },
+      {
+        label: "Refund Policy",
+        href: "/refund-policy",
+      },
+      {
+        label: "Terms and Conditions",
+        href: "/terms-and-conditions",
       },
     ],
   },

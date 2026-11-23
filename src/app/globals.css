@@ -77,6 +77,33 @@
     @apply rounded-3xl bg-white shadow-card ring-1 ring-slate-100;
   }
 
+  /* Text of the legal pages (HTML from the admin panel) */
+  .legal-text > * + * {
+    @apply mt-4;
+  }
+  .legal-text h2 {
+    @apply mt-9 text-lg font-bold text-night-900 sm:text-xl;
+  }
+  .legal-text h3 {
+    @apply mt-6 text-base font-bold text-night-900;
+  }
+  .legal-text h2 + *,
+  .legal-text h3 + * {
+    @apply mt-2.5;
+  }
+  .legal-text ul {
+    @apply list-disc space-y-2 pl-5 marker:text-brand-500;
+  }
+  .legal-text ol {
+    @apply list-decimal space-y-2 pl-5 marker:font-semibold marker:text-brand-600;
+  }
+  .legal-text strong {
+    @apply font-semibold text-night-900;
+  }
+  .legal-text a {
+    @apply font-semibold text-brand-600 underline;
+  }
+
   .field {
     @apply w-full rounded-2xl border border-slate-200 bg-mist px-4 py-3 text-sm text-night-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 disabled:cursor-not-allowed disabled:opacity-60;
   }

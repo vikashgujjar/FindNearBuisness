@@ -121,7 +121,7 @@ function Cm(props) {
               }}
               className="flex items-center justify-between gap-3"
             >
-              <a href="/terms" className="text-xs text-slate-500 underline hover:text-brand-600">
+              <a href="/terms-and-conditions" className="text-xs text-slate-500 underline hover:text-brand-600">
                 {"Terms & Conditions Apply"}
               </a>
               <button type="button" onClick={() => o(true)} className="btn-primary">

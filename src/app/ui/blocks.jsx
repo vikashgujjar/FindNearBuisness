@@ -15,6 +15,7 @@ function c(props) {
       align = "center",
       compact = false,
       waveFill = "#fff",
+      banner = null, // shown above the heading, on the same background
     } = props,
     h = "center" === align;
   return (
@@ -22,10 +23,11 @@ function c(props) {
       <DotGrid className="inset-0 h-full w-full [mask-image:radial-gradient(ellipse_at_top,#000,transparent_70%)]" />
       <Glow className="-left-24 -top-10 h-72 w-72" color="bg-brand-200/60" />
       <Glow className="-right-24 bottom-0 h-72 w-72" color="bg-magenta-400/15" />
+      {banner}
       <Stagger
         onLoad
         gap={0.08}
-        className={`container-x relative flex flex-col gap-4 ${h ? "items-center text-center" : "items-start"} ${compact ? "pb-16 pt-10 sm:pb-20 sm:pt-12" : "pb-20 pt-12 sm:pb-28 sm:pt-16"}`}
+        className={`container-x relative flex flex-col gap-4 ${h ? "items-center text-center" : "items-start"} ${banner ? "pb-14 pt-7 sm:pb-16 sm:pt-9" : compact ? "pb-16 pt-10 sm:pb-20 sm:pt-12" : "pb-20 pt-12 sm:pb-28 sm:pt-16"}`}
       >
         {crumbs && (
           <StaggerItem>

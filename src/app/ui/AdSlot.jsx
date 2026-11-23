@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useApi, API_URL, listingHref } from "@/app/lib/api";
 function AdSlot(props) {
   var t;
-  let { slot, className = "" } = props,
-    { data } = useApi(`/ads?slot=${slot}`, {
+  let { slot, category, className = "" } = props,
+    { data } = useApi(`/ads?slot=${slot}${category ? `&category=${encodeURIComponent(category)}` : ""}`, {
       auth: false,
       cacheable: false,
     }),

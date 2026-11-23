@@ -4,7 +4,18 @@ import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 import { Contours } from "@/app/ui/decor";
 import { Reveal } from "@/app/ui/motion";
+import { useApi } from "@/app/lib/api";
+
+// Editable in the admin panel: Settings → "Add my business" box.
+const DEFAULTS = {
+  promo_title: "Grow your business with Findbee",
+  promo_text: "Add your business for free, show your photos, services and offers, and get enquiries from customers near you.",
+  promo_button: "Add my business",
+  promo_link: "/mybusiness",
+};
 function BuinessDirectory() {
+  const { data: settings } = useApi("/settings", { auth: false });
+  const text = (key) => settings?.[key] || DEFAULTS[key];
   return (
     <section className="container-x py-12 sm:py-16">
       <Reveal className="relative overflow-hidden rounded-[2rem] bg-brand-gradient p-6 text-white shadow-glow sm:p-10">
@@ -19,18 +30,17 @@ function BuinessDirectory() {
           />
           <div className="flex-1">
             <h2 className="text-xl font-extrabold sm:text-2xl lg:text-3xl">
-              #1 Business Directory and Service Provider
+              {text("promo_title")}
             </h2>
             <p className="mt-2 max-w-2xl text-sm text-white/80 sm:text-base">
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-              in some form, by injected humour.
+              {text("promo_text")}
             </p>
           </div>
           <Link
-            href="/mybusiness"
+            href={text("promo_link")}
             className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-night-900 transition hover:-translate-y-0.5"
           >
-            Add my business
+            {text("promo_button")}
             <FaArrowRight className="text-xs transition group-hover:translate-x-1" />
           </Link>
         </div>

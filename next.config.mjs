@@ -6,6 +6,13 @@ const nextConfig = {
     // has no .htaccess, so in development pages are rendered on demand for any city instead.
     output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
     trailingSlash: true,
+    // Old addresses; on the live server public/.htaccess does this.
+    ...(process.env.NODE_ENV === 'production' ? {} : {
+        redirects: async () => [
+            { source: '/privacy', destination: '/privacy-policy/', permanent: false },
+            { source: '/:old(terms|terms-and-condition)', destination: '/terms-and-conditions/', permanent: false },
+        ],
+    }),
     images: {
         unoptimized: true,
     },
